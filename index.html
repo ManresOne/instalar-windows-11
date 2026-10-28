@@ -117,6 +117,16 @@ footer details p{margin:10px 0}
 #pv{max-width:100%;max-height:320px;border-radius:14px;border:2px solid var(--line);margin-top:8px}
 #toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:all .3s;z-index:60;max-width:92vw;text-align:center}
 #toast.on{opacity:1;transform:translate(-50%,0)}
+.danger{background:#FFE5EA;color:#7A0F2B;border:3px solid var(--rose);animation:pulse 2s ease-in-out infinite}
+.danger::before{content:"🛑"}
+.danger b:first-child{font-size:1.2rem;text-transform:uppercase;letter-spacing:.04em}
+@keyframes pulse{50%{box-shadow:0 0 0 9px rgba(255,92,138,.25)}}
+.q.good{border-color:var(--mint);background:#F0FDF9}
+.exp{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:#fff;color:#7A0F2B;font-weight:600}
+.fl{display:block;font-weight:700;margin:12px 0}
+.fl input{display:block;font:inherit;width:100%;max-width:420px;padding:10px 14px;border:2px solid var(--line);border-radius:12px;margin-top:4px}
+.ck{display:flex;gap:10px;align-items:flex-start;margin:12px 0;max-width:60ch;font-size:.95rem}
+.ck input{margin-top:5px;accent-color:var(--pri)}
 </style>
 </head>
 <body>
@@ -128,7 +138,7 @@ footer details p{margin:10px 0}
 <div id="toast" role="status"></div>
 <aside id="side" aria-label="Lista de pasos"><h1>Todos los pasos</h1><nav id="toc"></nav></aside><div id="scrim"></div>
 <main><div class="pills" id="pills"></div><div class="bar"><i id="pb"></i></div><p class="meta" id="meta"></p><article id="step" tabindex="-1"></article>
-<div class="nav"><button id="prev">Anterior</button><button id="next" class="p">Siguiente</button></div></main>
+<div class="nav" id="nav"><button id="prev">Anterior</button><button id="next" class="p">Siguiente</button></div></main>
 <footer>
 <p><b>Creado por Manuel Restrepo</b></p>
 <p>Material creado con fines académicos y educativos. Usa siempre licencias originales y descarga el software solo desde sitios oficiales.</p>
@@ -144,6 +154,8 @@ const L={iso:"https://www.microsoft.com/es-es/software-download/windows11",rufus
 const im=(f,a,c)=>`<figure><img src="img/${f}" alt="${a}" loading="lazy">${c?`<figcaption>${c}</figcaption>`:""}</figure>`;
 const btn=(h,t,alt)=>`<a class="btn${alt?" alt":""}" href="${h}" target="_blank" rel="noopener">${t}</a>`;
 const warn=t=>`<div class="callout warn"><b>Atención</b>${t}</div>`;
+const danger=(t,x="")=>`<div class="callout danger"><b>¡Cuidado!</b>${t}${x}</div>`;
+const bk=()=>danger("Se perderá TODA la información que hay en el disco. Antes de continuar, asegúrate de que ya hiciste tu copia de seguridad. Después de este punto no hay vuelta atrás.",`<div class="btns"><button class="btn alt" data-go="1">Ver cómo hacer la copia de seguridad</button></div>`);
 const tip=t=>`<div class="callout tip"><b>Consejo</b>${t}</div>`;
 const rufus=rows=>`<div class="rufus" role="group" aria-label="Ventana de Rufus"><div class="tb">Rufus</div><dl>${rows.map(r=>`<div class="r"><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join("")}</dl></div>`;
 const F=["Antes de empezar","Copia de seguridad","Preparar el USB con Rufus","Arrancar desde el USB","Instalar Windows","Configurar Windows","Comprobar que terminaste"];
@@ -161,19 +173,19 @@ const S=[
 {f:2,t:"Revisar las opciones de Rufus",h:`<p>Antes de empezar, comprueba que la ventana se parezca a esta. Rara vez hay que cambiar algo.</p>${rufus([["Opción de imagen","Instalación estándar de Windows"],["Esquema de partición","GPT"],["Sistema de destino","UEFI (sin CSM)"],["Nombre de volumen","WIN11"],["Sistema de archivos","NTFS"]])}<p><b>GPT</b> y <b>UEFI</b> son la forma moderna de arrancar un PC y la que pide Windows 11. El nombre de volumen puede ser cualquiera. No toques las opciones avanzadas.</p>`},
 {f:2,t:"Grabar el USB",h:`<p>Pulsa <b>EMPEZAR</b>. Rufus mostrará un par de ventanas:</p><ol><li><b>Experiencia de usuario de Windows</b>: déjala como está. Solo para un PC antiguo que no cumple los requisitos puedes marcar la opción de quitar los requisitos de TPM 2.0, Arranque seguro y RAM. Es una opción de Rufus, no oficial de Microsoft.</li><li><b>Aviso de borrado</b>: confirma con <b>Aceptar</b>.</li></ol><p>Espera a que la barra se llene y muestre <b>LISTO</b>. Cierra Rufus y expulsa el USB desde la barra de tareas.</p>${warn("No saques el USB mientras la barra avanza: el USB quedaría dañado y tendrás que repetir el paso.")}`},
 {f:3,t:"Apagar el PC y conectar el USB",h:`<p>Apaga el PC donde vas a instalar. Con el PC apagado, conecta el USB de instalación y desconecta todo lo que no sea necesario, salvo el ratón y el teclado.</p><p>Si el PC no tiene sistema operativo, el asistente de instalación arranca solo al encenderlo. Si ya tiene Windows u otro sistema, sigue con el paso siguiente.</p>`},
-{f:3,t:"Entrar al menú de arranque o a la BIOS",h:`<p>Si el PC ya tiene un sistema, hay que ordenarle que arranque desde el USB. Justo al encenderlo, pulsa <b>repetidamente</b> la tecla del menú de arranque, normalmente F11 o F12 según el fabricante. Fíjate en la primera pantalla: suele mostrar la tecla.</p><div class="btns">${btn(L.yt,"Ver el video: cómo entrar a la BIOS y cambiar la secuencia de arranque",1)}</div><p>Teclas habituales por marca:</p><div class="tw"><table><thead><tr><th>Marca</th><th>Menú de arranque</th><th>Entrar a la BIOS</th></tr></thead><tbody>${keys.map(k=>`<tr><td>${k[0]}</td><td>${k[1]}</td><td>${k[2]}</td></tr>`).join("")}</tbody></table></div><p>Si el PC arranca tan rápido que no alcanzas, entra desde Windows: <b>Configuración › Sistema › Recuperación › Inicio avanzado › Reiniciar ahora › Solucionar problemas › Opciones avanzadas › Configuración de firmware UEFI</b>.</p>${tip("La tabla es orientativa. Los modelos varían, así que confirma la tecla en la pantalla de inicio del equipo.")}`},
+{f:3,t:"Entrar al menú de arranque o a la BIOS",h:`<p>Si el PC ya tiene un sistema, hay que ordenarle que arranque desde el USB. Justo al encenderlo, pulsa <b>repetidamente</b> la tecla del menú de arranque, normalmente F11 o F12 según el fabricante. Fíjate en la primera pantalla: suele mostrar la tecla.</p><div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/rATceRrSvLM" title="Video: cómo entrar a la BIOS y cambiar la secuencia de arranque" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p>Teclas habituales por marca:</p><div class="tw"><table><thead><tr><th>Marca</th><th>Menú de arranque</th><th>Entrar a la BIOS</th></tr></thead><tbody>${keys.map(k=>`<tr><td>${k[0]}</td><td>${k[1]}</td><td>${k[2]}</td></tr>`).join("")}</tbody></table></div><p>Si el PC arranca tan rápido que no alcanzas, entra desde Windows: <b>Configuración › Sistema › Recuperación › Inicio avanzado › Reiniciar ahora › Solucionar problemas › Opciones avanzadas › Configuración de firmware UEFI</b>.</p>${tip("La tabla es orientativa. Los modelos varían, así que confirma la tecla en la pantalla de inicio del equipo.")}`},
 {f:3,t:"Pulsar una tecla para arrancar desde el USB",h:`<p>Elige el USB en el menú de arranque. Puede aparecer este mensaje: pulsa cualquier tecla y el asistente de instalación comenzará a cargar.</p>${im("presione-tecla.png","Pantalla negra con el texto Presione cualquier tecla para iniciar desde el CD o DVD")}`},
 {f:4,t:"Idioma e «Instalar ahora»",h:`<p>Espera unos segundos mientras Windows prepara el asistente. Verás la pantalla de selección de idioma, formato de hora y teclado. Ajusta lo necesario y pulsa <b>Siguiente</b>.</p>${im("idioma.jpeg","Pantalla de idioma, formato de hora y teclado del instalador")}<p>Después haz clic en <b>Instalar ahora</b>. El asistente tardará unos segundos en hacer comprobaciones iniciales.</p>${im("instalar-ahora.jpeg","Botón Instalar ahora del instalador de Windows")}`},
 {f:4,t:"Clave de producto",h:`<p>Si tienes la clave de Windows, escríbela aquí. Si no la tienes, pulsa <b>No tengo clave de producto</b>, abajo a la derecha: podrás activar Windows más tarde.</p>${im("clave.jpeg","Pantalla Activar Windows con el campo de clave de producto")}`},
 {f:4,t:"Aceptar la licencia",h:`<p>Marca la casilla para aceptar los términos de licencia del sistema operativo y pulsa <b>Siguiente</b>.</p>${im("licencia.jpeg","Términos de licencia con la casilla de aceptación")}`},
-{f:4,t:"Elegir el tipo de instalación",h:`<p>Aquí se decide si Windows se actualiza o se instala desde cero. Escoge <b>Personalizada: instalar solo Windows (avanzado)</b>, que borra todo e instala un Windows limpio.</p>${im("tipo.jpeg","Pantalla con las opciones Actualización y Personalizada")}`},
-{f:4,t:"Elegir dónde instalar",h:`<p>Elige la unidad y la partición donde irá Windows. Lo más sencillo: elimina todas las particiones del disco o SSD principal hasta que quede como espacio sin asignar, y pulsa <b>Siguiente</b>. Windows creará solo las particiones que necesita (arranque, recuperación, sistema).</p>${im("disco.jpeg","Lista de unidades y particiones con espacio sin asignar")}<p>Puede salir un aviso de que Windows creará particiones adicionales. Pulsa <b>Aceptar</b>.</p>${im("disco-aviso.jpeg","Aviso de creación de particiones adicionales")}${warn("Si el PC tiene varios discos, revisa el tamaño de cada uno. Al eliminar una partición se pierde su contenido.")}`},
-{f:4,t:"Esperar la instalación",h:`<p>Empieza el asistente, que avanza en 5 etapas: copiar los archivos de Windows, prepararlos, instalar características, instalar actualizaciones y acabar. Puede tardar varios minutos.</p>${im("copiando.jpeg","Barra de progreso con las etapas de instalación")}<p>Al llegar al 100 %, retira el USB justo antes de que el PC reinicie. Si lo dejas puesto, al reiniciar saldrá el mensaje de «Presione cualquier tecla»: <b>no pulses nada</b>, o volverás a empezar.</p><p>Windows se reiniciará varias veces mientras instala servicios y dispositivos. Espera con paciencia.</p>`},
+{f:4,t:"Elegir el tipo de instalación",h:`<p>Aquí se decide si Windows se actualiza o se instala desde cero. Escoge <b>Personalizada: instalar solo Windows (avanzado)</b>, que borra todo e instala un Windows limpio.</p>${im("tipo.jpeg","Pantalla con las opciones Actualización y Personalizada")}${bk()}`},
+{f:4,t:"Elegir dónde instalar",h:`${bk()}<p>Elige la unidad y la partición donde irá Windows. Lo más sencillo: elimina todas las particiones del disco o SSD principal hasta que quede como espacio sin asignar, y pulsa <b>Siguiente</b>. Windows creará solo las particiones que necesita (arranque, recuperación, sistema).</p>${im("disco.jpeg","Lista de unidades y particiones con espacio sin asignar")}<p>Puede salir un aviso de que Windows creará particiones adicionales. Pulsa <b>Aceptar</b>.</p>${im("disco-aviso.jpeg","Aviso de creación de particiones adicionales")}${warn("Si el PC tiene varios discos, revisa el tamaño de cada uno. Al eliminar una partición se pierde su contenido.")}`},
+{f:4,t:"Esperar la instalación",h:`<p>Empieza el asistente, que avanza en 5 etapas: copiar los archivos de Windows, prepararlos, instalar características, instalar actualizaciones y acabar. Puede tardar varios minutos.</p>${im("copiando.jpeg","Barra de progreso con las etapas de instalación")}${danger("Al llegar al 100 %, retira el USB justo antes de que el PC reinicie. Si lo dejas puesto, saldrá el mensaje «Presione cualquier tecla…»: <b>NO pulses ninguna tecla</b> o la instalación empezará de nuevo desde cero.")}<p>Windows se reiniciará varias veces mientras instala servicios y dispositivos. Espera con paciencia.</p>`},
 {f:5,t:"País o región y teclado",h:`<p>Windows ya está casi instalado y toca configurarlo. Elige el país o región (en este curso, <b>Colombia</b>) y pulsa <b>Sí</b>.</p>${im("pais.jpeg","Lista de países con España seleccionado")}<p>Luego elige la distribución de teclado: <b>Español Latinoamérica</b> o <b>Español Colombia</b>. Si Windows pregunta por otra distribución, omite ese paso. Después buscará actualizaciones importantes si hay internet.</p>`},
 {f:5,t:"Ponerle nombre al PC",h:`<p>El nombre hace único a tu equipo en la red y permite conectarte a él desde otros dispositivos. Escríbelo y pulsa <b>Siguiente</b>, o elige <b>Omitir por ahora</b>.</p>${im("nombre-pc.jpeg","Pantalla Asignemos un nombre a su PC")}<p>Verás la pantalla «Un momento…» mientras Windows aplica la configuración.</p>`},
 {f:5,t:"Crear la cuenta de usuario",h:`<p>Puedes usar una <b>cuenta Microsoft</b> o una <b>cuenta local</b> que no esté vinculada a Microsoft.</p>${im("cuenta.jpeg","Pantalla Vamos a agregar la cuenta con inicio de sesión de Microsoft")}<ul><li>En Windows 11 <b>Pro</b> puedes crear la cuenta local fácilmente desde el asistente.</li><li>En <b>Home</b> solo es posible si el PC no tiene conexión a internet.</li></ul><p>Desde aquí todo son ajustes personales: PIN de acceso, privacidad y otras cuentas.</p>`},
-{f:6,k:"quiz",t:"Quiz de repaso",h:`<p>Contesta las 6 preguntas. Necesitas 5 aciertos para pasar. Si fallas, repasa los pasos y vuelve a intentarlo.</p><div id="qz"></div>`},
-{f:6,k:"ev",t:"Envía tu prueba",h:`<p>Para terminar, muestra que tu instalación funciona. Toma una foto o una captura de <b>Configuración › Sistema › Acerca de</b>, donde se vea el nombre de tu equipo y la edición de Windows.</p><div id="ev"></div>`},
+{f:6,k:"quiz",t:"Quiz de repaso",h:`<p>Contesta las 10 preguntas. Necesitas 8 aciertos para pasar. Cuando compruebes tus respuestas ya no podrás cambiarlas: verás cuáles fallaste y por qué, y podrás intentarlo de nuevo.</p><div id="qz"></div>`},
+{f:6,k:"ev",t:"Envía tu prueba",h:`<p>Para terminar, escribe tus datos y sube <b>una foto donde se te vea el rostro mientras manipulas el equipo</b> en el que estás instalando el sistema operativo. Puedes pedirle a un compañero que te la tome.</p><div id="ev"></div>`},
 {f:6,t:"¡Windows 11 instalado!",hero:1,h:`<p>Terminaste. Windows 11 está instalado desde cero.</p>${tip("Con las actualizaciones, las pantallas de Windows pueden cambiar un poco. Esta guía es informativa.")}<div class="btns"><button class="btn" id="again">Volver al inicio</button></div>`}
 ];
 const $=id=>document.getElementById(id);
@@ -185,7 +197,11 @@ const QZ={w11:[
 {q:"¿Qué esquema de partición y sistema de destino usa Rufus para Windows 11?",o:["MBR y BIOS","GPT y UEFI","FAT y CSM"]},
 {q:"¿Qué tecla abre el menú de arranque en la mayoría de equipos?",o:["F11 o F12, según el fabricante","Bloq Mayús","Ctrl + Alt + Supr"]},
 {q:"¿Qué tipo de instalación eliges para instalar Windows desde cero?",o:["Actualización","Personalizada","Reparar"]},
-{q:"La instalación llegó al 100 %, el PC reinicia con el USB puesto y sale «Presione cualquier tecla…». ¿Qué haces?",o:["Pulsar una tecla","No pulsar nada","Apagar el PC"]}]};
+{q:"La instalación llegó al 100 %, el PC reinicia con el USB puesto y sale «Presione cualquier tecla…». ¿Qué haces?",o:["Pulsar una tecla","No pulsar nada","Apagar el PC"]},
+{q:"Antes de arrancar desde el USB, ¿qué haces con los periféricos?",o:["Dejar solo ratón y teclado","Conectarlos todos","Quitar también el teclado"]},
+{q:"En «¿Dónde quieres instalar Windows?», ¿qué se recomienda con las particiones del disco principal?",o:["Eliminarlas y dejar espacio sin asignar","Dejarlas intactas","Formatear el USB"]},
+{q:"Si no tienes clave de producto en la pantalla de activación, ¿qué haces?",o:["Pulsar «No tengo clave de producto»","Usar un activador descargado de internet","Detener la instalación"]},
+{q:"¿Dónde debe guardarse la copia de seguridad?",o:["En un disco externo o USB distinto al de instalación","En el mismo disco donde se instalará Windows","En la carpeta Descargas"]}]};
 const API="https://script.google.com/macros/s/AKfycby3HOilUGOBqrVGfcBeqAuL07d4HlDHOXJnRf2bG_8mPI9yshV9VFxn1zQCJ93mUpTx/exec";
 const on=API.startsWith("https://");
 let mi=0,n=0,seen=new Set(),ses=null,done=new Set(),qok=new Set();
@@ -196,7 +212,7 @@ const key=()=>"seen-"+MODS[mi].id;
 function load(){try{seen=new Set(JSON.parse(localStorage.getItem(key())||"[]"))}catch(e){seen=new Set()}}
 function save(){try{localStorage.setItem(key(),JSON.stringify([...seen]))}catch(e){}}
 const open=m=>!m.req||done.has(m.req);
-function tabs(){$("tabs").innerHTML=MODS.map((m,i)=>`<button role="tab" data-m="${i}" aria-selected="${i===mi}"${m.soon||!open(m)?' aria-disabled="true"':""}>${open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`).join("")}
+function tabs(){$("tabs").innerHTML=MODS.map((m,i)=>`<button role="tab" data-m="${i}" aria-selected="${i===mi}"${m.soon||!open(m)||done.has(m.id)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`).join("")}
 function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3400)}
 function pills(){const f=MODS[mi].S[n].f;$("pills").innerHTML=SH.map((t,i)=>`<span class="pill${i===f?" on":i<f?" past":""}"><b>${i<f?"✓":I[i]}</b><span>${t}</span></span>`).join("");const o=document.querySelector(".pill.on");if(o)o.scrollIntoView({inline:"center",block:"nearest"})}
 function toc(){const{S,F}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!==last){if(last>-1)h+="</ol>";h+=`<h2>${I[s.f]} ${F[s.f]}</h2><ol>`;last=s.f}
@@ -207,7 +223,7 @@ function go(i,fromHash){const{S,F}=MODS[mi];i=Math.max(0,Math.min(S.length-1,i))
 const hi=i===0&&ses?`<p class="hi">¡Hola, ${ses.name.replace(/[<>&"]/g,"")}! Vamos a instalar Windows 11 juntos, un paso a la vez.</p>`:"";
 $("step").innerHTML=`${hi}<h2 class="t${s.hero?" hero":""}">${s.t}</h2>${s.h}`;
 $("pb").style.width=p+"%";$("meta").textContent=i===0?"¡Listos para empezar!":`Paso ${i} de ${S.length-1} · ${p} %`;
-$("prev").disabled=i===0;$("next").disabled=last;toc();pills();
+$("prev").disabled=i===0;$("next").textContent=last?"Finalizar":"Siguiente";$("nav").hidden=false;toc();pills();
 document.querySelectorAll("#toc button").forEach(b=>{if(+b.dataset.i===i)b.setAttribute("aria-current","step")});
 const a=$("again");if(a)a.onclick=()=>go(0);
 menu(false);
@@ -216,38 +232,46 @@ if(s.k==="quiz")quiz();if(s.k==="ev")evid();if(last&&done.has(MODS[mi].id)&&!fro
 if(!fromHash){history.replaceState(null,"","#"+MODS[mi].id+"/"+i);window.scrollTo(0,0);$("step").focus({preventScroll:true});
 if(!matchMedia("(prefers-reduced-motion:reduce)").matches)$("step").animate([{opacity:0,transform:"translateY(14px) scale(.98)"},{opacity:1,transform:"none"}],{duration:300,easing:"cubic-bezier(.3,1.3,.5,1)"})}}
 function openMod(m,i,fromHash){mi=m;load();tabs();go(i,fromHash)}
-$("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;const m=MODS[+b.dataset.m];if(m.soon)return toast("Esta guía estará disponible pronto.");if(!open(m))return toast("Termina "+MODS.find(x=>x.id===m.req).name+" (quiz y prueba) para desbloquear.");openMod(+b.dataset.m,0)};
+$("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;const m=MODS[+b.dataset.m];if(done.has(m.id))return toast("Ya completaste esta guía.");if(m.soon)return toast("Esta guía estará disponible pronto.");if(!open(m))return toast("Termina "+MODS.find(x=>x.id===m.req).name+" (quiz y prueba) para desbloquear.");openMod(+b.dataset.m,0)};
 $("toc").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
-$("prev").onclick=()=>go(n-1);$("next").onclick=()=>go(n+1);
+$("prev").onclick=()=>go(n-1);$("next").onclick=()=>{const S=MODS[mi].S;if(n<S.length-1)return go(n+1);if(done.has(mid()))showDone();else{toast("Antes de finalizar, aprueba el quiz y envía tu prueba.");go(S.findIndex(x=>x.k==="quiz"))}};
+$("step").addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)go(+g.dataset.go)});
 $("menu").onclick=()=>menu(!$("side").classList.contains("open"));$("scrim").onclick=()=>menu(false);
 document.addEventListener("keydown",e=>{if(e.target.matches("input"))return;if(e.key==="ArrowRight")go(n+1);if(e.key==="ArrowLeft")go(n-1);if(e.key==="Escape")menu(false)});
 function fromHash(){const m=location.hash.match(/^#(\w+)\/(\d+)/),o=location.hash.match(/^#paso-(\d+)/);let id="w11",i=0;if(m){id=m[1];i=+m[2]}else if(o)i=+o[1];
-const k=MODS.findIndex(x=>x.id===id&&!x.soon&&open(x));openMod(k<0?0:k,i,true)}
+const k=MODS.findIndex(x=>x.id===id&&!x.soon&&open(x)&&!done.has(x.id));openMod(k<0?0:k,i,true)}
 const lm=(t,e)=>{$("lmsg").textContent=t;$("lmsg").className=e?"err":""};
 const mail=()=>$("em").value.trim().toLowerCase();
 $("f1").onsubmit=async e=>{e.preventDefault();lm("Enviando el código…");try{const r=await post({action:"code",email:mail()});if(r.ok){$("f1").hidden=true;$("f2").hidden=false;lm("Te enviamos un código. Revisa también la carpeta de spam.")}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
-$("f2").onsubmit=async e=>{e.preventDefault();lm("Verificando…");try{const r=await post({action:"verify",email:mail(),code:$("cd").value.trim()});if(r.ok){ses={email:mail(),name:r.name,token:r.token};try{sessionStorage.setItem("ses",JSON.stringify(ses))}catch(x){}enter()}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
+$("f2").onsubmit=async e=>{e.preventDefault();lm("Verificando…");try{const r=await post({action:"verify",email:mail(),code:$("cd").value.trim(),ua:navigator.userAgent});if(r.ok){ses={email:mail(),name:r.name,token:r.token};try{sessionStorage.setItem("ses",JSON.stringify(ses))}catch(x){}enter()}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
 const mid=()=>MODS[mi].id;
 const demo='<div class="callout tip"><b>Modo de prueba</b>Conecta la hoja de Google para activar esta parte.</div>';
+const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.floor(Math.random()*i--);[a[i],a[j]]=[a[j],a[i]]}return a};
 function quiz(){const b=$("qz"),Q=QZ[mid()];if(!on){b.innerHTML=demo;return}
 if(qok.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Quiz aprobado!</b>Sigue con el siguiente paso para enviar tu prueba.</div>';return}
-b.innerHTML=Q.map((x,i)=>`<fieldset class="q"><legend>${i+1}. ${x.q}</legend>${x.o.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}">${o}</label>`).join("")}</fieldset>`).join("")+'<div class="btns"><button class="btn" id="qgo">Comprobar respuestas</button></div><p id="qres" role="status"></p>';
+b.innerHTML=shuf(Q.map((_,i)=>i)).map((qi,k)=>`<fieldset class="q" data-q="${qi}"><legend>${k+1}. ${Q[qi].q}</legend>${shuf(Q[qi].o.map((t,j)=>[t,j])).map(([t,j])=>`<label><input type="radio" name="q${qi}" value="${j}">${t}</label>`).join("")}<p class="exp" hidden></p></fieldset>`).join("")+'<div class="btns" id="qb"><button class="btn" id="qgo">Comprobar respuestas</button></div><p id="qres" role="status"></p>';
 $("qgo").onclick=async()=>{const a=Q.map((_,i)=>{const c=document.querySelector(`input[name=q${i}]:checked`);return c?+c.value:-1});
 if(a.includes(-1)){$("qres").textContent="Responde todas las preguntas.";return}
-$("qres").textContent="Revisando…";
+$("qgo").disabled=true;$("qres").textContent="Revisando…";
 try{const r=await post({action:"quiz",mod:mid(),answers:a,token:ses.token});
-if(!r.ok){$("qres").textContent=r.error;return}
-document.querySelectorAll(".q").forEach((f,i)=>f.classList.toggle("bad",r.bad.includes(i)));
-if(r.pass){qok.add(mid());$("qres").textContent=`¡Aprobaste con ${r.score} de ${r.total}! Pasa al siguiente paso.`;confetti()}
-else $("qres").textContent=`Sacaste ${r.score} de ${r.total} y necesitas ${r.need}. Repasa los pasos y vuelve a intentarlo: las preguntas en rojo fallaron.`}catch(x){$("qres").textContent="No pudimos conectar. Intenta de nuevo."}}}
+if(!r.ok){$("qres").textContent=r.error;$("qgo").disabled=false;return}
+document.querySelectorAll(".q").forEach(f=>{const i=+f.dataset.q;f.querySelectorAll("input").forEach(x=>x.disabled=true);if(r.bad.includes(i)){f.classList.add("bad");const e=f.querySelector(".exp");e.textContent=r.exp[i];e.hidden=false}else f.classList.add("good")});
+if(r.pass){qok.add(mid());$("qres").textContent=`¡Aprobaste con ${r.score} de ${r.total}! ${r.bad.length?"Repasa las respuestas en rojo. ":""}Pulsa Continuar para enviar tu prueba.`;$("qb").innerHTML='<button class="btn" id="qnx">Continuar</button>';$("qnx").onclick=()=>go(n+1);confetti()}
+else{$("qres").textContent=`Sacaste ${r.score} de ${r.total} y necesitas ${r.need}. Lee la explicación de las respuestas en rojo y vuelve a intentarlo.`;$("qb").innerHTML='<button class="btn" id="qre">Intentar de nuevo</button>';$("qre").onclick=()=>{quiz();$("qz").scrollIntoView({behavior:"smooth"})}}}catch(x){$("qres").textContent="No pudimos conectar. Intenta de nuevo.";$("qgo").disabled=false}}}
 function evid(){const b=$("ev");if(!on){b.innerHTML=demo;return}
 if(done.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Listo!</b>Tu profesor ya recibió tu prueba.</div>';return}
 if(!qok.has(mid())){b.innerHTML='<div class="callout warn"><b>Primero el quiz</b>Aprueba el quiz del paso anterior para poder enviar tu prueba.</div>';return}
-b.innerHTML='<input type="file" id="fi" accept="image/*"><img id="pv" alt="Vista previa de tu prueba" hidden><div class="btns"><button class="btn" id="sv" disabled>Enviar prueba</button></div><p id="evm" role="status"></p>';
+b.innerHTML='<label class="fl">Nombre completo<input id="fn" autocomplete="name" placeholder="Nombres y apellidos"></label><label class="fl">Número de documento<input id="fd" inputmode="numeric" placeholder="Solo números"></label><label class="fl">Foto donde se vea tu rostro mientras manipulas el equipo<input type="file" id="fi" accept="image/*"></label><img id="pv" alt="Vista previa de tu foto" hidden><label class="ck"><input type="checkbox" id="fc">Autorizo el uso de mi nombre, documento e imagen únicamente para el seguimiento académico de este curso.</label><div class="btns"><button class="btn" id="sv" disabled>Enviar prueba</button></div><p id="evm" role="status"></p>';
 let data="";
-$("fi").onchange=()=>{const f=$("fi").files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,1100/im.width),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);data=c.toDataURL("image/jpeg",.72);$("pv").src=data;$("pv").hidden=false;$("sv").disabled=false};im.onerror=()=>{$("evm").textContent="Ese archivo no es una imagen válida."};im.src=URL.createObjectURL(f)};
-$("sv").onclick=async()=>{$("sv").disabled=true;$("evm").textContent="Enviando…";try{const r=await post({action:"evidence",mod:mid(),img:data,token:ses.token});if(r.ok){done.add(mid());tabs();$("evm").textContent="¡Enviada! Tu profesor ya recibió tu prueba y se desbloquea tu siguiente guía.";confetti()}else{$("evm").textContent=r.error;$("sv").disabled=false}}catch(x){$("evm").textContent="No pudimos conectar. Intenta de nuevo.";$("sv").disabled=false}}}
-function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(r.ok){done=new Set(r.done);qok=new Set(r.quiz);tabs();if(MODS[mi].S[n].k)go(n,true)}}).catch(()=>{})}
+const chk=()=>{$("sv").disabled=!(data&&$("fn").value.trim().split(/\s+/).length>=2&&/^\d{5,15}$/.test($("fd").value.replace(/\D/g,""))&&$("fc").checked)};
+["fn","fd","fc"].forEach(k=>$(k).oninput=chk);
+$("fi").onchange=()=>{const f=$("fi").files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,1100/im.width),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);data=c.toDataURL("image/jpeg",.72);$("pv").src=data;$("pv").hidden=false;chk()};im.onerror=()=>{$("evm").textContent="Ese archivo no es una imagen válida."};im.src=URL.createObjectURL(f)};
+$("sv").onclick=async()=>{$("sv").disabled=true;$("evm").textContent="Enviando…";try{const r=await post({action:"evidence",mod:mid(),img:data,fullname:$("fn").value.trim(),doc:$("fd").value,consent:$("fc").checked,token:ses.token});if(r.ok){done.add(mid());tabs();$("evm").textContent="¡Enviada! Tu profesor ya recibió tu prueba.";$("sv").parentElement.innerHTML='<button class="btn" id="fin">Finalizar</button>';$("fin").onclick=showDone;confetti()}else{$("evm").textContent=r.error;$("sv").disabled=false}}catch(x){$("evm").textContent="No pudimos conectar. Intenta de nuevo.";$("sv").disabled=false}}}
+function showDone(){const m=MODS[mi],nx=MODS.findIndex(x=>!x.soon&&open(x)&&!done.has(x.id));confetti();$("pills").innerHTML="";$("meta").textContent="";$("pb").style.width="100%";$("nav").hidden=true;
+$("step").innerHTML=`<h2 class="t hero">¡Completaste ${m.name}!</h2><p>Tu profesor ya recibió tu prueba. Esta guía quedó cerrada.</p><p>${nx<0?"Las próximas guías (Linux, Office y más) se abrirán aquí cuando estén listas.":"Ya puedes seguir con la siguiente guía."}</p><div class="btns">${nx<0?"":'<button class="btn" id="nx">Ir a la siguiente guía</button>'}<button class="btn alt" id="out">Cerrar sesión</button></div>`;
+if(nx>=0)$("nx").onclick=()=>openMod(nx,0);
+$("out").onclick=()=>{try{sessionStorage.removeItem("ses")}catch(e){}location.reload()};tabs()}
+function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(r.ok){done=new Set(r.done);qok=new Set(r.quiz);tabs();if(done.has(mid()))showDone();else if(MODS[mi].S[n].k)go(n,true)}}).catch(()=>{})}
 function enter(){$("login").hidden=true;if(ses){$("who").textContent=ses.name;$("who").hidden=false}fromHash();estado()}
 window.addEventListener("hashchange",()=>{if(!$("login").hidden)return;fromHash()});
 if(!on||ses)enter();else $("login").hidden=false;
