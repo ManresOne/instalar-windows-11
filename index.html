@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula de instalación: Windows 11 paso a paso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F3FF;--ink:#1E1B4B;--mut:#5B5886;--pri:#6C4CF1;--pri-d:#5536D9;--mint:#19C3A0;--sun:#FFB020;--rose:#FF5C8A;--line:#E4E0FA;--hh:64px}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font:17px/1.65 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(180deg,#EAE5FF 0,#F8F7FF 360px) fixed,var(--bg)}
+h1,h2,.brand{font-weight:800}
+header{display:flex;align-items:center;gap:16px;height:var(--hh);padding:0 22px;background:#fff;box-shadow:0 2px 16px rgba(108,76,241,.10);position:sticky;top:0;z-index:8}
+.brand{display:flex;align-items:center;gap:10px;font-size:1.1rem;white-space:nowrap}
+#tabs{display:flex;gap:6px;overflow-x:auto;flex:1}
+#tabs button{font:inherit;font-weight:700;font-size:.95rem;padding:7px 18px;border:0;border-radius:999px;background:none;color:var(--mut);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+#tabs button:hover:not([aria-disabled=true]){background:#F0ECFF;color:var(--pri)}
+#tabs button[aria-selected=true]{background:var(--pri);color:#fff}
+#tabs small{margin-left:6px;font-size:.75rem}
+.who{background:#E5FAF5;color:#0A7A65;font-weight:700;font-size:.9rem;padding:5px 14px;border-radius:999px;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+#menu{font:inherit;font-weight:700;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+#menu:hover{border-color:var(--pri);color:var(--pri)}
+main{max-width:860px;margin:0 auto;padding:26px 18px 64px}
+.pills{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px}
+.pill{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:#fff;border:2px solid var(--line);font-weight:700;font-size:.9rem;color:var(--mut);white-space:nowrap;transition:all .3s}
+.pill.on{background:var(--pri);border-color:var(--pri);color:#fff;transform:scale(1.06);box-shadow:0 6px 16px rgba(108,76,241,.35)}
+.pill.past{background:#E5FAF5;border-color:#B8EFE2;color:#0A7A65}
+.bar{height:12px;background:#fff;border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--pri),var(--mint));transition:width .5s cubic-bezier(.3,1.3,.5,1)}
+.meta{font-weight:700;font-size:.95rem;color:var(--mut);margin:8px 4px 16px}
+#step{background:#fff;border-radius:24px;padding:clamp(20px,4vw,40px);box-shadow:0 14px 44px rgba(108,76,241,.14)}
+h2.t{font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.2;margin:0 0 14px}
+.hero{font-size:clamp(2.1rem,6vw,3.3rem);line-height:1.08;background:linear-gradient(90deg,var(--pri),var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hi{font-size:1.15rem;font-weight:700;color:var(--pri-d);margin:0 0 6px}
+#step p,#step li{max-width:64ch}
+#step ol{list-style:none;counter-reset:c;padding:0}
+#step ol>li{counter-increment:c;position:relative;padding-left:46px;margin:12px 0}
+#step ol>li::before{content:counter(c);position:absolute;left:0;top:-1px;width:32px;height:32px;border-radius:50%;background:var(--pri);color:#fff;font-weight:800;display:grid;place-items:center}
+.callout{position:relative;padding:14px 18px 14px 58px;border-radius:16px;margin:18px 0;max-width:64ch}
+.callout::before{position:absolute;left:16px;top:10px;font-size:1.6rem}
+.callout b:first-child{display:block}
+.warn{background:#FFF4DB;color:#7A4B00}.warn::before{content:"⚠️"}
+.tip{background:#EAF7FF;color:#0B4A6F}.tip::before{content:"💡"}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.btn{display:inline-block;font:inherit;font-weight:800;background:var(--pri);color:#fff;text-decoration:none;padding:11px 22px;border:2px solid var(--pri);border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(108,76,241,.35)}
+.btn.alt{background:#fff;color:var(--pri)}
+figure{margin:20px 0}
+figure img{max-width:100%;height:auto;border-radius:14px;border:2px solid var(--line);display:block}
+figcaption{font-size:.9rem;color:var(--mut);margin-top:6px}
+ul.chk{list-style:none;padding:0}
+ul.chk li{margin:10px 0}
+ul.chk label{display:block;padding:10px 14px;border:2px solid var(--line);border-radius:14px;cursor:pointer;transition:all .2s}
+ul.chk label:has(input:checked){background:#E5FAF5;border-color:var(--mint)}
+ul.chk input{width:1.2em;height:1.2em;margin-right:10px;vertical-align:-.15em;accent-color:var(--mint)}
+.rufus{color:#111;border:1px solid #9AA3B5;border-radius:8px;background:#F0F0F0;max-width:520px;margin:20px 0;font-size:.95rem;box-shadow:0 10px 28px rgba(30,27,75,.2)}
+.rufus .tb{background:#fff;padding:6px 12px;border-bottom:1px solid #C9CFDB;border-radius:8px 8px 0 0;font-weight:700}
+.rufus dl{margin:0;padding:10px 14px}
+.rufus .r{display:grid;grid-template-columns:1fr 1.2fr;gap:10px;padding:4px 0;align-items:center}
+.rufus dd{margin:0;background:#fff;border:1px solid #8A93A6;padding:2px 8px}
+.tw{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;min-width:420px;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:left}
+th{background:#F0ECFF}
+.vid{position:relative;aspect-ratio:16/9;max-width:760px;margin:16px 0;border-radius:16px;overflow:hidden;background:#000}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+code{background:#F0ECFF;padding:3px 10px;border-radius:8px;font-size:.95em}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+.nav button{font:inherit;font-weight:800;font-size:1.05rem;padding:13px 30px;border-radius:999px;border:2px solid var(--pri);background:#fff;color:var(--pri);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.nav button.p{background:var(--pri);color:#fff}
+.nav button:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 8px 18px rgba(108,76,241,.35)}
+.nav button[disabled]{opacity:.3;cursor:default}
+aside{position:fixed;left:0;top:0;bottom:0;width:min(360px,88vw);background:#fff;z-index:20;padding:22px 16px;overflow:auto;transform:translateX(-105%);transition:transform .3s;box-shadow:8px 0 40px rgba(30,27,75,.2)}
+aside.open{transform:none}
+#scrim{position:fixed;inset:0;background:rgba(30,27,75,.4);z-index:19;opacity:0;pointer-events:none;transition:opacity .3s}
+#scrim.on{opacity:1;pointer-events:auto}
+aside h1{font-size:1.2rem;margin:0 0 6px}
+aside h2{font-size:.95rem;color:var(--pri);margin:18px 0 6px}
+aside ol{list-style:none;margin:0;padding:0}
+aside li button{all:unset;box-sizing:border-box;display:flex;gap:8px;width:100%;padding:7px 10px;border-radius:12px;cursor:pointer;font-size:.95rem;line-height:1.35;color:var(--mut)}
+aside li button:hover{background:#F0ECFF;color:var(--ink)}
+aside li button[aria-current=step]{background:var(--pri);color:#fff;font-weight:800}
+aside .n{min-width:2.2em;text-align:right}
+aside .done .n{color:#0A9B80}
+aside .done .n::after{content:"✓"}
+.gate{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,#6C4CF1,#19C3A0)}
+.gate>div{background:#fff;border-radius:28px;padding:34px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(30,27,75,.4);text-align:center}
+.gate h1{margin:6px 0 8px;font-size:1.7rem}
+.gate p{margin:0 0 16px;color:var(--mut)}
+.gate input{font:inherit;width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:14px;margin-bottom:12px;text-align:center}
+.gate input:focus{border-color:var(--pri);outline:0}
+.gate .btn{width:100%}
+#lmsg{min-height:1.5em;margin:12px 0 0;font-weight:700;color:#0A7A65}
+#lmsg.err{color:#C0264F}
+.cf{position:fixed;top:-14px;width:9px;height:14px;border-radius:2px;z-index:50;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+@media (max-width:700px){.brand span,#menu b,.who{display:none}.pill:not(.on) span{display:none}header{padding:0 12px;gap:8px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+footer{max-width:860px;margin:0 auto;padding:0 18px 44px;text-align:center;color:var(--mut);font-size:.92rem}
+footer p{margin:4px 0}
+footer details{text-align:left;margin-top:12px;background:#fff;border-radius:16px;padding:10px 18px;box-shadow:0 6px 20px rgba(108,76,241,.08)}
+footer summary{cursor:pointer;font-weight:800;color:var(--ink)}
+footer details p{margin:10px 0}
+.gate small{display:block;margin-top:18px;color:var(--mut)}
+#tabs button[aria-disabled=true]{opacity:.55;cursor:not-allowed}
+.q{border:2px solid var(--line);border-radius:16px;margin:14px 0;padding:12px 16px}
+.q legend{font-weight:800;padding:0 8px}
+.q label{display:block;padding:6px 8px;border-radius:10px;cursor:pointer}
+.q label:hover{background:#F0ECFF}
+.q input{margin-right:8px;accent-color:var(--pri)}
+.q.bad{border-color:var(--rose);background:#FFF0F5}
+#qres,#evm{font-weight:700;color:var(--pri-d)}
+#fi{font:inherit;display:block;margin:8px 0}
+#pv{max-width:100%;max-height:320px;border-radius:14px;border:2px solid var(--line);margin-top:8px}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:all .3s;z-index:60;max-width:92vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<header><div class="brand"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" rx="2.5" fill="#6C4CF1"/><rect x="12.5" y="2" width="9.5" height="9.5" rx="2.5" fill="#19C3A0"/><rect x="2" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FFB020"/><rect x="12.5" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FF5C8A"/></svg><span>Aula de instalación</span></div><nav id="tabs" role="tablist" aria-label="Guías"></nav><span id="who" class="who" hidden></span><button id="menu" aria-expanded="false">☰ <b>Todos los pasos</b></button></header>
+<div id="login" class="gate" hidden><div><div style="font-size:3rem">👋</div><h1>¡Bienvenido!</h1><p>Entra con el correo que registró tu profesor.</p>
+<form id="f1"><input id="em" type="email" placeholder="tu correo" autocomplete="email" required><button class="btn">Enviarme el código</button></form>
+<form id="f2" hidden><input id="cd" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" autocomplete="one-time-code" required><button class="btn">Entrar</button></form>
+<p id="lmsg" role="status"></p><small>Creado por Manuel Restrepo · Con fines académicos</small></div></div>
+<div id="toast" role="status"></div>
+<aside id="side" aria-label="Lista de pasos"><h1>Todos los pasos</h1><nav id="toc"></nav></aside><div id="scrim"></div>
+<main><div class="pills" id="pills"></div><div class="bar"><i id="pb"></i></div><p class="meta" id="meta"></p><article id="step" tabindex="-1"></article>
+<div class="nav"><button id="prev">Anterior</button><button id="next" class="p">Siguiente</button></div></main>
+<footer>
+<p><b>Creado por Manuel Restrepo</b></p>
+<p>Material creado con fines académicos y educativos. Usa siempre licencias originales y descarga el software solo desde sitios oficiales.</p>
+<details><summary>Aviso legal y de privacidad</summary>
+<p><b>Licencias.</b> Usar Windows u otro software sin licencia, o con claves y activadores ilegales, infringe los derechos de autor y puede traer sanciones legales, además de riesgos de seguridad como virus y robo de datos. Adquiere licencias originales y descarga los programas desde las páginas de sus fabricantes.</p>
+<p><b>Marcas.</b> Windows y Microsoft son marcas de Microsoft Corporation. Rufus pertenece a sus autores. Este sitio es independiente y no está afiliado ni respaldado por ellos. Las capturas de pantalla se muestran únicamente con fines educativos.</p>
+<p><b>Responsabilidad.</b> Esta guía es informativa: las pantallas pueden cambiar con las actualizaciones. Instalar Windows borra datos, así que cada persona es responsable de hacer su copia de seguridad antes de empezar.</p>
+<p><b>Privacidad.</b> Si ingresas con tu correo, se registran tu correo, tu nombre y tu avance en la guía solo para el seguimiento del curso.</p>
+</details>
+</footer>
+<script>
+const L={iso:"https://www.microsoft.com/es-es/software-download/windows11",rufus:"https://rufus.ie/es/#download",yt:"https://www.youtube.com/watch?v=rATceRrSvLM"};
+const im=(f,a,c)=>`<figure><img src="img/${f}" alt="${a}" loading="lazy">${c?`<figcaption>${c}</figcaption>`:""}</figure>`;
+const btn=(h,t,alt)=>`<a class="btn${alt?" alt":""}" href="${h}" target="_blank" rel="noopener">${t}</a>`;
+const warn=t=>`<div class="callout warn"><b>Atención</b>${t}</div>`;
+const tip=t=>`<div class="callout tip"><b>Consejo</b>${t}</div>`;
+const rufus=rows=>`<div class="rufus" role="group" aria-label="Ventana de Rufus"><div class="tb">Rufus</div><dl>${rows.map(r=>`<div class="r"><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join("")}</dl></div>`;
+const F=["Antes de empezar","Copia de seguridad","Preparar el USB con Rufus","Arrancar desde el USB","Instalar Windows","Configurar Windows","Comprobar que terminaste"];
+const keys=[["Acer","F12","F2 o Supr"],["ASUS","Esc o F8","F2 o Supr"],["Dell","F12","F2"],["HP","Esc, luego F9","Esc, luego F10"],["Lenovo","F12 (o botón Novo)","F1 o F2"],["MSI","F11","Supr"],["Gigabyte","F12","Supr o F2"],["Samsung","Esc o F12","F2"],["Toshiba","F12","F2"],["Sony VAIO","Botón ASSIST","F2"]];
+const S=[
+{f:0,t:"Antes de empezar",hero:1,h:`<p>En esta guía vas a instalar Windows 11 en un PC, paso a paso, usando un USB y el programa Rufus.</p>${warn("Instalar Windows borra todo el contenido del disco duro principal donde se instale. Haz una copia de seguridad de tus datos antes de continuar: el siguiente bloque te enseña cómo.")}<p>Comprueba que tienes todo:</p><ul class="chk"><li><label><input type="checkbox">Un USB de 8 GB o más (se borrará por completo)</label></li><li><label><input type="checkbox">Copia de seguridad de los datos del PC</label></li><li><label><input type="checkbox">Conexión a internet para descargar los archivos</label></li><li><label><input type="checkbox">Ratón y teclado para el PC donde instalarás</label></li></ul>`},
+{f:1,t:"Buscar y copiar tus carpetas personales",h:`<p>Tus archivos personales están en la carpeta de tu usuario. Entra así:</p><p><b>Este equipo › Disco C: › Usuarios › tu carpeta de usuario</b></p><p>Dentro verás carpetas como estas:</p><ul><li><b>Documentos</b> (Documents)</li><li><b>Descargas</b> (Downloads)</li><li><b>Imágenes</b> (Pictures)</li><li><b>Música</b> (Music)</li><li><b>Escritorio</b> (Desktop)</li><li><b>Vídeos</b> (Videos)</li></ul><p>Selecciona las que quieras guardar, haz clic derecho y elige <b>Copiar</b>.</p>${tip("Para seleccionar varias a la vez, mantén pulsada la tecla Ctrl y haz clic en cada una.")}`},
+{f:1,t:"Conectar el disco externo y crear la carpeta",h:`<p>Conecta el disco duro externo o el USB donde guardarás la copia y ábrelo. Crea una carpeta nueva con el nombre <b>Backup</b>, seguido del nombre de usuario y la fecha:</p><p><code>BackupAna Pérez 10_18_2026</code></p>${tip("Escribe la fecha con guiones bajos (10_18_2026): Windows no permite el símbolo / en los nombres de carpetas.")}${warn("Usa un disco o USB distinto al USB de instalación de Windows: Rufus borra todo lo que tenga ese USB.")}`},
+{f:1,t:"Pegar y comprobar la copia",h:`<p>Abre la carpeta de copia que creaste, haz clic derecho y elige <b>Pegar</b>. Espera a que termine la barra de progreso: puede tardar si hay muchos archivos.</p><p>Al terminar, abre la carpeta y confirma que ves tus documentos, imágenes y demás archivos.</p>${warn("No sigas hasta confirmar que la copia está completa. Después de instalar Windows, recuperar lo que no copiaste será muy difícil.")}`},
+{f:1,t:"Copia de seguridad avanzada (opcional)",h:`<p>Si quieres una copia más completa, mira este video y síguelo paso a paso.</p><div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/w3WsDEx4v_Y" title="Video: copia de seguridad avanzada en Windows" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><div class="btns">${btn("https://youtu.be/w3WsDEx4v_Y","Abrir el video en YouTube",1)}</div>`},
+{f:2,t:"Descargar Windows 11 desde la web oficial",h:`<p>Entra a la página oficial de Microsoft y baja la imagen ISO de Windows 11. Es el archivo que Rufus grabará en el USB.</p><ol><li>Baja hasta «Descargar imagen de disco de Windows 11 (ISO)».</li><li>Elige «Windows 11» en el menú y pulsa <b>Descargar</b>.</li><li>Elige el idioma, pulsa <b>Confirmar</b> y descarga la versión de 64 bits.</li></ol><div class="btns">${btn(L.iso,"Abrir la web de descarga de Windows 11")}</div>${im("iso-descarga.jpeg","Página de Microsoft con el menú Windows 11 y el botón Descargar","Así se ve la sección de descarga de la ISO.")}<p>El archivo pesa varios GB y queda en la carpeta <b>Descargas</b> o donde guardes tus descargas.</p>`},
+{f:2,t:"Descargar Rufus",h:`<p>Rufus es el programa que graba la ISO en el USB y lo deja listo para arrancar el PC. No se instala: descargas el archivo <b>.exe</b> y lo abres con doble clic.</p><div class="btns">${btn(L.rufus,"Ir a la descarga de Rufus")}</div>${tip("Descárgalo siempre desde rufus.ie para evitar copias falsas. Si Windows pide permiso al abrirlo, pulsa <b>Sí</b>.")}`},
+{f:2,t:"Abrir Rufus y elegir el USB",h:`<p>Conecta el USB al PC y abre Rufus. En el primer campo, <b>Dispositivo</b>, debe aparecer tu USB con su nombre y capacidad.</p>${rufus([["Dispositivo","MI_USB (8 GB)"],["Selección de arranque","Imagen de disco o ISO"]])}${warn("Rufus borrará todo lo que tenga el USB elegido. Si tienes más de un USB conectado, desconecta los demás para no equivocarte.")}`},
+{f:2,t:"Seleccionar la imagen ISO",h:`<p>Junto a «Selección de arranque» pulsa <b>SELECCIONAR</b>, busca el archivo ISO de Windows 11 en Descargas y pulsa <b>Abrir</b>.</p>${tip("Si todavía no bajaste la ISO, la flecha junto a SELECCIONAR permite cambiar a <b>DESCARGAR</b> y Rufus la baja por ti.")}<p>Al elegir la ISO, Rufus rellena solo el resto de opciones.</p>`},
+{f:2,t:"Revisar las opciones de Rufus",h:`<p>Antes de empezar, comprueba que la ventana se parezca a esta. Rara vez hay que cambiar algo.</p>${rufus([["Opción de imagen","Instalación estándar de Windows"],["Esquema de partición","GPT"],["Sistema de destino","UEFI (sin CSM)"],["Nombre de volumen","WIN11"],["Sistema de archivos","NTFS"]])}<p><b>GPT</b> y <b>UEFI</b> son la forma moderna de arrancar un PC y la que pide Windows 11. El nombre de volumen puede ser cualquiera. No toques las opciones avanzadas.</p>`},
+{f:2,t:"Grabar el USB",h:`<p>Pulsa <b>EMPEZAR</b>. Rufus mostrará un par de ventanas:</p><ol><li><b>Experiencia de usuario de Windows</b>: déjala como está. Solo para un PC antiguo que no cumple los requisitos puedes marcar la opción de quitar los requisitos de TPM 2.0, Arranque seguro y RAM. Es una opción de Rufus, no oficial de Microsoft.</li><li><b>Aviso de borrado</b>: confirma con <b>Aceptar</b>.</li></ol><p>Espera a que la barra se llene y muestre <b>LISTO</b>. Cierra Rufus y expulsa el USB desde la barra de tareas.</p>${warn("No saques el USB mientras la barra avanza: el USB quedaría dañado y tendrás que repetir el paso.")}`},
+{f:3,t:"Apagar el PC y conectar el USB",h:`<p>Apaga el PC donde vas a instalar. Con el PC apagado, conecta el USB de instalación y desconecta todo lo que no sea necesario, salvo el ratón y el teclado.</p><p>Si el PC no tiene sistema operativo, el asistente de instalación arranca solo al encenderlo. Si ya tiene Windows u otro sistema, sigue con el paso siguiente.</p>`},
+{f:3,t:"Entrar al menú de arranque o a la BIOS",h:`<p>Si el PC ya tiene un sistema, hay que ordenarle que arranque desde el USB. Justo al encenderlo, pulsa <b>repetidamente</b> la tecla del menú de arranque, normalmente F11 o F12 según el fabricante. Fíjate en la primera pantalla: suele mostrar la tecla.</p><div class="btns">${btn(L.yt,"Ver el video: cómo entrar a la BIOS y cambiar la secuencia de arranque",1)}</div><p>Teclas habituales por marca:</p><div class="tw"><table><thead><tr><th>Marca</th><th>Menú de arranque</th><th>Entrar a la BIOS</th></tr></thead><tbody>${keys.map(k=>`<tr><td>${k[0]}</td><td>${k[1]}</td><td>${k[2]}</td></tr>`).join("")}</tbody></table></div><p>Si el PC arranca tan rápido que no alcanzas, entra desde Windows: <b>Configuración › Sistema › Recuperación › Inicio avanzado › Reiniciar ahora › Solucionar problemas › Opciones avanzadas › Configuración de firmware UEFI</b>.</p>${tip("La tabla es orientativa. Los modelos varían, así que confirma la tecla en la pantalla de inicio del equipo.")}`},
+{f:3,t:"Pulsar una tecla para arrancar desde el USB",h:`<p>Elige el USB en el menú de arranque. Puede aparecer este mensaje: pulsa cualquier tecla y el asistente de instalación comenzará a cargar.</p>${im("presione-tecla.png","Pantalla negra con el texto Presione cualquier tecla para iniciar desde el CD o DVD")}`},
+{f:4,t:"Idioma e «Instalar ahora»",h:`<p>Espera unos segundos mientras Windows prepara el asistente. Verás la pantalla de selección de idioma, formato de hora y teclado. Ajusta lo necesario y pulsa <b>Siguiente</b>.</p>${im("idioma.jpeg","Pantalla de idioma, formato de hora y teclado del instalador")}<p>Después haz clic en <b>Instalar ahora</b>. El asistente tardará unos segundos en hacer comprobaciones iniciales.</p>${im("instalar-ahora.jpeg","Botón Instalar ahora del instalador de Windows")}`},
+{f:4,t:"Clave de producto",h:`<p>Si tienes la clave de Windows, escríbela aquí. Si no la tienes, pulsa <b>No tengo clave de producto</b>, abajo a la derecha: podrás activar Windows más tarde.</p>${im("clave.jpeg","Pantalla Activar Windows con el campo de clave de producto")}`},
+{f:4,t:"Aceptar la licencia",h:`<p>Marca la casilla para aceptar los términos de licencia del sistema operativo y pulsa <b>Siguiente</b>.</p>${im("licencia.jpeg","Términos de licencia con la casilla de aceptación")}`},
+{f:4,t:"Elegir el tipo de instalación",h:`<p>Aquí se decide si Windows se actualiza o se instala desde cero. Escoge <b>Personalizada: instalar solo Windows (avanzado)</b>, que borra todo e instala un Windows limpio.</p>${im("tipo.jpeg","Pantalla con las opciones Actualización y Personalizada")}`},
+{f:4,t:"Elegir dónde instalar",h:`<p>Elige la unidad y la partición donde irá Windows. Lo más sencillo: elimina todas las particiones del disco o SSD principal hasta que quede como espacio sin asignar, y pulsa <b>Siguiente</b>. Windows creará solo las particiones que necesita (arranque, recuperación, sistema).</p>${im("disco.jpeg","Lista de unidades y particiones con espacio sin asignar")}<p>Puede salir un aviso de que Windows creará particiones adicionales. Pulsa <b>Aceptar</b>.</p>${im("disco-aviso.jpeg","Aviso de creación de particiones adicionales")}${warn("Si el PC tiene varios discos, revisa el tamaño de cada uno. Al eliminar una partición se pierde su contenido.")}`},
+{f:4,t:"Esperar la instalación",h:`<p>Empieza el asistente, que avanza en 5 etapas: copiar los archivos de Windows, prepararlos, instalar características, instalar actualizaciones y acabar. Puede tardar varios minutos.</p>${im("copiando.jpeg","Barra de progreso con las etapas de instalación")}<p>Al llegar al 100 %, retira el USB justo antes de que el PC reinicie. Si lo dejas puesto, al reiniciar saldrá el mensaje de «Presione cualquier tecla»: <b>no pulses nada</b>, o volverás a empezar.</p><p>Windows se reiniciará varias veces mientras instala servicios y dispositivos. Espera con paciencia.</p>`},
+{f:5,t:"País o región y teclado",h:`<p>Windows ya está casi instalado y toca configurarlo. Elige el país o región (en este curso, <b>Colombia</b>) y pulsa <b>Sí</b>.</p>${im("pais.jpeg","Lista de países con España seleccionado")}<p>Luego elige la distribución de teclado: <b>Español Latinoamérica</b> o <b>Español Colombia</b>. Si Windows pregunta por otra distribución, omite ese paso. Después buscará actualizaciones importantes si hay internet.</p>`},
+{f:5,t:"Ponerle nombre al PC",h:`<p>El nombre hace único a tu equipo en la red y permite conectarte a él desde otros dispositivos. Escríbelo y pulsa <b>Siguiente</b>, o elige <b>Omitir por ahora</b>.</p>${im("nombre-pc.jpeg","Pantalla Asignemos un nombre a su PC")}<p>Verás la pantalla «Un momento…» mientras Windows aplica la configuración.</p>`},
+{f:5,t:"Crear la cuenta de usuario",h:`<p>Puedes usar una <b>cuenta Microsoft</b> o una <b>cuenta local</b> que no esté vinculada a Microsoft.</p>${im("cuenta.jpeg","Pantalla Vamos a agregar la cuenta con inicio de sesión de Microsoft")}<ul><li>En Windows 11 <b>Pro</b> puedes crear la cuenta local fácilmente desde el asistente.</li><li>En <b>Home</b> solo es posible si el PC no tiene conexión a internet.</li></ul><p>Desde aquí todo son ajustes personales: PIN de acceso, privacidad y otras cuentas.</p>`},
+{f:6,k:"quiz",t:"Quiz de repaso",h:`<p>Contesta las 6 preguntas. Necesitas 5 aciertos para pasar. Si fallas, repasa los pasos y vuelve a intentarlo.</p><div id="qz"></div>`},
+{f:6,k:"ev",t:"Envía tu prueba",h:`<p>Para terminar, muestra que tu instalación funciona. Toma una foto o una captura de <b>Configuración › Sistema › Acerca de</b>, donde se vea el nombre de tu equipo y la edición de Windows.</p><div id="ev"></div>`},
+{f:6,t:"¡Windows 11 instalado!",hero:1,h:`<p>Terminaste. Windows 11 está instalado desde cero.</p>${tip("Con las actualizaciones, las pantallas de Windows pueden cambiar un poco. Esta guía es informativa.")}<div class="btns"><button class="btn" id="again">Volver al inicio</button></div>`}
+];
+const $=id=>document.getElementById(id);
+const I=["🏁","💾","🔌","⚡","🛠️","✨","🏆"],SH=["Inicio","Respaldo","USB","Arranque","Instalar","Ajustes","Prueba"];
+const MODS=[{id:"w11",name:"Windows 11",F,S},{id:"linux",name:"Linux",soon:1,req:"w11"},{id:"office",name:"Office",soon:1,req:"w11"}];
+const QZ={w11:[
+{q:"¿Qué pasa con los datos del disco donde instalas Windows desde cero?",o:["Se conservan","Se borran","Se mueven a la nube"]},
+{q:"¿Qué programa graba la ISO de Windows en el USB?",o:["Word","Rufus","Paint"]},
+{q:"¿Qué esquema de partición y sistema de destino usa Rufus para Windows 11?",o:["MBR y BIOS","GPT y UEFI","FAT y CSM"]},
+{q:"¿Qué tecla abre el menú de arranque en la mayoría de equipos?",o:["F11 o F12, según el fabricante","Bloq Mayús","Ctrl + Alt + Supr"]},
+{q:"¿Qué tipo de instalación eliges para instalar Windows desde cero?",o:["Actualización","Personalizada","Reparar"]},
+{q:"La instalación llegó al 100 %, el PC reinicia con el USB puesto y sale «Presione cualquier tecla…». ¿Qué haces?",o:["Pulsar una tecla","No pulsar nada","Apagar el PC"]}]};
+const API="https://script.google.com/macros/s/AKfycby3HOilUGOBqrVGfcBeqAuL07d4HlDHOXJnRf2bG_8mPI9yshV9VFxn1zQCJ93mUpTx/exec";
+const on=API.startsWith("https://");
+let mi=0,n=0,seen=new Set(),ses=null,done=new Set(),qok=new Set();
+try{ses=JSON.parse(sessionStorage.getItem("ses")||"null")}catch(e){}
+const post=b=>fetch(API,{method:"POST",body:JSON.stringify(b)}).then(r=>r.json());
+const ping=b=>{if(on&&ses)post({...b,token:ses.token}).catch(()=>{})};
+const key=()=>"seen-"+MODS[mi].id;
+function load(){try{seen=new Set(JSON.parse(localStorage.getItem(key())||"[]"))}catch(e){seen=new Set()}}
+function save(){try{localStorage.setItem(key(),JSON.stringify([...seen]))}catch(e){}}
+const open=m=>!m.req||done.has(m.req);
+function tabs(){$("tabs").innerHTML=MODS.map((m,i)=>`<button role="tab" data-m="${i}" aria-selected="${i===mi}"${m.soon||!open(m)?' aria-disabled="true"':""}>${open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`).join("")}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3400)}
+function pills(){const f=MODS[mi].S[n].f;$("pills").innerHTML=SH.map((t,i)=>`<span class="pill${i===f?" on":i<f?" past":""}"><b>${i<f?"✓":I[i]}</b><span>${t}</span></span>`).join("");const o=document.querySelector(".pill.on");if(o)o.scrollIntoView({inline:"center",block:"nearest"})}
+function toc(){const{S,F}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!==last){if(last>-1)h+="</ol>";h+=`<h2>${I[s.f]} ${F[s.f]}</h2><ol>`;last=s.f}
+h+=`<li><button data-i="${i}" class="${seen.has(i)?"done":""}"><span class="n">${i}</span><span>${s.t}</span></button></li>`});$("toc").innerHTML=h+"</ol>"}
+function confetti(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const c=["#6C4CF1","#19C3A0","#FFB020","#FF5C8A"];for(let k=0;k<50;k++){const e=document.createElement("i");e.className="cf";e.style.cssText=`left:${Math.random()*100}vw;background:${c[k%4]};animation-delay:${Math.random()*.6}s;animation-duration:${2+Math.random()*1.5}s`;document.body.appendChild(e);setTimeout(()=>e.remove(),4500)}}
+function menu(o){$("side").classList.toggle("open",o);$("scrim").classList.toggle("on",o);$("menu").setAttribute("aria-expanded",o)}
+function go(i,fromHash){const{S,F}=MODS[mi];i=Math.max(0,Math.min(S.length-1,i));if(i>n)seen.add(n);n=i;save();const s=S[i],p=Math.round(i/(S.length-1)*100),last=i===S.length-1;
+const hi=i===0&&ses?`<p class="hi">¡Hola, ${ses.name.replace(/[<>&"]/g,"")}! Vamos a instalar Windows 11 juntos, un paso a la vez.</p>`:"";
+$("step").innerHTML=`${hi}<h2 class="t${s.hero?" hero":""}">${s.t}</h2>${s.h}`;
+$("pb").style.width=p+"%";$("meta").textContent=i===0?"¡Listos para empezar!":`Paso ${i} de ${S.length-1} · ${p} %`;
+$("prev").disabled=i===0;$("next").disabled=last;toc();pills();
+document.querySelectorAll("#toc button").forEach(b=>{if(+b.dataset.i===i)b.setAttribute("aria-current","step")});
+const a=$("again");if(a)a.onclick=()=>go(0);
+menu(false);
+ping({action:"step",mod:MODS[mi].id,step:i,title:s.t});
+if(s.k==="quiz")quiz();if(s.k==="ev")evid();if(last&&done.has(MODS[mi].id)&&!fromHash)confetti();
+if(!fromHash){history.replaceState(null,"","#"+MODS[mi].id+"/"+i);window.scrollTo(0,0);$("step").focus({preventScroll:true});
+if(!matchMedia("(prefers-reduced-motion:reduce)").matches)$("step").animate([{opacity:0,transform:"translateY(14px) scale(.98)"},{opacity:1,transform:"none"}],{duration:300,easing:"cubic-bezier(.3,1.3,.5,1)"})}}
+function openMod(m,i,fromHash){mi=m;load();tabs();go(i,fromHash)}
+$("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;const m=MODS[+b.dataset.m];if(m.soon)return toast("Esta guía estará disponible pronto.");if(!open(m))return toast("Termina "+MODS.find(x=>x.id===m.req).name+" (quiz y prueba) para desbloquear.");openMod(+b.dataset.m,0)};
+$("toc").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
+$("prev").onclick=()=>go(n-1);$("next").onclick=()=>go(n+1);
+$("menu").onclick=()=>menu(!$("side").classList.contains("open"));$("scrim").onclick=()=>menu(false);
+document.addEventListener("keydown",e=>{if(e.target.matches("input"))return;if(e.key==="ArrowRight")go(n+1);if(e.key==="ArrowLeft")go(n-1);if(e.key==="Escape")menu(false)});
+function fromHash(){const m=location.hash.match(/^#(\w+)\/(\d+)/),o=location.hash.match(/^#paso-(\d+)/);let id="w11",i=0;if(m){id=m[1];i=+m[2]}else if(o)i=+o[1];
+const k=MODS.findIndex(x=>x.id===id&&!x.soon&&open(x));openMod(k<0?0:k,i,true)}
+const lm=(t,e)=>{$("lmsg").textContent=t;$("lmsg").className=e?"err":""};
+const mail=()=>$("em").value.trim().toLowerCase();
+$("f1").onsubmit=async e=>{e.preventDefault();lm("Enviando el código…");try{const r=await post({action:"code",email:mail()});if(r.ok){$("f1").hidden=true;$("f2").hidden=false;lm("Te enviamos un código. Revisa también la carpeta de spam.")}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
+$("f2").onsubmit=async e=>{e.preventDefault();lm("Verificando…");try{const r=await post({action:"verify",email:mail(),code:$("cd").value.trim()});if(r.ok){ses={email:mail(),name:r.name,token:r.token};try{sessionStorage.setItem("ses",JSON.stringify(ses))}catch(x){}enter()}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
+const mid=()=>MODS[mi].id;
+const demo='<div class="callout tip"><b>Modo de prueba</b>Conecta la hoja de Google para activar esta parte.</div>';
+function quiz(){const b=$("qz"),Q=QZ[mid()];if(!on){b.innerHTML=demo;return}
+if(qok.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Quiz aprobado!</b>Sigue con el siguiente paso para enviar tu prueba.</div>';return}
+b.innerHTML=Q.map((x,i)=>`<fieldset class="q"><legend>${i+1}. ${x.q}</legend>${x.o.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}">${o}</label>`).join("")}</fieldset>`).join("")+'<div class="btns"><button class="btn" id="qgo">Comprobar respuestas</button></div><p id="qres" role="status"></p>';
+$("qgo").onclick=async()=>{const a=Q.map((_,i)=>{const c=document.querySelector(`input[name=q${i}]:checked`);return c?+c.value:-1});
+if(a.includes(-1)){$("qres").textContent="Responde todas las preguntas.";return}
+$("qres").textContent="Revisando…";
+try{const r=await post({action:"quiz",mod:mid(),answers:a,token:ses.token});
+if(!r.ok){$("qres").textContent=r.error;return}
+document.querySelectorAll(".q").forEach((f,i)=>f.classList.toggle("bad",r.bad.includes(i)));
+if(r.pass){qok.add(mid());$("qres").textContent=`¡Aprobaste con ${r.score} de ${r.total}! Pasa al siguiente paso.`;confetti()}
+else $("qres").textContent=`Sacaste ${r.score} de ${r.total} y necesitas ${r.need}. Repasa los pasos y vuelve a intentarlo: las preguntas en rojo fallaron.`}catch(x){$("qres").textContent="No pudimos conectar. Intenta de nuevo."}}}
+function evid(){const b=$("ev");if(!on){b.innerHTML=demo;return}
+if(done.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Listo!</b>Tu profesor ya recibió tu prueba.</div>';return}
+if(!qok.has(mid())){b.innerHTML='<div class="callout warn"><b>Primero el quiz</b>Aprueba el quiz del paso anterior para poder enviar tu prueba.</div>';return}
+b.innerHTML='<input type="file" id="fi" accept="image/*"><img id="pv" alt="Vista previa de tu prueba" hidden><div class="btns"><button class="btn" id="sv" disabled>Enviar prueba</button></div><p id="evm" role="status"></p>';
+let data="";
+$("fi").onchange=()=>{const f=$("fi").files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,1100/im.width),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);data=c.toDataURL("image/jpeg",.72);$("pv").src=data;$("pv").hidden=false;$("sv").disabled=false};im.onerror=()=>{$("evm").textContent="Ese archivo no es una imagen válida."};im.src=URL.createObjectURL(f)};
+$("sv").onclick=async()=>{$("sv").disabled=true;$("evm").textContent="Enviando…";try{const r=await post({action:"evidence",mod:mid(),img:data,token:ses.token});if(r.ok){done.add(mid());tabs();$("evm").textContent="¡Enviada! Tu profesor ya recibió tu prueba y se desbloquea tu siguiente guía.";confetti()}else{$("evm").textContent=r.error;$("sv").disabled=false}}catch(x){$("evm").textContent="No pudimos conectar. Intenta de nuevo.";$("sv").disabled=false}}}
+function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(r.ok){done=new Set(r.done);qok=new Set(r.quiz);tabs();if(MODS[mi].S[n].k)go(n,true)}}).catch(()=>{})}
+function enter(){$("login").hidden=true;if(ses){$("who").textContent=ses.name;$("who").hidden=false}fromHash();estado()}
+window.addEventListener("hashchange",()=>{if(!$("login").hidden)return;fromHash()});
+if(!on||ses)enter();else $("login").hidden=false;
+</script>
+</body>
+</html>
