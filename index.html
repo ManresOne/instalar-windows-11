@@ -85,8 +85,9 @@ aside li button[aria-current=step]{background:var(--pri);color:#fff;font-weight:
 aside .n{min-width:2.2em;text-align:right}
 aside .done .n{color:#0A9B80}
 aside .done .n::after{content:"✓"}
-.gate{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,rgba(108,76,241,.82),rgba(25,195,160,.7)),url(img/bienvenida.jpg) center/cover no-repeat,#6C4CF1}
-.gate>div{background:#fff;border-radius:28px;padding:34px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(30,27,75,.4);text-align:center}
+.gate{position:fixed;inset:0;z-index:40;display:flex;overflow:auto;padding:18px;background:linear-gradient(135deg,#6C4CF1,#19C3A0)}
+.gate>div{margin:auto;background:#fff;border-radius:28px;padding:34px;max-width:520px;width:100%;box-shadow:0 24px 60px rgba(30,27,75,.4);text-align:center}
+.gimg{display:block;width:calc(100% + 68px);max-width:none;height:230px;margin:-34px -34px 14px;object-fit:cover;object-position:center 62%;border-radius:28px 28px 0 0}
 .grp{display:inline-block;background:#EFEAFF;color:var(--pri-d);font-weight:800;border-radius:999px;padding:3px 16px;margin:0 0 12px}
 .gate h1{margin:6px 0 8px;font-size:1.7rem}
 .gate p{margin:0 0 16px;color:var(--mut)}
@@ -185,7 +186,7 @@ footer details p{margin:10px 0}
 </head>
 <body>
 <header><div class="brand"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" rx="2.5" fill="#6C4CF1"/><rect x="12.5" y="2" width="9.5" height="9.5" rx="2.5" fill="#19C3A0"/><rect x="2" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FFB020"/><rect x="12.5" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FF5C8A"/></svg><span>Aula de instalación</span></div><nav id="tabs" role="tablist" aria-label="Guías"></nav><span id="who" class="who" hidden></span><button id="menu" aria-expanded="false">☰ <b>Todos los pasos</b></button></header>
-<div id="login" class="gate" hidden><div><div style="font-size:3rem">👋</div><h1>¡Te damos la bienvenida!</h1><span class="grp">TICS Marinilla Grupo 2</span><p>Entra con el correo que registró tu docente.</p>
+<div id="login" class="gate" hidden><div><img class="gimg" src="img/bienvenida.jpg" alt="El grupo TICS Marinilla Grupo 2 en el aula"><div style="font-size:2.4rem;line-height:1.2">👋</div><h1>¡Te damos la bienvenida!</h1><span class="grp">TICS Marinilla Grupo 2</span><p>Entra con el correo que registró tu docente.</p>
 <form id="f1"><input id="em" type="email" placeholder="tu correo" autocomplete="email" required><button class="btn">Enviarme el código</button></form>
 <form id="f2" hidden><input id="cd" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" autocomplete="one-time-code" required><button class="btn">Entrar</button></form>
 <p id="lmsg" role="status"></p><small>Creado por Manuel Restrepo · Con fines académicos</small></div></div>
