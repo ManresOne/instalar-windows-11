@@ -127,6 +127,23 @@ footer details p{margin:10px 0}
 .fl input{display:block;font:inherit;width:100%;max-width:420px;padding:10px 14px;border:2px solid var(--line);border-radius:12px;margin-top:4px}
 .ck{display:flex;gap:10px;align-items:flex-start;margin:12px 0;max-width:60ch;font-size:.95rem}
 .ck input{margin-top:5px;accent-color:var(--pri)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:16px 0}
+.card{border:2px solid var(--line);border-radius:18px;padding:14px 16px}
+.card h3{margin:0 0 8px;font-size:1rem;color:var(--pri)}
+.card ul{margin:0;padding:0;list-style:none}
+.card li{display:flex;align-items:center;gap:10px;margin:8px 0}
+.card img{width:36px;height:36px;object-fit:contain}
+.layers{display:flex;flex-direction:column;gap:6px;max-width:340px;margin:12px 0}
+.layers div{padding:10px 14px;border-radius:12px;font-weight:800;text-align:center;color:#fff}
+.layers div:nth-child(1){background:var(--pri)}.layers div:nth-child(2){background:#3F8EF5}.layers div:nth-child(3){background:var(--mint)}.layers div:nth-child(4){background:#FFB020;color:#3D2A00}
+.tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.tl>div{text-align:center;border:2px solid var(--line);border-radius:16px;padding:10px}
+.tl b{display:block;color:var(--pri);font-size:1.2rem}
+.tl img{height:64px;max-width:100%;object-fit:contain;margin:6px 0}
+.tl strong,.tl small{display:block}.tl small{color:var(--mut);font-size:.9rem}
+.so-hero{max-width:260px;display:block;margin:10px 0}
+.so-tux{height:90px;display:block;margin:6px 0}
+.term{background:#1E1B4B;color:#C9F7E8;font-family:ui-monospace,Consolas,monospace;border-radius:12px;padding:12px 16px;max-width:460px;margin:14px 0;overflow-x:auto}
 </style>
 </head>
 <body>
@@ -190,7 +207,48 @@ const S=[
 ];
 const $=id=>document.getElementById(id);
 const I=["🏁","💾","🔌","⚡","🛠️","✨","🏆"],SH=["Inicio","Respaldo","USB","Arranque","Instalar","Ajustes","Prueba"];
-const MODS=[{id:"w11",name:"Windows 11",F,S},{id:"linux",name:"Linux",soon:1,req:"w11"},{id:"office",name:"Office",soon:1,req:"w11"}];
+const imu=f=>{const u="https://ubuntu.com/desktop/docs/en/latest/_images/"+f;return `<figure><img src="${u}" alt="Captura oficial del instalador de Ubuntu" loading="lazy" onerror="this.outerHTML='<p><a href=${u} target=_blank rel=noopener>Ver captura oficial del instalador</a></p>'"><figcaption>Captura de la documentación oficial de Ubuntu.</figcaption></figure>`};
+const pick=t=>S.find(x=>x.t.startsWith(t));
+const sim=(f,a)=>`<img src="img/${f}" alt="${a}" loading="lazy">`;
+const LS=[
+{f:0,t:"Ubuntu Desktop 26.04 LTS",hero:1,h:`<p>Del USB de arranque al primer inicio de sesión: vas a instalar Ubuntu, un sistema operativo Linux, paso a paso. No necesitas conocimientos técnicos avanzados.</p>${warn("Si instalas Ubuntu borrando el disco, se elimina todo lo que haya en él. Haz una copia de seguridad antes de continuar: el siguiente bloque te enseña cómo.")}<p>Comprueba que tienes todo:</p><ul class="chk"><li><label><input type="checkbox">Un portátil o PC con mínimo 25 GB de almacenamiento</label></li><li><label><input type="checkbox">Una unidad flash (USB) de 8 GB o más: se borrará por completo</label></li><li><label><input type="checkbox">Lo ideal: que tu equipo esté en la lista de hardware certificado. Si no figura, prueba Ubuntu antes de instalarlo</label></li><li><label><input type="checkbox">Conexión a internet para descargar la imagen</label></li></ul>`},
+...S.slice(1,5),
+{f:1,t:"Sincroniza tu navegador",h:`<p>Para no perder tus favoritos, contraseñas y extensiones, conecta tu navegador a una cuenta en línea antes de instalar. Después de instalar Ubuntu, el navegador sincronizará tus datos.</p>${tip("Revisa que la sincronización esté activada y termina antes de borrar nada del equipo.")}`},
+{f:2,t:"Descargar la imagen de Ubuntu",h:`<p>Descarga la imagen desde la página oficial y guárdala en un lugar fácil de recordar. Es un archivo de imagen <b>ISO</b>, con un nombre parecido a <code>ubuntu-26.04-desktop-amd64.iso</code>.</p><div class="btns">${btn("https://ubuntu.com/download/desktop","Ir a la descarga oficial de Ubuntu Desktop")}</div>${imu("download-an-ubuntu-image.png")}`},
+{f:2,t:"Crear el USB de arranque",h:`<p>Grabar la imagen en el USB <b>no es copiar el archivo</b>: hace falta un programa especial, y esto borra todo lo que tenga la memoria USB. Desde Windows se usa <b>Rufus</b>.</p><div class="btns">${btn(L.rufus,"Ir a la descarga de Rufus")}</div>${rufus([["Dispositivo","MI_USB (8 GB)"],["Selección de arranque","ubuntu-26.04-desktop-amd64.iso"]])}<ol><li>Abre Rufus y elige tu USB en <b>Dispositivo</b>.</li><li>Pulsa <b>SELECCIONAR</b> y busca la ISO de Ubuntu.</li><li>Pulsa <b>EMPEZAR</b>. Si Rufus pregunta cómo grabar, elige el modo ISO (recomendado).</li><li>Espera a que diga <b>LISTO</b> y expulsa el USB.</li></ol>${warn("Elige bien el USB: Rufus borrará todo lo que tenga. En Ubuntu se usa «Discos» y en macOS «balenaEtcher».")}`},
+pick("Apagar el PC"),
+pick("Entrar al menú"),
+{f:3,t:"Arrancar el instalador de Ubuntu",h:`<p>Con el USB puesto, el instalador de Ubuntu debería iniciar automáticamente. Si no, reinicia y abre el menú de arranque con <b>F12</b>. Las alternativas habituales son <b>Esc</b>, <b>F2</b> y <b>F10</b>.</p>${tip("En un Mac, mantén pulsada la tecla Option (⌥) al encender y elige la unidad marcada como «EFI Boot».")}`},
+{f:4,t:"Idioma, teclado y red",h:`<ol><li>Elige el <b>idioma</b> y las opciones de accesibilidad.</li><li>Selecciona la <b>distribución del teclado</b>.</li><li>Conéctate a la <b>red</b>: es opcional, pero permite descargar actualizaciones y controladores de terceros durante la instalación.</li><li>Haz clic en <b>Instalar Ubuntu</b>.</li></ol>${imu("try-or-install-ubuntu.png")}${warn("Si aparece una alerta de Intel RST, el instalador no es compatible: desactívalo en la BIOS del equipo para continuar.")}`},
+{f:4,t:"Tipo de instalación",h:`<ul><li><b>Interactiva:</b> la ruta estándar para la mayoría. La <b>automatizada</b> es para usuarios avanzados.</li><li><b>Predeterminada:</b> lo básico para empezar. <b>Extendida:</b> suma herramientas de oficina (todo se puede instalar después).</li><li>Activa el <b>software de terceros</b> recomendado: mejora el soporte de dispositivos y formatos multimedia.</li></ul>${imu("type-of-installation.png")}`},
+{f:4,t:"Configuración del disco",h:`${bk()}<p>Elige cómo se usará el disco:</p><ul><li><b>Borrar disco e instalar Ubuntu:</b> la opción más sencilla; Ubuntu queda como único sistema.</li><li><b>Instalar junto a otro sistema</b>, si ya tienes uno.</li><li><b>Manual:</b> solo para expertos.</li></ul>${imu("disk-setup.png")}${warn("Si tienes varios discos, comprueba que eliges la unidad correcta.")}`},
+{f:4,t:"Cifrado y alertas",h:`<p>Si quieres cifrar tus datos, la opción recomendada es el <b>cifrado con contraseña</b>.</p>${warn("Sin la contraseña de cifrado no podrás recuperar tus datos. Guárdala fuera del equipo.")}<p>Si Windows tiene <b>BitLocker</b> activo, no se puede instalar Ubuntu junto a Windows. Soluciones: desactivar BitLocker, borrar Windows o usar otro disco sin cifrar.</p>${imu("encryption-and-file-system.png")}`},
+{f:4,t:"Cuenta y zona horaria",h:`<ol><li>Escribe tu <b>nombre</b> y el <b>nombre del equipo</b> (así se verá en la red).</li><li>Crea un <b>usuario</b> y una <b>contraseña segura</b>. Si usas el equipo al viajar, deja activa la opción de pedir contraseña al iniciar sesión.</li><li>Selecciona tu <b>zona horaria</b> en el mapa. Con internet, Ubuntu puede detectarla solo.</li></ol>${imu("create-your-account.png")}`},
+{f:4,t:"Instalar y reiniciar",h:`<ol><li>Revisa el resumen y haz clic en <b>Instalar</b>.</li><li>Mientras se instala puedes ver la presentación del proceso.</li><li>Al terminar, haz clic en <b>Reiniciar ahora</b>.</li></ol>${danger("Cuando el instalador lo pida, <b>retira el USB</b> y pulsa <b>Enter</b>. Si dejas el USB puesto, el equipo puede volver a iniciar el instalador.")}${imu("installation-complete.png")}`},
+{f:5,t:"Primer inicio de sesión",h:`<p>Al reiniciar, introduce la <b>contraseña de cifrado</b>, si creaste una, e inicia sesión con tu usuario y contraseña.</p><p>La aplicación de configuración inicial te ofrece servicios de ubicación, esquema de color y más aplicaciones.</p>`},
+{f:5,t:"Actualizar el sistema",h:`<p>Actualiza Ubuntu desde el <b>Actualizador de software</b>, o desde la terminal. Para abrirla pulsa <b>Ctrl + Alt + T</b>:</p><div class="term">$ sudo apt update<br>$ sudo apt upgrade</div>${imu("software-updater.png")}`},
+{...pick("Quiz de repaso")},
+{...pick("Envía tu prueba")},
+{f:6,t:"¡Ubuntu instalado!",hero:1,h:`<p>Terminaste: Ubuntu 26.04 LTS está instalado y listo para usar.</p><ul><li>Restaura tus copias de seguridad y sincroniza el navegador.</li><li>Considera Ubuntu Pro: es gratis para uso personal, hasta en 5 equipos.</li><li>¿Dudas? Pregunta en Ubuntu Discourse.</li></ul><div class="btns"><button class="btn" id="again">Volver al inicio</button></div>`}
+];
+const FS=["Introducción","Historia","Comparación"],IS=["📘","🕰️","⚖️"],SS=["Intro","Historia","Compara"];
+const win=[["1985","so-win1.png","Windows 1.0","Interfaz gráfica sobre MS-DOS"],["1995","so-win95.png","Windows 95","Populariza el menú Inicio"],["2001","so-winxp.png","Windows XP","Muy extendido en hogares y oficinas"],["2009","so-win7.png","Windows 7","Reconocido por su estabilidad"],["2015","so-win10.png","Windows 10","Unifica la familia de versiones"],["2021","so-win11.png","Windows 11","Diseño moderno; requisitos nuevos"]];
+const lin=[["1991","Linus Torvalds inicia el desarrollo del núcleo Linux."],["1992","Linux adopta la licencia GPL y se integra al ecosistema de software libre."],["1993","Se crean distribuciones como Debian y Red Hat."],["2004","Ubuntu facilita la instalación y el uso para más personas."],["Hoy","Presente en servidores, Android, sistemas integrados y supercomputadoras."]];
+const cmp=[["Costo","Licencia propietaria; puede venir preinstalado","Generalmente gratuito; soporte opcional"],["Código","Cerrado","Abierto y modificable"],["Facilidad","Familiar para muchos usuarios","Depende de la distribución y la experiencia"],["Software","Amplia compatibilidad comercial y juegos","Amplia oferta libre; compatibilidad variable"],["Seguridad","Objetivo frecuente de malware; requiere cuidados","Permisos y repositorios ayudan; también requiere cuidados"],["Personalización","Opciones disponibles, con límites","Muy alta en muchas distribuciones"]];
+const SOS=[
+{f:0,t:"Sistemas operativos: el corazón de la computadora",hero:1,h:`<p>¿Qué son, cuáles existen y cómo se diferencian Windows y Linux? Una guía informativa para entender el software que hace funcionar tu equipo.</p>${sim("so-hero.png","Ilustración de un portátil con herramientas y barra de progreso").replace("<img",'<img class="so-hero"')}<p><b>Autor:</b> Manuel Restrepo · <b>Curso:</b> TICS Coredi</p>`},
+{f:0,t:"¿Qué es un sistema operativo?",h:`<p>Es el software que coordina los recursos del equipo y permite usar las aplicaciones.</p><ul><li>Administra el hardware y los recursos de la computadora.</li><li>Conecta al usuario con los programas.</li><li>Gestiona memoria, procesos, dispositivos, archivos y usuarios.</li><li>Ofrece la base sobre la que funcionan las aplicaciones.</li></ul><div class="tip callout"><b>Analogía</b>Es el «director de orquesta» del equipo.</div><p>Un sistema de capas: cada una depende de la anterior.</p><div class="layers"><div>Usuario</div><div>Aplicaciones</div><div>Sistema operativo</div><div>Hardware</div></div>`},
+{f:0,t:"Sistemas operativos existentes",h:`<p>Se adaptan a distintos dispositivos y necesidades.</p><div class="cards"><div class="card"><h3>Escritorio</h3><ul><li>${sim("so-windows.png","Windows")}<span><b>Windows</b> · Microsoft</span></li><li>${sim("so-macos.png","macOS")}<span><b>macOS</b> · Apple</span></li><li>${sim("so-linux.png","Linux")}<span><b>Linux</b> · Ubuntu, Fedora, Debian</span></li></ul></div><div class="card"><h3>Móviles</h3><ul><li>${sim("so-android.png","Android")}<span><b>Android</b> · basado en Linux</span></li><li>${sim("so-ios.png","iOS")}<span><b>iOS</b> · Apple</span></li></ul></div><div class="card"><h3>Otros entornos</h3><ul><li><span><b>ChromeOS</b> · Google</span></li><li><span><b>Windows Server</b></span></li><li><span><b>Unix</b></span></li></ul></div></div>${tip("Linux tiene muchas distribuciones. Android usa el núcleo Linux, pero su experiencia es distinta a la de un computador de escritorio.")}`},
+{f:1,t:"Breve historia de Windows",h:`<p>De una interfaz gráfica temprana a los equipos actuales.</p><div class="tl">${win.map(([y,f,n,t])=>`<div><b>${y}</b>${sim(f,n)}<strong>${n}</strong><small>${t}</small></div>`).join("")}</div><p>Microsoft · Sistema propietario (código cerrado). La licencia y el costo dependen de la edición y el equipo.</p>${tip("Windows 11 se lanzó en 2021 y sigue siendo la versión principal de Windows para equipos personales, con actualizaciones posteriores.")}`},
+{f:1,t:"Breve historia de Linux",h:`<p>Un núcleo de código abierto que impulsa muchos tipos de dispositivos.</p><div class="tl">${lin.map(([y,t])=>`<div><b>${y}</b><small>${t}</small></div>`).join("")}</div>${sim("so-linux.png","Tux, la mascota de Linux").replace("<img",'<img class="so-tux"')}<div class="term">usuario@ubuntu:~$ sudo apt update<br>usuario@ubuntu:~$ sudo apt install ...</div><p>Linux es técnicamente el <b>núcleo</b>. Las distribuciones lo combinan con herramientas y aplicaciones.</p>`},
+{f:2,t:"Windows y Linux: diferencias",h:`<p>La mejor opción depende del uso, el equipo y las preferencias.</p><div class="tw"><table><thead><tr><th>Aspecto</th><th>Windows</th><th>Linux</th></tr></thead><tbody>${cmp.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>${warn("Ningún sistema es invulnerable. Las actualizaciones, la configuración y los hábitos del usuario influyen en la seguridad: ambos necesitan copias de seguridad y cuidado.")}`},
+{f:2,t:"Conclusión",hero:1,h:`<p>Elegir un sistema operativo es elegir la herramienta adecuada para cada tarea.</p><ul><li>Es esencial para aprovechar el hardware y ejecutar aplicaciones.</li><li>Hay opciones para computadoras, móviles, servidores y otros dispositivos.</li><li>Windows destaca por su familiaridad y amplia compatibilidad.</li><li>Linux destaca por su apertura, flexibilidad y variedad de distribuciones.</li><li>No existe un ganador universal: importa el contexto de uso.</li></ul><div class="tip callout"><b>¿Cuál elegirías y por qué?</b>Piensa en costo, programas y experiencia.</div><div class="btns"><button class="btn" data-mod="w11">Ir a la guía de Windows 11</button></div>`}
+];
+const MODS=[
+{id:"so",name:"Sistemas operativos",info:1,F:FS,S:SOS,I:IS,SH:SS,hi:"Vamos a conocer los sistemas operativos, un tema a la vez."},
+{id:"w11",name:"Windows 11",F,S,I,SH,hi:"Vamos a instalar Windows 11 juntos, un paso a la vez."},
+{id:"linux",name:"Linux",req:"w11",F,S:LS,I,SH,hi:"Vamos a instalar Ubuntu juntos, un paso a la vez."},
+{id:"office",name:"Office",soon:1,req:"w11"}];
 const QZ={w11:[
 {q:"¿Qué pasa con los datos del disco donde instalas Windows desde cero?",o:["Se conservan","Se borran","Se mueven a la nube"]},
 {q:"¿Qué programa graba la ISO de Windows en el USB?",o:["Word","Rufus","Paint"]},
@@ -202,6 +260,17 @@ const QZ={w11:[
 {q:"En «¿Dónde quieres instalar Windows?», ¿qué se recomienda con las particiones del disco principal?",o:["Eliminarlas y dejar espacio sin asignar","Dejarlas intactas","Formatear el USB"]},
 {q:"Si no tienes clave de producto en la pantalla de activación, ¿qué haces?",o:["Pulsar «No tengo clave de producto»","Usar un activador descargado de internet","Detener la instalación"]},
 {q:"¿Dónde debe guardarse la copia de seguridad?",o:["En un disco externo o USB distinto al de instalación","En el mismo disco donde se instalará Windows","En la carpeta Descargas"]}]};
+QZ.linux=[
+{q:"¿Cuánto almacenamiento mínimo necesita Ubuntu Desktop 26.04 LTS?",o:["25 GB","2 GB","250 GB"]},
+{q:"¿Qué tipo de archivo descargas de la página oficial de Ubuntu?",o:["Una imagen ISO","Un programa .exe","Una carpeta de fotos"]},
+{q:"¿Grabar la imagen en el USB es lo mismo que copiar el archivo?",o:["Sí, basta con copiarlo","No: se necesita un programa especial y se borra el USB","Solo si el USB es nuevo"]},
+{q:"¿Qué programa se usa desde Windows para crear el USB de arranque?",o:["Rufus","Discos","balenaEtcher"]},
+{q:"Si el equipo no inicia el instalador solo, ¿qué tecla se prueba primero para abrir el menú de arranque?",o:["F12","Bloq Num","Impr Pant"]},
+{q:"¿Para qué sirve conectarse a la red durante la instalación?",o:["Es obligatorio para instalar","Es opcional y permite descargar actualizaciones y controladores","Sirve para borrar el disco"]},
+{q:"¿Qué opción de disco es la más sencilla para que Ubuntu sea el único sistema?",o:["Borrar disco e instalar Ubuntu","Modo manual","Instalar junto a otro sistema"]},
+{q:"Si activas el cifrado y pierdes la contraseña, ¿qué pasa?",o:["Se recupera con el USB","No podrás recuperar tus datos","No pasa nada"]},
+{q:"Al terminar y pulsar «Reiniciar ahora», ¿qué haces cuando el instalador lo pide?",o:["Retirar el USB y pulsar Enter","Dejar el USB y apagar el equipo","Formatear el USB"]},
+{q:"¿Qué comandos actualizan Ubuntu desde la terminal?",o:["sudo apt update y luego sudo apt upgrade","format c:","sudo apt remove all"]}];
 const API="https://script.google.com/macros/s/AKfycbwebAyTLr5ulHxfmW6EnBqnngask8iijhtOhm_psa_jOX_GBZ3B4n8Kgo8pRqJqtzg5/exec";
 const on=API.startsWith("https://");
 let mi=0,n=0,seen=new Set(),ses=null,done=new Set(),qok=new Set();
@@ -214,13 +283,13 @@ function save(){try{localStorage.setItem(key(),JSON.stringify([...seen]))}catch(
 const open=m=>!m.req||done.has(m.req);
 function tabs(){$("tabs").innerHTML=MODS.map((m,i)=>`<button role="tab" data-m="${i}" aria-selected="${i===mi}"${m.soon||!open(m)||done.has(m.id)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`).join("")}
 function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3400)}
-function pills(){const f=MODS[mi].S[n].f;$("pills").innerHTML=SH.map((t,i)=>`<span class="pill${i===f?" on":i<f?" past":""}"><b>${i<f?"✓":I[i]}</b><span>${t}</span></span>`).join("");const o=document.querySelector(".pill.on");if(o)o.scrollIntoView({inline:"center",block:"nearest"})}
-function toc(){const{S,F}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!==last){if(last>-1)h+="</ol>";h+=`<h2>${I[s.f]} ${F[s.f]}</h2><ol>`;last=s.f}
+function pills(){const m=MODS[mi],f=m.S[n].f;$("pills").innerHTML=m.SH.map((t,i)=>`<span class="pill${i===f?" on":i<f?" past":""}"><b>${i<f?"✓":m.I[i]}</b><span>${t}</span></span>`).join("");const o=document.querySelector(".pill.on");if(o)o.scrollIntoView({inline:"center",block:"nearest"})}
+function toc(){const{S,F,I}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!==last){if(last>-1)h+="</ol>";h+=`<h2>${I[s.f]} ${F[s.f]}</h2><ol>`;last=s.f}
 h+=`<li><button data-i="${i}" class="${seen.has(i)?"done":""}"><span class="n">${i}</span><span>${s.t}</span></button></li>`});$("toc").innerHTML=h+"</ol>"}
 function confetti(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const c=["#6C4CF1","#19C3A0","#FFB020","#FF5C8A"];for(let k=0;k<50;k++){const e=document.createElement("i");e.className="cf";e.style.cssText=`left:${Math.random()*100}vw;background:${c[k%4]};animation-delay:${Math.random()*.6}s;animation-duration:${2+Math.random()*1.5}s`;document.body.appendChild(e);setTimeout(()=>e.remove(),4500)}}
 function menu(o){$("side").classList.toggle("open",o);$("scrim").classList.toggle("on",o);$("menu").setAttribute("aria-expanded",o)}
 function go(i,fromHash){const{S,F}=MODS[mi];i=Math.max(0,Math.min(S.length-1,i));if(i>n)seen.add(n);n=i;save();const s=S[i],p=Math.round(i/(S.length-1)*100),last=i===S.length-1;
-const hi=i===0&&ses?`<p class="hi">¡Hola, ${ses.name.replace(/[<>&"]/g,"")}! Vamos a instalar Windows 11 juntos, un paso a la vez.</p>`:"";
+const hi=i===0&&ses?`<p class="hi">¡Hola, ${ses.name.replace(/[<>&"]/g,"")}! ${MODS[mi].hi}</p>`:"";
 $("step").innerHTML=`${hi}<h2 class="t${s.hero?" hero":""}">${s.t}</h2>${s.h}`;
 $("pb").style.width=p+"%";$("meta").textContent=i===0?"¡Listos para empezar!":`Paso ${i} de ${S.length-1} · ${p} %`;
 $("prev").disabled=i===0;$("next").textContent=last?"Finalizar":"Siguiente";$("nav").hidden=false;toc();pills();
@@ -231,14 +300,14 @@ ping({action:"step",mod:MODS[mi].id,step:i,title:s.t});
 if(s.k==="quiz")quiz();if(s.k==="ev")evid();if(last&&done.has(MODS[mi].id)&&!fromHash)confetti();
 if(!fromHash){history.replaceState(null,"","#"+MODS[mi].id+"/"+i);window.scrollTo(0,0);$("step").focus({preventScroll:true});
 if(!matchMedia("(prefers-reduced-motion:reduce)").matches)$("step").animate([{opacity:0,transform:"translateY(14px) scale(.98)"},{opacity:1,transform:"none"}],{duration:300,easing:"cubic-bezier(.3,1.3,.5,1)"})}}
-function openMod(m,i,fromHash){mi=m;load();tabs();go(i,fromHash)}
+function openMod(m,i,fromHash){mi=m;n=0;load();tabs();go(i,fromHash)}
 $("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;const m=MODS[+b.dataset.m];if(done.has(m.id))return toast("Ya completaste esta guía.");if(m.soon)return toast("Esta guía estará disponible pronto.");if(!open(m))return toast("Termina "+MODS.find(x=>x.id===m.req).name+" (quiz y prueba) para desbloquear.");openMod(+b.dataset.m,0)};
 $("toc").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
-$("prev").onclick=()=>go(n-1);$("next").onclick=()=>{const S=MODS[mi].S;if(n<S.length-1)return go(n+1);if(done.has(mid()))showDone();else{toast("Antes de finalizar, aprueba el quiz y envía tu prueba.");go(S.findIndex(x=>x.k==="quiz"))}};
-$("step").addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)go(+g.dataset.go)});
+$("prev").onclick=()=>go(n-1);$("next").onclick=()=>{const S=MODS[mi].S;if(n<S.length-1)return go(n+1);if(MODS[mi].info){const k=MODS.findIndex(x=>!x.info&&!x.soon&&open(x)&&!done.has(x.id));return k>=0?openMod(k,0):toast("Pronto habrá más guías.")}if(done.has(mid()))showDone();else{toast("Antes de finalizar, aprueba el quiz y envía tu prueba.");go(S.findIndex(x=>x.k==="quiz"))}};
+$("step").addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)go(+g.dataset.go);const t=e.target.closest("[data-mod]");if(t){const k=MODS.findIndex(x=>x.id===t.dataset.mod);if(k>=0&&!MODS[k].soon&&open(MODS[k])&&!done.has(MODS[k].id))openMod(k,0)}});
 $("menu").onclick=()=>menu(!$("side").classList.contains("open"));$("scrim").onclick=()=>menu(false);
 document.addEventListener("keydown",e=>{if(e.target.matches("input"))return;if(e.key==="ArrowRight")go(n+1);if(e.key==="ArrowLeft")go(n-1);if(e.key==="Escape")menu(false)});
-function fromHash(){const m=location.hash.match(/^#(\w+)\/(\d+)/),o=location.hash.match(/^#paso-(\d+)/);let id="w11",i=0;if(m){id=m[1];i=+m[2]}else if(o)i=+o[1];
+function fromHash(){const m=location.hash.match(/^#(\w+)\/(\d+)/),o=location.hash.match(/^#paso-(\d+)/);let id=MODS[0].id,i=0;if(m){id=m[1];i=+m[2]}else if(o)i=+o[1];
 const k=MODS.findIndex(x=>x.id===id&&!x.soon&&open(x)&&!done.has(x.id));openMod(k<0?0:k,i,true)}
 const lm=(t,e)=>{$("lmsg").textContent=t;$("lmsg").className=e?"err":""};
 const mail=()=>$("em").value.trim().toLowerCase();
@@ -267,7 +336,7 @@ const chk=()=>{$("sv").disabled=!($("fn").value.trim().split(/\s+/).length>=2&&/
 ["fn","fd","fc"].forEach(k=>$(k).oninput=chk);
 $("fi").onchange=()=>{const f=$("fi").files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,1100/im.width),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);data=c.toDataURL("image/jpeg",.72);$("pv").src=data;$("pv").hidden=false;chk()};im.onerror=()=>{$("evm").textContent="Ese archivo no es una imagen válida."};im.src=URL.createObjectURL(f)};
 $("sv").onclick=async()=>{$("sv").disabled=true;$("evm").textContent="Enviando…";try{const r=await post({action:"evidence",mod:mid(),img:data,fullname:$("fn").value.trim(),doc:$("fd").value,consent:$("fc").checked,token:ses.token});if(r.ok){done.add(mid());tabs();$("evm").textContent="¡Enviada! Tu profesor ya recibió tu prueba.";$("sv").parentElement.innerHTML='<button class="btn" id="fin">Finalizar</button>';$("fin").onclick=showDone;confetti()}else{$("evm").textContent=r.error;$("sv").disabled=false}}catch(x){$("evm").textContent="No pudimos conectar. Intenta de nuevo.";$("sv").disabled=false}}}
-function showDone(){const m=MODS[mi],nx=MODS.findIndex(x=>!x.soon&&open(x)&&!done.has(x.id));confetti();$("pills").innerHTML="";$("meta").textContent="";$("pb").style.width="100%";$("nav").hidden=true;
+function showDone(){const m=MODS[mi],nx=MODS.findIndex(x=>!x.info&&!x.soon&&open(x)&&!done.has(x.id));confetti();$("pills").innerHTML="";$("meta").textContent="";$("pb").style.width="100%";$("nav").hidden=true;
 $("step").innerHTML=`<h2 class="t hero">¡Completaste ${m.name}!</h2><p>Tu profesor ya recibió tu prueba. Esta guía quedó cerrada.</p><p>${nx<0?"Las próximas guías (Linux, Office y más) se abrirán aquí cuando estén listas.":"Ya puedes seguir con la siguiente guía."}</p><div class="btns">${nx<0?"":'<button class="btn" id="nx">Ir a la siguiente guía</button>'}<button class="btn alt" id="out">Cerrar sesión</button></div>`;
 if(nx>=0)$("nx").onclick=()=>openMod(nx,0);
 $("out").onclick=()=>{try{sessionStorage.removeItem("ses")}catch(e){}location.reload()};tabs()}
