@@ -85,8 +85,9 @@ aside li button[aria-current=step]{background:var(--pri);color:#fff;font-weight:
 aside .n{min-width:2.2em;text-align:right}
 aside .done .n{color:#0A9B80}
 aside .done .n::after{content:"✓"}
-.gate{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,#6C4CF1,#19C3A0)}
+.gate{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,rgba(108,76,241,.82),rgba(25,195,160,.7)),url(img/bienvenida.jpg) center/cover no-repeat,#6C4CF1}
 .gate>div{background:#fff;border-radius:28px;padding:34px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(30,27,75,.4);text-align:center}
+.grp{display:inline-block;background:#EFEAFF;color:var(--pri-d);font-weight:800;border-radius:999px;padding:3px 16px;margin:0 0 12px}
 .gate h1{margin:6px 0 8px;font-size:1.7rem}
 .gate p{margin:0 0 16px;color:var(--mut)}
 .gate input{font:inherit;width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:14px;margin-bottom:12px;text-align:center}
@@ -184,7 +185,7 @@ footer details p{margin:10px 0}
 </head>
 <body>
 <header><div class="brand"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" rx="2.5" fill="#6C4CF1"/><rect x="12.5" y="2" width="9.5" height="9.5" rx="2.5" fill="#19C3A0"/><rect x="2" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FFB020"/><rect x="12.5" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FF5C8A"/></svg><span>Aula de instalación</span></div><nav id="tabs" role="tablist" aria-label="Guías"></nav><span id="who" class="who" hidden></span><button id="menu" aria-expanded="false">☰ <b>Todos los pasos</b></button></header>
-<div id="login" class="gate" hidden><div><div style="font-size:3rem">👋</div><h1>¡Bienvenido!</h1><p>Entra con el correo que registró tu profesor.</p>
+<div id="login" class="gate" hidden><div><div style="font-size:3rem">👋</div><h1>¡Te damos la bienvenida!</h1><span class="grp">TICS Marinilla Grupo 2</span><p>Entra con el correo que registró tu docente.</p>
 <form id="f1"><input id="em" type="email" placeholder="tu correo" autocomplete="email" required><button class="btn">Enviarme el código</button></form>
 <form id="f2" hidden><input id="cd" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" autocomplete="one-time-code" required><button class="btn">Entrar</button></form>
 <p id="lmsg" role="status"></p><small>Creado por Manuel Restrepo · Con fines académicos</small></div></div>
@@ -391,16 +392,16 @@ document.querySelectorAll(".q").forEach(f=>{const i=+f.dataset.q;f.querySelector
 if(r.pass){qok.add(mid());$("qres").textContent=`¡Aprobaste con ${r.score} de ${r.total}! ${r.bad.length?"Repasa las respuestas en rojo. ":""}Pulsa Continuar para enviar tu prueba.`;$("qb").innerHTML='<button class="btn" id="qnx">Continuar</button>';$("qnx").onclick=()=>go(n+1);confetti()}
 else{$("qres").textContent=`Sacaste ${r.score} de ${r.total} y necesitas ${r.need}. Lee la explicación de las respuestas en rojo y vuelve a intentarlo.`;$("qb").innerHTML='<button class="btn" id="qre">Intentar de nuevo</button>';$("qre").onclick=()=>{quiz();$("qz").scrollIntoView({behavior:"smooth"})}}}catch(x){$("qres").textContent="No pudimos conectar. Intenta de nuevo.";$("qgo").disabled=false}}}
 function evid(){const b=$("ev");if(!on){b.innerHTML=demo;return}
-if(done.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Listo!</b>Tu profesor ya recibió tu prueba.</div>';return}
+if(done.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Listo!</b>Tu docente ya recibió tu prueba.</div>';return}
 if(!qok.has(mid())){b.innerHTML='<div class="callout warn"><b>Primero el quiz</b>Aprueba el quiz del paso anterior para poder enviar tu prueba.</div>';return}
 b.innerHTML='<label class="fl">Nombre completo (obligatorio)<input id="fn" autocomplete="name" placeholder="Nombres y apellidos"></label><label class="fl">Número de documento (obligatorio)<input id="fd" inputmode="numeric" placeholder="Solo números"></label><label class="fl">Foto donde se vea tu rostro mientras manipulas el equipo (opcional)<input type="file" id="fi" accept="image/*"></label><img id="pv" alt="Vista previa de tu foto" hidden><label class="ck"><input type="checkbox" id="fc">Autorizo (obligatorio) el uso de mi nombre, documento e imagen únicamente para el seguimiento académico de este curso.</label><div class="btns"><button class="btn" id="sv" disabled>Enviar prueba</button></div><p id="evm" role="status"></p>';
 let data="";
 const chk=()=>{$("sv").disabled=!($("fn").value.trim().split(/\s+/).length>=2&&/^\d{5,15}$/.test($("fd").value.replace(/\D/g,""))&&$("fc").checked)};
 ["fn","fd","fc"].forEach(k=>$(k).oninput=chk);
 $("fi").onchange=()=>{const f=$("fi").files[0];if(!f)return;const im=new Image();im.onload=()=>{const k=Math.min(1,1100/im.width),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);data=c.toDataURL("image/jpeg",.72);$("pv").src=data;$("pv").hidden=false;chk()};im.onerror=()=>{$("evm").textContent="Ese archivo no es una imagen válida."};im.src=URL.createObjectURL(f)};
-$("sv").onclick=async()=>{$("sv").disabled=true;$("evm").textContent="Enviando…";try{const r=await post({action:"evidence",mod:mid(),img:data,fullname:$("fn").value.trim(),doc:$("fd").value,consent:$("fc").checked,token:ses.token});if(r.ok){done.add(mid());tabs();$("evm").textContent="¡Enviada! Tu profesor ya recibió tu prueba.";$("sv").parentElement.innerHTML='<button class="btn" id="fin">Finalizar</button>';$("fin").onclick=showDone;confetti()}else{$("evm").textContent=r.error;$("sv").disabled=false}}catch(x){$("evm").textContent="No pudimos conectar. Intenta de nuevo.";$("sv").disabled=false}}}
+$("sv").onclick=async()=>{$("sv").disabled=true;$("evm").textContent="Enviando…";try{const r=await post({action:"evidence",mod:mid(),img:data,fullname:$("fn").value.trim(),doc:$("fd").value,consent:$("fc").checked,token:ses.token});if(r.ok){done.add(mid());tabs();$("evm").textContent="¡Enviada! Tu docente ya recibió tu prueba.";$("sv").parentElement.innerHTML='<button class="btn" id="fin">Finalizar</button>';$("fin").onclick=showDone;confetti()}else{$("evm").textContent=r.error;$("sv").disabled=false}}catch(x){$("evm").textContent="No pudimos conectar. Intenta de nuevo.";$("sv").disabled=false}}}
 function showDone(){const m=MODS[mi],nx=MODS.findIndex(x=>!x.info&&!x.soon&&open(x)&&!done.has(x.id));confetti();$("pills").innerHTML="";$("meta").textContent="";$("pb").style.width="100%";$("nav").hidden=true;
-$("step").innerHTML=`<h2 class="t hero">¡Completaste ${m.name}!</h2><p>Tu profesor ya recibió tu prueba. Esta guía quedó cerrada.</p><p>${nx<0?"Las próximas guías (Linux, Office y más) se abrirán aquí cuando estén listas.":"Ya puedes seguir con la siguiente guía."}</p><div class="btns">${nx<0?"":'<button class="btn" id="nx">Ir a la siguiente guía</button>'}<button class="btn alt" id="out">Cerrar sesión</button></div>`;
+$("step").innerHTML=`<h2 class="t hero">¡Completaste ${m.name}!</h2><p>Tu docente ya recibió tu prueba. Esta guía quedó cerrada.</p><p>${nx<0?"Las próximas guías (Linux, Office y más) se abrirán aquí cuando estén listas.":"Ya puedes seguir con la siguiente guía."}</p><div class="btns">${nx<0?"":'<button class="btn" id="nx">Ir a la siguiente guía</button>'}<button class="btn alt" id="out">Cerrar sesión</button></div>`;
 if(nx>=0)$("nx").onclick=()=>openMod(nx,0);
 $("out").onclick=()=>{try{sessionStorage.removeItem("ses")}catch(e){}location.reload()};tabs()}
 function osInit(){const box=$("oscards"),det=$("osdet");let f="all";
