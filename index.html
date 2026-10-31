@@ -181,6 +181,15 @@ footer details p{margin:10px 0}
 .win .bd{padding:14px;display:flex;gap:18px;flex-wrap:wrap}.win .bd span{text-align:center;font-size:.85rem}
 .glos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
 .glos>div{border:2px solid var(--line);border-radius:14px;padding:10px 14px}.glos b{color:var(--pri-d)}
+.gsearch{font:inherit;width:100%;max-width:520px;padding:12px 18px;border:2px solid var(--line);border-radius:999px;margin:8px 0 6px}
+.gsearch:focus{border-color:var(--pri);outline:0}
+.gh{margin:22px 0 8px;color:var(--pri-d)}
+.gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin:10px 0}
+.gt{border:2px solid var(--line);border-radius:16px;padding:12px 16px;background:#fff;animation:rise .4s both}
+.gt .gs{font-size:1.2rem;color:var(--pri-d);display:block}
+.gt .ge{display:block;font-weight:700;font-size:.88rem;color:var(--mut);margin:2px 0 6px;line-height:1.35}
+.gt p{margin:0;font-size:.95rem}
+@media (max-width:1320px){.brand span{display:none}}
 </style>
 </head>
 <body>
@@ -303,14 +312,63 @@ const SOS=[
 {f:2,t:"Distribuciones de Linux",h:`<p>Una distribución (o «distro») es un sistema completo que combina el núcleo Linux con programas, escritorio e instalador. Algunas de las más conocidas:</p>${gcards([["🟠","Ubuntu","Fácil de instalar y usar. Es la que verás en la guía de Linux."],["🌀","Debian","Muy estable. Es la base de otras distribuciones, entre ellas Ubuntu."],["🍃","Linux Mint","Basada en Ubuntu, con un escritorio parecido al de Windows."],["🎩","Fedora","Ofrece las novedades del software libre; la patrocina Red Hat."],["🛠️","Arch Linux","Para usuarios avanzados que quieren personalizarlo todo."],["🏢","Red Hat Enterprise Linux","Pensada para empresas, con soporte comercial."]])}`},
 {f:3,t:"Windows y Linux: diferencias",h:`<p>La mejor opción depende del uso, el equipo y las preferencias.</p><div class="tw"><table><thead><tr><th>Aspecto</th><th>Windows</th><th>Linux</th></tr></thead><tbody>${cmp.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>${warn("Ningún sistema es invulnerable. Las actualizaciones, la configuración y los hábitos del usuario influyen en la seguridad: ambos necesitan copias de seguridad y cuidado.")}`},
 {f:3,t:"Licencias: propietario, libre y abierto",h:`${gcards([["🔒","Software propietario","El código es cerrado y se usa con una licencia que define cuánto y cómo. Ejemplos: Windows, macOS."],["🕊️","Software libre","Te permite usar, estudiar, modificar y compartir el programa. Ejemplo: Linux."],["🔓","Código abierto","El código fuente es visible y se publica bajo licencias como la GPL."]])}${warn("Libre no significa pirata, ni gratis es lo mismo que libre. Todo software tiene licencia: usa siempre licencias originales y descarga los programas solo desde sitios oficiales.")}`},
-{f:3,t:"Glosario",h:`<div class="glos">${[["Kernel","Núcleo del sistema que controla el hardware."],["Driver","Controlador que permite al sistema usar un dispositivo."],["Shell","Interfaz con la que das órdenes al sistema."],["Proceso","Programa en ejecución."],["Partición","Parte en la que se divide un disco."],["ISO","Archivo que contiene la copia de un disco de instalación."],["UEFI / BIOS","Firmware que arranca el equipo."],["GPT","Esquema moderno de particiones."],["Distribución","Sistema Linux completo con programas e instalador."],["Código abierto","Software cuyo código fuente es visible."],["Sistema de archivos","Forma de organizar archivos en el disco."],["Arranque (boot)","Proceso de encendido hasta iniciar el sistema."]].map(([a,b])=>`<div><b>${a}</b><br>${b}</div>`).join("")}</div>`},
+{f:3,t:"Glosario",h:`<div class="glos">${[["Kernel","Núcleo del sistema que controla el hardware."],["Driver","Controlador que permite al sistema usar un dispositivo."],["Shell","Interfaz con la que das órdenes al sistema."],["Proceso","Programa en ejecución."],["Partición","Parte en la que se divide un disco."],["ISO","Archivo que contiene la copia de un disco de instalación."],["UEFI / BIOS","Firmware que arranca el equipo."],["GPT","Esquema moderno de particiones."],["Distribución","Sistema Linux completo con programas e instalador."],["Código abierto","Software cuyo código fuente es visible."],["Sistema de archivos","Forma de organizar archivos en el disco."],["Arranque (boot)","Proceso de encendido hasta iniciar el sistema."]].map(([a,b])=>`<div><b>${a}</b><br>${b}</div>`).join("")}</div><div class="tip callout"><b>¿Quieres más términos?</b>Abre la pestaña «Glosario», al final de la barra de arriba: tiene siglas con su significado en inglés y en español, y un buscador.</div>`},
 {f:3,t:"Conclusión",hero:1,h:`<p>Elegir un sistema operativo es elegir la herramienta adecuada para cada tarea.</p><ul><li>Es esencial para aprovechar el hardware y ejecutar aplicaciones.</li><li>Hay opciones para computadoras, móviles, servidores y otros dispositivos.</li><li>Windows destaca por su familiaridad y amplia compatibilidad.</li><li>Linux destaca por su apertura, flexibilidad y variedad de distribuciones.</li><li>No existe un ganador universal: importa el contexto de uso.</li></ul><div class="tip callout"><b>¿Cuál elegirías y por qué?</b>Piensa en costo, programas y experiencia.</div><div class="btns"><button class="btn" data-fin="1">Finalizar y continuar con Windows 11</button></div>`}
 ];
+const g=(c,s,en,es,d)=>({c,s,en,es,d});
+const FG=["Buscar un término","Hardware y componentes","Memoria y almacenamiento","Arranque y firmware","Datos, copias e internet","Software y licencias","Soporte y entorno profesional"],IG=["🔎","🖥️","💾","⚡","☁️","📜","🎧"],SHG=["Buscar","Hardware","Memoria","Arranque","Datos","Software","Soporte"];
+const GL=[
+g(1,"Hardware","Hardware","Equipo físico (componentes físicos)","Las piezas físicas de un equipo, las que se pueden tocar: procesador, memoria, disco, pantalla, teclado."),
+g(1,"CPU","Central Processing Unit","Unidad Central de Procesamiento","El «cerebro» del equipo: ejecuta las instrucciones de los programas y realiza los cálculos."),
+g(1,"GPU","Graphics Processing Unit","Unidad de Procesamiento Gráfico","Procesador especializado en imágenes, video y juegos. Puede venir integrado en la CPU o ser una tarjeta aparte."),
+g(1,"Motherboard","Motherboard","Placa base (placa madre)","Circuito principal que conecta la CPU, la memoria y los demás componentes."),
+g(1,"Chipset","Chipset","Conjunto de chips","Chips de la placa base que coordinan la comunicación entre la CPU, la memoria y los dispositivos."),
+g(1,"Socket","Socket","Zócalo (zócalo del procesador)","Conector de la placa base donde se instala el procesador (CPU). Cada tipo de socket, como LGA 1700 o AM5, solo admite procesadores compatibles; por eso, al cambiar la CPU hay que verificar que su socket coincida con el de la placa."),
+g(1,"PSU","Power Supply Unit","Fuente de alimentación (fuente de poder)","Convierte la corriente de la pared en la que usan los componentes del equipo."),
+g(1,"USB","Universal Serial Bus","Bus Serie Universal","Estándar para conectar dispositivos y memorias externas al equipo."),
+g(1,"ESD","Electrostatic Discharge","Descarga Electrostática","Paso brusco de electricidad estática acumulada hacia un componente. Puede dañar chips sin que se note. Se previene con una pulsera antiestática o tocando el chasis metálico antes de manipular piezas."),
+g(2,"RAM","Random Access Memory","Memoria de Acceso Aleatorio","Memoria de trabajo, rápida y temporal, donde el equipo guarda lo que está usando. Se vacía al apagar."),
+g(2,"ROM","Read-Only Memory","Memoria de Solo Lectura","Guarda instrucciones permanentes, como el firmware, y conserva los datos sin energía. Hoy muchas son memorias flash que se pueden reescribir."),
+g(2,"HDD","Hard Disk Drive","Unidad de Disco Duro","Disco mecánico con platos giratorios. Es barato y de gran capacidad, pero más lento y frágil ante golpes."),
+g(2,"SSD","Solid State Drive","Unidad de Estado Sólido","Guarda los datos en chips, sin partes móviles. Es mucho más rápida, silenciosa y resistente que un HDD."),
+g(2,"NVMe / M.2","Non-Volatile Memory Express / M.2","Memoria No Volátil Exprés / formato M.2","SSD muy rápido que se conecta directo a la placa base. M.2 es el formato (tamaño y conector) y NVMe el protocolo de comunicación."),
+g(3,"BIOS / UEFI","Basic Input/Output System · Unified Extensible Firmware Interface","Sistema Básico de Entrada/Salida · Interfaz de Firmware Extensible Unificada","Programa grabado en la placa base que arranca el equipo, revisa el hardware y entrega el control al sistema operativo. La BIOS es la forma clásica; la UEFI es la moderna: admite discos grandes, GPT y arranque seguro."),
+g(3,"Firmware","Firmware","Programa grabado en el dispositivo (soporte lógico inalterable)","Software grabado en un dispositivo que controla su funcionamiento básico, como la BIOS/UEFI."),
+g(3,"CMOS","Complementary Metal-Oxide-Semiconductor","Semiconductor Complementario de Óxido Metálico","Técnicamente es una tecnología para fabricar chips. En mantenimiento se llama así a la pequeña memoria que guarda la fecha, la hora y la configuración de la BIOS, alimentada por la pila de la placa. Si la pila se agota, se pierde la hora."),
+g(3,"POST","Power-On Self-Test","Autoprueba de Encendido","Revisión automática del hardware que hace el equipo al encenderse, antes de cargar el sistema operativo."),
+g(3,"TPM","Trusted Platform Module","Módulo de Plataforma Segura","Chip de seguridad que guarda claves de cifrado y protege el equipo. Windows 11 exige la versión 2.0."),
+g(3,"Secure Boot","Secure Boot","Arranque seguro","Función de la UEFI que solo permite arrancar software firmado y de confianza. Windows 11 requiere que el equipo sea compatible."),
+g(4,"Back up","Backup","Copia de seguridad","Copia de tus datos en otro lugar, como un disco externo o la nube, para recuperarlos si se pierden, dañan o borran. Regla 3-2-1: 3 copias, en 2 tipos de medios, con 1 fuera del lugar."),
+g(4,"Upload","Upload","Subida (subir archivos)","Enviar archivos desde tu equipo a internet o a otro equipo."),
+g(4,"Download","Download","Descarga (descargar archivos)","Traer archivos desde internet u otro equipo al tuyo."),
+g(4,"Cloud","Cloud","Nube","Servicios y almacenamiento que se usan por internet en vez de en tu propio equipo."),
+g(4,"Bots","Bot (abreviatura de robot)","Robot informático (programa automático)","Programa que realiza tareas automáticas por internet. Pueden ser útiles, como los asistentes de chat, o maliciosos, como las redes de equipos infectados que envían spam o atacan sitios."),
+g(5,"Software","Software","Programas (soporte lógico)","Programas e instrucciones que hacen funcionar al hardware: sistema operativo, aplicaciones y controladores."),
+g(5,"Open Source","Open Source","Código abierto","Software cuyo código fuente es público y se puede ver, modificar y compartir según su licencia."),
+g(5,"GPL","GNU General Public License","Licencia Pública General de GNU","Licencia de software libre. Permite usar, estudiar, modificar y distribuir, con la condición de que las versiones derivadas mantengan la misma licencia. Linux la usa."),
+g(5,"GNU","GNU’s Not Unix","GNU no es Unix","Proyecto que inició Richard Stallman en 1983 para crear un sistema operativo libre. Su nombre es un acrónimo recursivo. Junto al núcleo Linux forma GNU/Linux."),
+g(5,"LTS","Long Term Support","Soporte a Largo Plazo","Versión que recibe actualizaciones durante años, como Ubuntu 26.04 LTS."),
+g(5,"EULA","End User License Agreement","Acuerdo de Licencia de Usuario Final","El contrato que aceptas al instalar un programa. Define cómo puedes usarlo; por eso hay que usar siempre licencias originales."),
+g(6,"Help Desk","Help Desk","Mesa de ayuda","Servicio que atiende y resuelve consultas e incidentes tecnológicos de los usuarios, por teléfono, chat o correo."),
+g(6,"IT","Information Technology","Tecnologías de la Información","Uso de computadores, redes y software para procesar, guardar y proteger información en una organización. También se llama así al área que lo gestiona."),
+g(6,"TIC / TICS","Information and Communication Technologies (ICT)","Tecnologías de la Información y la Comunicación","Herramientas y medios para obtener, procesar y comunicar información: computadores, internet, telefonía y software. «TIC» es la forma estándar y «TICs» el plural; es más amplia que IT porque incluye la comunicación."),
+g(6,"Ticket","Ticket","Tique (solicitud de soporte)","Registro de una solicitud o incidente en un sistema de soporte, con su número y estado."),
+g(6,"SLA","Service Level Agreement","Acuerdo de Nivel de Servicio","Acuerdo que fija los tiempos de respuesta y la calidad esperada de un servicio, como el de un help desk.")];
+const nz=x=>String(x).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/["]/g,"").toLowerCase();
+const gent=e=>`<div class="gt" data-t="${nz([e.s,e.en,e.es,e.d].join(" "))}"><b class="gs">${e.s}</b><span class="ge">${e.en} / ${e.es}</span><p>${e.d}</p></div>`;
+const glist=c=>`<div class="gl">${GL.filter(e=>e.c===c).map(gent).join("")}</div>`;
+const gintro=["","Las piezas físicas del equipo y las siglas que más verás al armarlo o repararlo.","Dónde se guardan los datos: memoria de trabajo y almacenamiento permanente.","Lo que ocurre antes de que cargue el sistema operativo.","Cómo se mueven, se protegen y se guardan los datos.","Los programas y las licencias que regulan su uso.","Términos del trabajo en tecnología y de la atención a usuarios."];
+const GLS=[
+{f:0,t:"Buscador y lista completa",k:"glo",h:`<p>Escribe una sigla o una palabra, en español o en inglés, y la lista se filtra. Cada término muestra su significado en inglés y en español, y luego su descripción.</p><input class="gsearch" id="gq" type="search" placeholder="Buscar: RAM, USB, BIOS, copia de seguridad…" aria-label="Buscar en el glosario"><p class="meta" id="gcount"></p><div id="gall">${FG.slice(1).map((n,i)=>`<h3 class="gh">${IG[i+1]} ${n}</h3>${glist(i+1)}`).join("")}</div>`},
+...[1,2,3,4,5,6].map(c=>({f:c,t:FG[c],h:`<p>${gintro[c]}</p>${glist(c)}`})),
+];
+function gloInit(){const q0=$("gq");q0.oninput=()=>{const q=nz(q0.value.trim());let n=0;document.querySelectorAll("#gall .gt").forEach(el=>{const m=!q||el.dataset.t.includes(q);el.hidden=!m;if(m)n++});document.querySelectorAll("#gall .gh").forEach(h=>{h.hidden=!h.nextElementSibling.querySelector(".gt:not([hidden])")});$("gcount").textContent=q?(n?n+" resultado"+(n===1?"":"s"):"Sin resultados. Prueba con otra palabra."):GL.length+" términos"};q0.oninput()}
 const MODS=[
 {id:"so",name:"Sistemas operativos",info:1,F:FS,S:SOS,I:IS,SH:SS,hi:"Vamos a conocer los sistemas operativos, un tema a la vez."},
 {id:"w11",name:"Windows 11",req:"so",F,S,I,SH,hi:"Vamos a instalar Windows 11 juntos, un paso a la vez."},
 {id:"linux",name:"Linux",req:"w11",F,S:LS,I,SH,hi:"Vamos a instalar Ubuntu juntos, un paso a la vez."},
-{id:"office",name:"Office",soon:1,req:"linux"}];
+{id:"office",name:"Office",soon:1,req:"linux"},
+{id:"glo",name:"Glosario",info:1,ref:1,F:FG,S:GLS,I:IG,SH:SHG,hi:"Aquí encuentras las siglas y términos más usados, con su significado en inglés y en español. Es solo informativo y está siempre disponible."}];
 const QZ={w11:[
 {q:"¿Qué pasa con los datos del disco donde instalas Windows desde cero?",o:["Se conservan","Se borran","Se mueven a la nube"]},
 {q:"¿Qué programa graba la ISO de Windows en el USB?",o:["Word","Rufus","Paint"]},
@@ -356,23 +414,23 @@ function go(i,fromHash){const{S,F}=MODS[mi];i=Math.max(0,Math.min(S.length-1,i))
 const hi=i===0&&ses?`<p class="hi">¡Hola, ${ses.name.replace(/[<>&"]/g,"")}! ${MODS[mi].hi}</p>`:"";
 $("step").innerHTML=`${hi}<h2 class="t${s.hero?" hero":""}">${s.t}</h2>${s.h}`;
 $("pb").style.width=p+"%";$("meta").textContent=i===0?"¡Listos para empezar!":`Paso ${i} de ${S.length-1} · ${p} %`;
-$("prev").disabled=i===0;$("next").textContent=last?"Finalizar":"Siguiente";$("nav").hidden=false;toc();pills();
+$("prev").disabled=i===0;$("next").textContent=last?(MODS[mi].ref?"Volver a mi guía":"Finalizar"):"Siguiente";$("nav").hidden=false;toc();pills();
 document.querySelectorAll("#toc button").forEach(b=>{if(+b.dataset.i===i)b.setAttribute("aria-current","step")});
 const a=$("again");if(a)a.onclick=()=>go(0);
 menu(false);
-ping({action:"step",mod:MODS[mi].id,step:i,title:s.t});
-if(s.k==="os")osInit();if(s.k==="quiz")quiz();if(s.k==="ev")evid();if(last&&done.has(MODS[mi].id)&&!fromHash)confetti();
+if(!MODS[mi].ref)ping({action:"step",mod:MODS[mi].id,step:i,title:s.t});
+if(s.k==="os")osInit();if(s.k==="glo")gloInit();if(s.k==="quiz")quiz();if(s.k==="ev")evid();if(last&&done.has(MODS[mi].id)&&!fromHash)confetti();
 if(!fromHash){history.replaceState(null,"","#"+MODS[mi].id+"/"+i);window.scrollTo(0,0);$("step").focus({preventScroll:true});
 if(!matchMedia("(prefers-reduced-motion:reduce)").matches)$("step").animate([{opacity:0,transform:"translateY(14px) scale(.98)"},{opacity:1,transform:"none"}],{duration:300,easing:"cubic-bezier(.3,1.3,.5,1)"})}}
 function openMod(m,i,fromHash){mi=m;n=0;load();tabs();go(i,fromHash)}
 $("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;const m=MODS[+b.dataset.m];if(done.has(m.id)&&!m.info)return toast("Ya completaste esta guía.");if(m.soon)return toast("Esta guía estará disponible pronto.");if(!open(m)){const r=MODS.find(x=>x.id===m.req);return toast(r.info?"Termina primero «"+r.name+"» para desbloquear esta guía.":"Termina "+r.name+" (quiz y prueba) para desbloquear.")}openMod(+b.dataset.m,0)};
 $("toc").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
-$("prev").onclick=()=>go(n-1);$("next").onclick=()=>{const S=MODS[mi].S;if(n<S.length-1)return go(n+1);if(MODS[mi].info){const id=mid(),ir=()=>{done.add(id);tabs();const k=MODS.findIndex(x=>!x.info&&!x.soon&&open(x)&&!done.has(x.id));k>=0?openMod(k,0):toast("Pronto habrá más guías.")};if(on&&ses&&!done.has(id))post({action:"leido",mod:id,token:ses.token}).then(r=>r.ok?ir():toast(r.error)).catch(()=>toast("No pudimos conectar. Intenta de nuevo."));else ir();return}if(done.has(mid()))showDone();else{toast("Antes de finalizar, aprueba el quiz y envía tu prueba.");go(S.findIndex(x=>x.k==="quiz"))}};
+$("prev").onclick=()=>go(n-1);$("next").onclick=()=>{const S=MODS[mi].S;if(n<S.length-1)return go(n+1);if(MODS[mi].ref){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;return showDone()}return openMod(k,0)}if(MODS[mi].info){const id=mid(),ir=()=>{done.add(id);tabs();const k=MODS.findIndex(x=>!x.info&&!x.soon&&open(x)&&!done.has(x.id));k>=0?openMod(k,0):toast("Pronto habrá más guías.")};if(on&&ses&&!done.has(id))post({action:"leido",mod:id,token:ses.token}).then(r=>r.ok?ir():toast(r.error)).catch(()=>toast("No pudimos conectar. Intenta de nuevo."));else ir();return}if(done.has(mid()))showDone();else{toast("Antes de finalizar, aprueba el quiz y envía tu prueba.");go(S.findIndex(x=>x.k==="quiz"))}};
 $("step").addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)go(+g.dataset.go);if(e.target.closest("[data-fin]"))$("next").onclick();const t=e.target.closest("[data-mod]");if(t){const k=MODS.findIndex(x=>x.id===t.dataset.mod);if(k>=0&&!MODS[k].soon&&open(MODS[k])&&!done.has(MODS[k].id))openMod(k,0)}});
 $("menu").onclick=()=>menu(!$("side").classList.contains("open"));$("scrim").onclick=()=>menu(false);
 document.addEventListener("keydown",e=>{if(e.target.matches("input"))return;if(e.key==="ArrowRight")go(n+1);if(e.key==="ArrowLeft")go(n-1);if(e.key==="Escape")menu(false)});
 function fromHash(){const m=location.hash.match(/^#(\w+)\/(\d+)/),o=location.hash.match(/^#paso-(\d+)/);let id=MODS[0].id,i=0;if(m){id=m[1];i=+m[2]}else if(o)i=+o[1];
-const k=MODS.findIndex(x=>x.id===id&&!x.soon&&open(x)&&(!done.has(x.id)||x.info));openMod(k<0?0:k,i,true)}
+const k=MODS.findIndex(x=>x.id===id&&!x.soon&&open(x)&&(!done.has(x.id)||x.info));openMod(k<0?0:k,k<0?0:i,true)}
 const lm=(t,e)=>{$("lmsg").textContent=t;$("lmsg").className=e?"err":""};
 const mail=()=>$("em").value.trim().toLowerCase();
 $("f1").onsubmit=async e=>{e.preventDefault();lm("Enviando el código…");try{const r=await post({action:"code",email:mail()});if(r.ok){$("f1").hidden=true;$("f2").hidden=false;lm("Te enviamos un código. Revisa también la carpeta de spam.")}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
@@ -409,8 +467,8 @@ const draw=()=>{box.innerHTML=OSD.filter(o=>f==="all"||o.g.split(" ").includes(f
 draw();
 $("oschips").onclick=e=>{const b=e.target.closest("button");if(!b)return;f=b.dataset.f;document.querySelectorAll("#oschips button").forEach(x=>x.classList.toggle("on",x===b));draw();det.innerHTML="<p>👆 Elige un sistema para ver su ficha.</p>"};
 box.onclick=e=>{const b=e.target.closest("[data-os]");if(!b)return;const o=OSD.find(x=>x.id===b.dataset.os);document.querySelectorAll(".osc").forEach(x=>x.classList.toggle("on",x===b));det.innerHTML=`<h3>${o.n}</h3><dl><dt>Creador</dt><dd>${o.by}</dd><dt>Desde</dt><dd>${o.y}</dd><dt>Licencia</dt><dd>${o.lic}</dd><dt>Se usa en</dt><dd>${o.use}</dd><dt>Dato clave</dt><dd>${o.cu}</dd></dl>`;det.classList.remove("pop");void det.offsetWidth;det.classList.add("pop")}}
-function startMod(){const k=MODS.findIndex(x=>!x.soon&&open(x)&&!done.has(x.id));if(k>=0)return k;for(let i=MODS.length-1;i>=0;i--)if(!MODS[i].soon&&!MODS[i].info&&done.has(MODS[i].id))return i;return 0}
-function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(!r.ok)return;done=new Set(r.done);qok=new Set(r.quiz);const c=MODS[mi];tabs();if(!open(c)||(done.has(c.id)&&!c.info)){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;showDone()}else openMod(k,0,true)}else if(c.S[n].k)go(n,true)}).catch(()=>{})}
+function startMod(){const k=MODS.findIndex(x=>!x.soon&&!x.ref&&open(x)&&!done.has(x.id));if(k>=0)return k;for(let i=MODS.length-1;i>=0;i--)if(!MODS[i].soon&&!MODS[i].info&&done.has(MODS[i].id))return i;return 0}
+function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(!r.ok)return;done=new Set(r.done);qok=new Set(r.quiz);const c=MODS[mi];tabs();if(!open(c)||done.has(c.id)){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;showDone()}else openMod(k,0,true)}else if(c.S[n].k)go(n,true)}).catch(()=>{})}
 function enter(){$("login").hidden=true;if(ses){$("who").textContent=ses.name;$("who").hidden=false}fromHash();estado()}
 window.addEventListener("hashchange",()=>{if(!$("login").hidden)return;fromHash()});
 if(!on||ses)enter();else $("login").hidden=false;
