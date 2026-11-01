@@ -205,6 +205,11 @@ footer details p{margin:10px 0}
 .gc .ge{display:block;font-weight:700;font-size:.86rem;color:var(--mut);margin:2px 0 6px;line-height:1.35}
 .gc p{margin:0;font-size:.95rem}
 @media (max-width:1200px){#menu b{display:none}.who{max-width:120px}}
+.qbar{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border-top:2px solid var(--line);padding:12px 4px;margin-top:10px}
+.qbar #qcnt{font-weight:700;color:var(--mut)}
+.qbar.ready #qcnt{color:var(--pri-d)}
+.qbar.ready #qgo{animation:pulsev 1.6s infinite}
+@keyframes pulsev{50%{box-shadow:0 0 0 9px rgba(108,76,241,.28)}}
 </style>
 </head>
 <body>
@@ -401,7 +406,7 @@ const QZ={w11:[
 {q:"¿Qué tipo de instalación eliges para instalar Windows desde cero?",o:["Actualización","Personalizada","Reparar"]},
 {q:"La instalación llegó al 100 %, el PC reinicia con el USB puesto y sale «Presione cualquier tecla…». ¿Qué haces?",o:["Pulsar una tecla","No pulsar nada","Apagar el PC"]},
 {q:"Antes de arrancar desde el USB, ¿qué haces con los periféricos?",o:["Dejar solo ratón y teclado","Conectarlos todos","Quitar también el teclado"]},
-{q:"En «¿Dónde quieres instalar Windows?», ¿qué se recomienda con las particiones del disco principal?",o:["Eliminarlas y dejar espacio sin asignar","Dejarlas intactas","Formatear el USB"]},
+{q:"En la pantalla «¿Dónde quieres instalar Windows?», cuando instalas desde cero y ya hiciste tu copia de seguridad, ¿qué es lo más sencillo que se recomienda hacer con las particiones del disco donde irá Windows?",o:["Eliminar todas las particiones de ese disco hasta que quede como «espacio sin asignar» y continuar: Windows crea las que necesita","Dejarlas intactas e instalar sobre la primera de la lista","Eliminar solo la partición más pequeña y dejar el resto"]},
 {q:"Si no tienes clave de producto en la pantalla de activación, ¿qué haces?",o:["Pulsar «No tengo clave de producto»","Usar un activador descargado de internet","Detener la instalación"]},
 {q:"¿Dónde debe guardarse la copia de seguridad?",o:["En un disco externo o USB distinto al de instalación","En el mismo disco donde se instalará Windows","En la carpeta Descargas"]}]};
 QZ.linux=[
@@ -434,11 +439,13 @@ function toc(){const{S,F,I}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!=
 h+=`<li><button data-i="${i}" class="${seen.has(i)?"done":""}"><span class="n">${i}</span><span>${s.t}</span></button></li>`});$("toc").innerHTML=h+"</ol>"}
 function confetti(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const c=["#6C4CF1","#19C3A0","#FFB020","#FF5C8A"];for(let k=0;k<50;k++){const e=document.createElement("i");e.className="cf";e.style.cssText=`left:${Math.random()*100}vw;background:${c[k%4]};animation-delay:${Math.random()*.6}s;animation-duration:${2+Math.random()*1.5}s`;document.body.appendChild(e);setTimeout(()=>e.remove(),4500)}}
 function menu(o){$("side").classList.toggle("open",o);$("scrim").classList.toggle("on",o);$("menu").setAttribute("aria-expanded",o)}
-function go(i,fromHash){const{S,F}=MODS[mi];i=Math.max(0,Math.min(S.length-1,i));if(i>n)seen.add(n);n=i;save();const s=S[i],p=Math.round(i/(S.length-1)*100),last=i===S.length-1;
+const pend=()=>{const g=$("qgo");if(g&&!g.disabled&&document.querySelector("#qz input:checked"))return"quiz";const v=$("sv");if(v&&!done.has(mid())&&(($("fn")&&$("fn").value.trim())||($("fd")&&$("fd").value.trim())||($("fi")&&$("fi").files.length)))return"prueba";return""};
+window.addEventListener("beforeunload",e=>{if(pend()){e.preventDefault();e.returnValue=""}});
+function go(i,fromHash){const{S,F}=MODS[mi];const pd=pend();if(pd&&!fromHash&&!confirm(pd==="quiz"?"Tienes respuestas del quiz SIN ENVIAR. Si sales ahora se perderán y no quedarán registradas. ¿Quieres salir sin enviarlas?":"Tienes datos de tu prueba SIN ENVIAR. ¿Quieres salir sin enviarlos?"))return;i=Math.max(0,Math.min(S.length-1,i));if(i>n)seen.add(n);n=i;save();const s=S[i],p=Math.round(i/(S.length-1)*100),last=i===S.length-1;
 const hi=i===0&&ses?`<p class="hi">¡Hola, ${ses.name.replace(/[<>&"]/g,"")}! ${MODS[mi].hi}</p>`:"";
 $("step").innerHTML=`${hi}<h2 class="t${s.hero?" hero":""}">${s.t}</h2>${s.h}`;
 $("pb").style.width=p+"%";$("meta").textContent=i===0?"¡Listos para empezar!":`Paso ${i} de ${S.length-1} · ${p} %`;
-$("prev").disabled=i===0;$("next").textContent=last?(MODS[mi].ref?"Volver a mi guía":"Finalizar"):"Siguiente";$("nav").hidden=false;toc();pills();
+$("prev").disabled=i===0;$("next").textContent=last?(MODS[mi].ref?"Volver a mi guía":"Finalizar"):"Siguiente";$("nav").hidden=false;$("next").disabled=!!(s.k==="quiz"&&on&&!qok.has(mid()));toc();pills();
 document.querySelectorAll("#toc button").forEach(b=>{if(+b.dataset.i===i)b.setAttribute("aria-current","step")});
 const a=$("again");if(a)a.onclick=()=>go(0);
 menu(false);
@@ -465,14 +472,15 @@ const demo='<div class="callout tip"><b>Modo de prueba</b>Conecta la hoja de Goo
 const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.floor(Math.random()*i--);[a[i],a[j]]=[a[j],a[i]]}return a};
 function quiz(){const b=$("qz"),Q=QZ[mid()];if(!on){b.innerHTML=demo;return}
 if(qok.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Quiz aprobado!</b>Sigue con el siguiente paso para enviar tu prueba.</div>';return}
-b.innerHTML=shuf(Q.map((_,i)=>i)).map((qi,k)=>`<fieldset class="q" data-q="${qi}"><legend>${k+1}. ${Q[qi].q}</legend>${shuf(Q[qi].o.map((t,j)=>[t,j])).map(([t,j])=>`<label><input type="radio" name="q${qi}" value="${j}">${t}</label>`).join("")}<p class="exp" hidden></p></fieldset>`).join("")+'<div class="btns" id="qb"><button class="btn" id="qgo">Comprobar respuestas</button></div><p id="qres" role="status"></p>';
+b.innerHTML=shuf(Q.map((_,i)=>i)).map((qi,k)=>`<fieldset class="q" data-q="${qi}"><legend>${k+1}. ${Q[qi].q}</legend>${shuf(Q[qi].o.map((t,j)=>[t,j])).map(([t,j])=>`<label><input type="radio" name="q${qi}" value="${j}">${t}</label>`).join("")}<p class="exp" hidden></p></fieldset>`).join("")+'<div class="qbar" id="qbar"><span id="qcnt"></span><div id="qb"><button class="btn" id="qgo">Comprobar respuestas</button></div></div><p id="qres" role="status"></p>';
+const upd=()=>{const c=$("qcnt");if(!c)return;const k=Q.filter((_,i)=>document.querySelector(`input[name=q${i}]:checked`)).length;c.textContent=k<Q.length?`Respondidas: ${k} de ${Q.length}`:"¡Listo! Pulsa «Comprobar respuestas» para enviar tu quiz.";$("qbar").classList.toggle("ready",k===Q.length)};b.onchange=upd;upd();
 $("qgo").onclick=async()=>{const a=Q.map((_,i)=>{const c=document.querySelector(`input[name=q${i}]:checked`);return c?+c.value:-1});
 if(a.includes(-1)){$("qres").textContent="Responde todas las preguntas.";return}
 $("qgo").disabled=true;$("qres").textContent="Revisando…";
 try{const r=await post({action:"quiz",mod:mid(),answers:a,token:ses.token});
 if(!r.ok){$("qres").textContent=r.error;$("qgo").disabled=false;return}
 document.querySelectorAll(".q").forEach(f=>{const i=+f.dataset.q;f.querySelectorAll("input").forEach(x=>x.disabled=true);if(r.bad.includes(i)){f.classList.add("bad");const e=f.querySelector(".exp");e.textContent=r.exp[i];e.hidden=false}else f.classList.add("good")});
-if(r.pass){qok.add(mid());$("qres").textContent=`¡Aprobaste con ${r.score} de ${r.total}! ${r.bad.length?"Repasa las respuestas en rojo. ":""}Pulsa Continuar para enviar tu prueba.`;$("qb").innerHTML='<button class="btn" id="qnx">Continuar</button>';$("qnx").onclick=()=>go(n+1);confetti()}
+if(r.pass){qok.add(mid());$("next").disabled=false;$("qres").textContent=`¡Aprobaste con ${r.score} de ${r.total}! ${r.bad.length?"Repasa las respuestas en rojo. ":""}Pulsa Continuar para enviar tu prueba.`;$("qb").innerHTML='<button class="btn" id="qnx">Continuar</button>';$("qnx").onclick=()=>go(n+1);confetti()}
 else{$("qres").textContent=`Sacaste ${r.score} de ${r.total} y necesitas ${r.need}. Lee la explicación de las respuestas en rojo y vuelve a intentarlo.`;$("qb").innerHTML='<button class="btn" id="qre">Intentar de nuevo</button>';$("qre").onclick=()=>{quiz();$("qz").scrollIntoView({behavior:"smooth"})}}}catch(x){$("qres").textContent="No pudimos conectar. Intenta de nuevo.";$("qgo").disabled=false}}}
 function evid(){const b=$("ev");if(!on){b.innerHTML=demo;return}
 if(done.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Listo!</b>Tu docente ya recibió tu prueba.</div>';return}
