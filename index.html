@@ -256,7 +256,7 @@ main.teacher-view{max-width:1240px}
 <div id="toast" role="status"></div>
 <aside id="side" aria-label="Lista de pasos"><h1>Todos los pasos</h1><nav id="toc"></nav></aside><div id="scrim"></div>
 <main><div class="pills" id="pills"></div><div class="bar"><i id="pb"></i></div><p class="meta" id="meta"></p><article id="step" tabindex="-1"></article>
-<section id="teacherPanel" hidden aria-live="polite"></section><section id="workshopView" hidden style="width:100%;padding:0;margin:0"><iframe id="workshopFrame" title="MR TECH LAB 2.0 - Taller interactivo" src="mr-tech-lab.html" loading="lazy" style="display:block;width:100%;height:calc(100vh - 110px);min-height:780px;border:0;border-radius:18px;background:#071525"></iframe></section>
+<section id="teacherPanel" hidden aria-live="polite"></section><section id="workshopView" hidden style="width:100%;padding:0;margin:0"><iframe id="workshopFrame" title="MR TECH LAB 2.0 - Taller interactivo" src="mr-tech-lab.html" loading="lazy" style="display:block;width:100%;height:calc(100vh - 110px);min-height:780px;border:0;border-radius:18px;background:#F5F3FF"></iframe></section>
 <div class="nav" id="nav"><button id="prev">Anterior</button><button id="next" class="p">Siguiente</button></div></main>
 <footer>
 <p><b>Creado por Manuel Restrepo</b></p>
@@ -467,7 +467,7 @@ function load(){try{seen=new Set(JSON.parse(localStorage.getItem(key())||"[]"))}
 function save(){try{localStorage.setItem(key(),JSON.stringify([...seen]))}catch(e){}}
 const open=m=>!m.req||done.has(m.req);
 const dis=m=>m.soon||!open(m)||(done.has(m.id)&&!m.info);
-function tabs(){if(teacherToken){$("tabs").innerHTML='<button role="tab" data-teacher aria-selected="true">Panel del profesor</button>';return}$("tabs").innerHTML=MODS.map((m,i)=>`<button role="tab" data-m="${i}" aria-selected="${i===mi&&!workshopMode}"${dis(m)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`).join("")+'<button role="tab" data-workshop aria-selected="'+(workshopMode?"true":"false")+'">MR TECH LAB 2.0</button>'}
+function tabs(){if(teacherToken){$("tabs").innerHTML='<button role="tab" data-teacher aria-selected="true">Panel del profesor</button>';return}const before=MODS.filter(m=>m.id!=="glo"),glossary=MODS.filter(m=>m.id==="glo");const draw=m=>{const i=MODS.indexOf(m);return `<button role="tab" data-m="${i}" aria-selected="${i===mi&&!workshopMode}"${dis(m)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`};$("tabs").innerHTML=before.map(draw).join("")+'<button role="tab" data-workshop aria-selected="'+(workshopMode?"true":"false")+'">MR TECH LAB 2.0</button>'+glossary.map(draw).join("")}
 function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3400)}
 function pills(){const m=MODS[mi],f=m.S[n].f;$("pills").innerHTML=m.SH.map((t,i)=>`<button class="pill${i===f?" on":i<f?" past":""}" data-ph="${i}" aria-label="Ir a ${t}"><b>${i<f?"✓":m.I[i]}</b><span>${t}</span></button>`).join("");const o=document.querySelector(".pill.on");if(o)o.scrollIntoView({inline:"center",block:"nearest"})}
 function toc(){const{S,F,I}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!==last){if(last>-1)h+="</ol>";h+=`<h2>${I[s.f]} ${F[s.f]}</h2><ol>`;last=s.f}

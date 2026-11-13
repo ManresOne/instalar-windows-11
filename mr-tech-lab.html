@@ -7,9 +7,9 @@
 <title>MR TECH LAB 2.0 | Aula técnica interactiva</title>
 <style>
 :root{
- --bg:#07111f;--surface:#0d1b2c;--surface2:#12263b;--surface3:#19334d;--line:#28445e;
- --text:#edf6ff;--muted:#a6bbcf;--cyan:#52d3ef;--blue:#5d8cff;--green:#4bd39a;
- --amber:#ffc66e;--red:#ff777e;--purple:#ad91ff;--shadow:0 18px 55px #0005;
+ --bg:#F5F3FF;--surface:#FFFFFF;--surface2:#F0ECFF;--surface3:#E5FAF5;--line:#E4E0FA;
+ --text:#1E1B4B;--muted:#5B5886;--cyan:#6C4CF1;--blue:#5536D9;--green:#19C3A0;
+ --amber:#FFB020;--red:#FF5C8A;--purple:#8B72F5;--shadow:0 14px 38px rgba(108,76,241,.10);
 }
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:radial-gradient(ellipse at 12% 0%,#123451 0,transparent 32%),radial-gradient(ellipse at 95% 30%,#17234b 0,transparent 30%),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -66,6 +66,33 @@ button,input,select{font:inherit}button{cursor:pointer}
 @media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.header{position:relative;top:0}}
 @media(max-width:520px){.app{padding:12px}.header{padding:12px}.brand h1{font-size:16px}.brand small{font-size:8px}.student{max-width:115px;font-size:12px}.hero{padding-top:25px}.card{padding:15px}.component-picks{grid-template-columns:repeat(2,1fr)}.metrics{gap:6px}.metric{padding:7px}.metric b{font-size:16px}.nav button{flex:1 1 42%;font-size:12px}.lesson-grid{grid-template-columns:1fr}}
 @media print{body{background:white;color:#111}.header,.nav,.btn,.tabs,.footer{display:none!important}.card,.info{background:white;color:#111;box-shadow:none;border:1px solid #aaa}.desc,.muted,.reading{color:#444}.page{display:block!important;page-break-after:always}.hero{padding:10px}.hero p{color:#333}}
+
+/* Integración visual con el aula principal */
+body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linear-gradient(145deg,#F5F3FF,#fff 58%,#edfbf7)!important;color:#1E1B4B!important}
+.header{background:rgba(255,255,255,.92)!important;border-color:#E4E0FA!important;box-shadow:0 12px 34px rgba(108,76,241,.10)!important}
+.brand h1{color:#1E1B4B}.brand small,.reading,.desc,.muted{color:#5B5886!important}
+.logo{background:linear-gradient(140deg,#6C4CF1,#19C3A0 70%,#FFB020)!important;color:#fff!important;box-shadow:0 7px 22px rgba(108,76,241,.22)!important}
+.card,.hero-panel,.info{background:#fff!important;border-color:#E4E0FA!important;color:#1E1B4B!important;box-shadow:0 9px 28px rgba(108,76,241,.07)}
+.card p,.info p,.info li,.steps,.step{color:#5B5886}
+.pill{background:#F0ECFF!important;color:#5536D9!important}
+.btn{background:linear-gradient(135deg,#6C4CF1,#8B72F5)!important;color:#fff!important;box-shadow:0 5px 14px rgba(108,76,241,.17)}
+.btn.secondary{background:#E5FAF5!important;border:1px solid #bcefe3!important;color:#08745F!important;box-shadow:none}
+.btn.ghost{background:#fff!important;border:1px solid #E4E0FA!important;color:#5536D9!important;box-shadow:none}
+.tabs button,.nav button,.choice,.component-picks button{background:#F7F5FF!important;border-color:#E4E0FA!important;color:#37316e!important}
+.tabs button.active,.nav button.active,.component-picks button.active,.choice.selected{background:#E5FAF5!important;border-color:#19C3A0!important;color:#08745F!important}
+.warning{background:#FFF6E5!important;border-left-color:#FFB020!important;color:#765016!important}
+.good{background:#E5FAF5!important;border-left-color:#19C3A0!important;color:#08745F!important}
+.feedback{background:#F0ECFF!important;border-color:#D9D0FF!important;color:#37316e!important}
+.diagram{background:radial-gradient(circle at 50% 40%,#fff 0,#f0ecff 66%,#e7e2ff 100%)!important;border-color:#d8d0ff!important;box-shadow:inset 0 0 30px rgba(108,76,241,.07)}
+.diagram svg{filter:drop-shadow(0 15px 14px rgba(31,27,75,.16))}
+.range-row input{accent-color:#6C4CF1}
+.bar{background:#EAE6FA!important}.bar span{background:linear-gradient(90deg,#6C4CF1,#19C3A0)!important}
+.footer{color:#77739b!important}
+.flow-control{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:18px;padding:16px 18px;border:1px solid #E4E0FA;border-radius:17px;background:linear-gradient(110deg,#F0ECFF,#E5FAF5)}
+.flow-control p{margin:0;color:#5B5886;font-size:13px}.flow-control strong{color:#1E1B4B}.flow-control button:disabled{opacity:.48;cursor:not-allowed}
+.nav button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.35)}
+.quiz-progress{height:7px;background:#eae6fa;border-radius:99px;overflow:hidden;margin:12px 0}.quiz-progress span{display:block;height:100%;background:linear-gradient(90deg,#6C4CF1,#19C3A0);border-radius:99px}
+
 </style>
 </head>
 <body>
@@ -76,7 +103,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 </header>
 <section class="hero">
  <div><div class="kicker">Aprender · Practicar · Verificar</div><h2>Tu taller de mantenimiento, ahora interactivo.</h2><p>Explora componentes, sigue procedimientos seguros, resuelve casos de diagnóstico y comprueba lo que aprendiste. Avanza a tu ritmo.</p></div>
- <div class="hero-panel"><div class="row"><span class="pill">Panel del estudiante</span><span class="reading">Progreso local</span></div><div class="big" id="overallPercent">0%</div><small>Avance de las actividades completables</small><div class="metrics"><div class="metric"><b id="doneTasks">0/8</b><span>Checklist</span></div><div class="metric"><b id="quizScore">—</b><span>Evaluación</span></div><div class="metric"><b id="caseDone">0/3</b><span>Casos</span></div></div></div>
+ <div class="hero-panel"><div class="row"><span class="pill">Panel del estudiante</span><span class="reading">Progreso del taller</span></div><div class="big" id="overallPercent">0%</div><small>Avance de las actividades completables</small><div class="metrics"><div class="metric"><b id="doneTasks">0/8</b><span>Checklist</span></div><div class="metric"><b id="quizScore">—</b><span>Evaluación</span></div><div class="metric"><b id="caseDone">0/3</b><span>Casos</span></div></div></div>
 </section>
 <nav class="nav" aria-label="Secciones del laboratorio">
  <button class="active" data-page="inicio">Inicio</button><button data-page="hardware">Hardware 3D</button><button data-page="mantenimiento">Mantenimiento</button><button data-page="diagnostico">Casos de diagnóstico</button><button data-page="rendimiento">Rendimiento</button><button data-page="evaluacion">Evaluación</button><button data-page="informe">Mi informe</button>
@@ -85,7 +112,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 <section class="page active" id="inicio">
  <div class="grid">
   <article class="card">
-   <div class="row"><h3>Ruta de aprendizaje</h3><span class="pill">6 actividades</span></div><p class="desc">Sigue este recorrido sugerido. Puedes volver a cualquier módulo cuando lo necesites.</p>
+   <div class="row"><h3>Ruta de aprendizaje</h3><span class="pill">6 actividades</span></div><p class="desc">Sigue el recorrido guiado en orden. Cada actividad se habilita al completar la anterior; puedes regresar a repasar lo ya trabajado.</p>
    <div class="steps">
     <div class="step"><div><b>Reconoce el hardware</b><div class="reading">Identifica componentes y comprende su función.</div><button class="btn secondary" data-go="hardware" style="margin-top:8px">Abrir explorador</button></div></div>
     <div class="step"><div><b>Aplica mantenimiento seguro</b><div class="reading">Prepara, inspecciona, limpia y verifica.</div><button class="btn secondary" data-go="mantenimiento" style="margin-top:8px">Iniciar práctica</button></div></div>
@@ -109,30 +136,34 @@ button,input,select{font:inherit}button{cursor:pointer}
    <div class="diagram">
     <svg viewBox="0 0 680 390" role="img" aria-label="Ilustración técnica de un computador abierto con placa base, procesador, memoria, ventiladores y unidad SSD">
      <defs>
-      <linearGradient id="caseG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#294e6b"/><stop offset="1" stop-color="#10243a"/></linearGradient>
+      <linearGradient id="caseG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#65758a"/><stop offset=".35" stop-color="#29394d"/><stop offset="1" stop-color="#111d2d"/></linearGradient>
+      <linearGradient id="metalG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8eef5"/><stop offset=".22" stop-color="#8294a9"/><stop offset=".52" stop-color="#34475d"/><stop offset=".8" stop-color="#a9b8c8"/><stop offset="1" stop-color="#43566c"/></linearGradient>
+      <linearGradient id="copperG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7d7a0"/><stop offset=".5" stop-color="#b87b43"/><stop offset="1" stop-color="#70472d"/></linearGradient>
+      <radialGradient id="fanG"><stop stop-color="#dce9f7"/><stop offset=".2" stop-color="#526c85"/><stop offset=".65" stop-color="#172c43"/><stop offset="1" stop-color="#0a1727"/></radialGradient>
+      <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur in="SourceAlpha" stdDeviation="7"/><feOffset dy="8"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       <linearGradient id="boardG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#267d76"/><stop offset="1" stop-color="#124c55"/></linearGradient>
       <linearGradient id="glowG"><stop stop-color="#5de7ee"/><stop offset="1" stop-color="#7588ff"/></linearGradient>
-      <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
      </defs>
-     <path d="M90 42 L476 18 L608 79 L608 328 L222 363 L90 299Z" fill="url(#caseG)" stroke="#83b7d1" stroke-width="3"/>
+     <path d="M90 42 L476 18 L608 79 L608 328 L222 363 L90 299Z" fill="url(#caseG)" stroke="#a9b8c8" stroke-width="3" filter="url(#softShadow)"/>
      <path d="M222 363 L608 328 L608 79 L476 112 L476 18" fill="none" stroke="#456b86" stroke-width="2"/>
-     <path d="M116 67 L460 47 L570 94 L570 297 L229 330 L116 274Z" fill="#0b1d2e" stroke="#4f7e9b" stroke-width="2"/>
-     <path d="M170 91 L435 74 L536 116 L536 272 L256 301 L170 251Z" fill="url(#boardG)" stroke="#6ccbc1" stroke-width="2" data-part="Placa base"/>
+     <path d="M116 67 L460 47 L570 94 L570 297 L229 330 L116 274Z" fill="#101b2b" stroke="#91a1b4" stroke-width="2"/>
+     <path d="M170 91 L435 74 L536 116 L536 272 L256 301 L170 251Z" fill="url(#boardG)" stroke="#9bd6c7" stroke-width="2" data-part="Placa base"/>
      <path d="M190 111 L420 96 M190 125 L420 110 M270 288 L270 315 M300 285 L300 313 M335 280 L335 308" stroke="#9ce4d5" opacity=".25" stroke-width="2"/>
      <g data-part="Procesador">
       <path d="M278 143 L359 137 L389 151 L389 219 L308 227 L278 210Z" fill="#18334c" stroke="#b8e8ff" stroke-width="3"/>
-      <path d="M292 151 L355 146 L375 156 L375 207 L311 214 L292 204Z" fill="#12263c" stroke="#62d8ee" stroke-width="3"/>
-      <text x="334" y="184" fill="#dffaff" text-anchor="middle" font-size="15" font-weight="800">CPU</text>
+      <path d="M292 151 L355 146 L375 156 L375 207 L311 214 L292 204Z" fill="url(#metalG)" stroke="#e7eef6" stroke-width="3"/>
+      <path d="M300 159 L366 154 L366 198 L300 205Z" fill="#263b50" opacity=".94"/><path d="M305 164 L361 160 M305 170 L361 166" stroke="#9eb2c6" stroke-width="1" opacity=".6"/><text x="334" y="188" fill="#f2f6fb" text-anchor="middle" font-size="14" font-weight="800" letter-spacing="2">CPU</text>
       <path d="M285 137 V126 M301 136 V125 M317 134 V123 M333 132 V121 M349 131 V120 M365 130 V119" stroke="#8dddf2" stroke-width="3"/>
      </g>
      <g data-part="RAM">
       <path d="M202 124 L224 122 L224 238 L202 240Z" fill="#142b40" stroke="#ffcf72" stroke-width="2"/>
       <path d="M232 122 L254 120 L254 235 L232 237Z" fill="#142b40" stroke="#ffcf72" stroke-width="2"/>
-      <g fill="#d5b56f"><rect x="207" y="134" width="12" height="7"/><rect x="207" y="151" width="12" height="7"/><rect x="237" y="132" width="12" height="7"/><rect x="237" y="149" width="12" height="7"/></g>
+      <g fill="url(#copperG)"><rect x="207" y="134" width="12" height="7" rx="1"/><rect x="207" y="151" width="12" height="7" rx="1"/><rect x="207" y="168" width="12" height="7" rx="1"/><rect x="237" y="132" width="12" height="7" rx="1"/><rect x="237" y="149" width="12" height="7" rx="1"/><rect x="237" y="166" width="12" height="7" rx="1"/></g>
      </g>
      <g data-part="Ventilador">
-      <circle cx="477" cy="166" r="51" fill="#102a40" stroke="#71d8e7" stroke-width="3"/>
-      <circle cx="477" cy="166" r="11" fill="#8cecff"/>
+      <circle cx="477" cy="166" r="53" fill="url(#metalG)" stroke="#dce6f0" stroke-width="3"/><circle cx="477" cy="166" r="46" fill="url(#fanG)" stroke="#253d55" stroke-width="2"/>
+      <circle cx="477" cy="166" r="13" fill="url(#metalG)" stroke="#e2ebf4" stroke-width="2"/><circle cx="477" cy="166" r="4" fill="#25384d"/>
       <g fill="#3e88a1" stroke="#8de4ee" stroke-width="1.5"><path d="M472 155 Q438 122 452 113 Q475 119 481 155Z"/><path d="M488 163 Q522 130 531 145 Q526 168 489 171Z"/><path d="M480 177 Q514 210 498 220 Q477 215 472 178Z"/><path d="M465 169 Q432 202 422 186 Q427 164 464 161Z"/></g>
      </g>
      <g data-part="SSD">
@@ -149,6 +180,13 @@ button,input,select{font:inherit}button{cursor:pointer}
      </g>
      <g stroke="#71d6e8" stroke-width="1.5" stroke-dasharray="4 4" opacity=".8"><path d="M212 115 L164 76"/><path d="M334 136 L334 83"/><path d="M477 113 L520 74"/><path d="M486 288 L557 315"/></g>
      <g fill="#7fe9f0"><circle cx="212" cy="115" r="4"/><circle cx="334" cy="136" r="4"/><circle cx="477" cy="113" r="4"/><circle cx="486" cy="288" r="4"/></g>
+     <!-- Detalles de fabricación: tornillos, pistas, disipadores y reflejos -->
+     <g fill="none" stroke="#b8d8c9" stroke-width="1.4" opacity=".62" data-part="Placa base"><path d="M185 157 L254 157 L270 172 L270 236 M393 112 L423 112 L440 129 L440 207 M267 264 L290 246 L290 232 M398 247 L421 230 L421 210"/><path d="M190 183 L247 183 M190 190 L247 190 M395 120 L425 120 M395 127 L425 127"/></g>
+     <g fill="#d6e0eb" stroke="#52657b" stroke-width="1.2"><circle cx="125" cy="78" r="5"/><circle cx="554" cy="103" r="5"/><circle cx="238" cy="319" r="5"/><circle cx="584" cy="303" r="5"/></g>
+     <g stroke="#50657b" stroke-width="1.5"><path d="M122 78 l6 0 M125 75 l0 6 M551 103 l6 0 M554 100 l0 6 M235 319 l6 0 M238 316 l0 6 M581 303 l6 0 M584 300 l0 6"/></g>
+     <g fill="#a7b8c9" opacity=".85"><rect x="398" y="145" width="13" height="34" rx="2"/><rect x="414" y="141" width="13" height="38" rx="2"/><rect x="430" y="137" width="13" height="42" rx="2"/></g>
+     <path d="M101 50 L476 27 L596 83" fill="none" stroke="#fff" stroke-width="2" opacity=".32"/>
+     <path d="M229 351 L601 318" fill="none" stroke="#c8d3df" stroke-width="2" opacity=".45"/>
     </svg>
    </div>
    <div class="component-picks" id="partButtons">
@@ -242,7 +280,7 @@ button,input,select{font:inherit}button{cursor:pointer}
    <div class="btnrow"><button class="btn" id="submitQuiz">Calificar evaluación</button><button class="btn ghost" id="retryQuiz">Reiniciar</button></div>
    <div id="quizResult" class="feedback" hidden aria-live="polite"></div>
   </article>
-  <aside class="stack"><div class="card"><h3>Recomendación para el alumno</h3><p class="desc">No memorices solamente la respuesta. Explica por qué una acción es segura, qué riesgo evita y qué resultado esperas observar.</p></div><div class="card"><h3>Para el docente</h3><p class="desc">Puedes utilizar la evaluación como actividad de repaso. El resultado queda guardado únicamente en el navegador del estudiante.</p></div></aside>
+  <aside class="stack"><div class="card"><h3>Recomendación para el alumno</h3><p class="desc">No memorices solamente la respuesta. Explica por qué una acción es segura, qué riesgo evita y qué resultado esperas observar.</p></div><div class="card"><h3>Para el docente</h3><p class="desc">Puedes utilizar la evaluación como actividad de repaso. Las respuestas se registran en el aula cuando el alumno accede desde su sesión; el progreso visual también se conserva en el navegador.</p></div></aside>
  </div>
 </section>
 
@@ -253,7 +291,7 @@ button,input,select{font:inherit}button{cursor:pointer}
    <div class="info" id="reportContent"></div>
    <div class="btnrow"><button class="btn" id="printReport">Imprimir / Guardar PDF</button><button class="btn secondary" id="downloadReport">Descargar informe JSON</button><button class="btn ghost" id="clearProgress">Borrar mi progreso</button></div>
   </article>
-  <aside class="stack"><div class="card"><h3>¿Cómo entregar?</h3><p class="desc">El alumno puede imprimir el informe como PDF y enviarlo al docente, o descargar el archivo JSON para conservar los datos de la práctica.</p></div><div class="card"><h3>Privacidad</h3><p class="desc">Esta versión guarda el nombre y el avance en el almacenamiento local del navegador. Los datos no se envían a un servidor ni llegan automáticamente al docente.</p></div></aside>
+  <aside class="stack"><div class="card"><h3>¿Cómo entregar?</h3><p class="desc">El alumno puede imprimir el informe como PDF y enviarlo al docente, o descargar el archivo JSON para conservar los datos de la práctica.</p></div><div class="card"><h3>Privacidad</h3><p class="desc">El avance visual se conserva en este navegador. Si el alumno inició sesión en la plataforma principal, los eventos, respuestas y resultados se envían al registro académico para consulta del docente.</p></div></aside>
  </div>
 </section>
 <footer class="footer">MR TECH LAB 2.0 · Material didáctico para formación técnica · Simulación local, sin conexión a hardware real.</footer>
@@ -266,14 +304,19 @@ const LAB_API="https://script.google.com/macros/s/AKfycbwebAyTLr5ulHxfmW6EnBqnng
 function labToken(){try{return JSON.parse(parent.sessionStorage.getItem("ses")||"null")?.token||""}catch(e){return ""}}
 function labLog(data){const token=labToken();if(!token)return;fetch(LAB_API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"lab_event",token,...data})}).catch(()=>{})}
 
-let state={name:"",checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null};
+let state={name:"",checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null,exploredParts:[],performanceTouched:[],quizIndex:0};
 try{const saved=JSON.parse(localStorage.getItem(STORE)||"null");if(saved)state={...state,...saved}}catch(e){}
 function save(){localStorage.setItem(STORE,JSON.stringify(state));updateDashboard()}
 function toast(msg){const t=$("#toast");t.textContent=msg;t.style.display="block";clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.style.display="none",2400)}
 $("#studentName").value=state.name||"";$("#studentName").addEventListener("input",e=>{state.name=e.target.value;$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();save()});$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();
-function go(id){$$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));$$(".page").forEach(p=>p.classList.toggle("active",p.id===id));window.scrollTo({top:0,behavior:"smooth"});if(id==="informe")renderReport()}
-$$(".nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));$$("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
-function updateDashboard(){let tasks=state.checks.filter(Boolean).length,cases=state.cases.filter(Boolean).length,score=state.quizScore;$("#doneTasks").textContent=tasks+"/8";$("#caseDone").textContent=cases+"/3";$("#quizScore").textContent=score===null?"—":score+"%";let points=tasks/8*40+cases/3*30+(score===null?0:score/100*30);$("#overallPercent").textContent=Math.round(points)+"%"}
+const flowSteps=[{id:"hardware",name:"Exploración de hardware"},{id:"mantenimiento",name:"Mantenimiento preventivo"},{id:"diagnostico",name:"Diagnóstico de fallas"},{id:"rendimiento",name:"Simulador de rendimiento"},{id:"evaluacion",name:"Evaluación final"},{id:"informe",name:"Informe de aprendizaje"}];
+function stepDone(id){if(id==="hardware")return ["Placa base","Procesador","RAM","Ventilador","SSD","Fuente"].every(x=>(state.exploredParts||[]).includes(x));if(id==="mantenimiento")return state.checks.every(Boolean);if(id==="diagnostico")return state.cases.every(Boolean);if(id==="rendimiento")return ["cpuRange","ramRange","tempRange","diskRange"].every(x=>(state.performanceTouched||[]).includes(x));if(id==="evaluacion")return state.quizScore!==null&&state.quizScore>=80;return id==="informe"}
+function stepUnlocked(id){const i=flowSteps.findIndex(x=>x.id===id);return i<=0||stepDone(flowSteps[i-1].id)}
+function go(id){if(!stepUnlocked(id)){const i=flowSteps.findIndex(x=>x.id===id);toast("Completa primero: "+(flowSteps[Math.max(0,i-1)]?.name||"la actividad anterior"));return}$$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));$$('.page').forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='informe')renderReport()}
+function refreshFlowUI(){const seq=flowSteps.map(x=>x.id);$$('.nav button').forEach(b=>{const id=b.dataset.page;if(id)b.disabled=!stepUnlocked(id)});$$('[data-go]').forEach(b=>{b.disabled=!stepUnlocked(b.dataset.go)});flowSteps.forEach((s,i)=>{const page=document.getElementById(s.id);if(!page)return;let box=page.querySelector('.flow-control');if(!box){box=document.createElement('div');box.className='flow-control';page.appendChild(box)}const done=stepDone(s.id),next=flowSteps[i+1];box.innerHTML=`<p><strong>${done?'Actividad completada':'Actividad en progreso'}</strong><br>${done?(next?'Ya puedes continuar con la siguiente sección.':'Has completado el recorrido.'):flowHint(s.id)}</p>${next?`<button class="btn" data-flow-next="${next.id}" ${done?'':'disabled'}>${done?'Continuar: '+next.name:'Completa la actividad para continuar →'}</button>`:`<button class="btn" data-flow-next="informe" ${done?'':'disabled'}>Ver informe final</button>`}`});$$('[data-flow-next]').forEach(b=>b.onclick=()=>go(b.dataset.flowNext))}
+function flowHint(id){return ({hardware:'Explora los seis componentes del diagrama y consulta su función.',mantenimiento:'Marca las ocho tareas del checklist después de revisar cada paso.',diagnostico:'Resuelve correctamente los tres casos de diagnóstico.',rendimiento:'Ajusta los cuatro indicadores del simulador y observa su interpretación.',evaluacion:'Responde las cinco preguntas y alcanza al menos 80%.'})[id]||'Completa esta actividad.'}
+$$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));$$('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+function updateDashboard(){let tasks=state.checks.filter(Boolean).length,cases=state.cases.filter(Boolean).length,score=state.quizScore;$('#doneTasks').textContent=tasks+'/8';$('#caseDone').textContent=cases+'/3';$('#quizScore').textContent=score===null?'—':score+'%';let points=(state.exploredParts||[]).length/6*15+tasks/8*25+cases/3*25+(state.performanceTouched||[]).length/4*15+(score===null?0:score/100*20);$('#overallPercent').textContent=Math.round(points)+'%';refreshFlowUI()}
 const partData={
  "Placa base":["Interconecta CPU, memoria, almacenamiento y periféricos; distribuye señales y energía entre ellos.","Inspecciona ranuras, conectores, fijaciones, corrosión y daños visibles. Consulta el manual del modelo."],
  "Procesador":["Ejecuta instrucciones y operaciones. Su rendimiento y temperatura dependen también de la refrigeración y la carga.","Comprueba montaje del disipador, ventilación y temperaturas con herramientas compatibles. No retires el disipador sin necesidad."],
@@ -282,7 +325,7 @@ const partData={
  "SSD":["Almacena sistema operativo, aplicaciones y archivos de forma persistente.","Consulta SMART, temperatura, firmware y conexión. Haz copia de seguridad antes de intervenir."],
  "Fuente":["Convierte la energía de entrada y entrega tensiones adecuadas a los componentes.","Inspecciona externamente cables, conectores, ventilación y signos de daño. Nunca abras su carcasa."]
 };
-function selectPart(name){labLog({tipo:"Exploración",actividad:"Explorador de componentes",pregunta:"Componente consultado",seleccionada:name,resultado:"Consultado"});$$("[data-part-button]").forEach(b=>b.classList.toggle("active",b.dataset.partButton===name));$$("[data-part]").forEach(g=>{g.style.opacity=g.dataset.part===name?"1":".35";g.style.filter=g.dataset.part===name?"drop-shadow(0 0 8px #62e7f2)":"none"});const d=partData[name];$("#partInfo").innerHTML=`<h4>${name}</h4><p><b>Función:</b> ${d[0]}</p><p><b>Inspección:</b> ${d[1]}</p>`}
+function selectPart(name){labLog({tipo:"Exploración",actividad:"Explorador de componentes",pregunta:"Componente consultado",seleccionada:name,resultado:"Consultado"});state.exploredParts=state.exploredParts||[];if(!state.exploredParts.includes(name)){state.exploredParts.push(name);save()}$$('[data-part-button]').forEach(b=>b.classList.toggle('active',b.dataset.partButton===name));$$('[data-part]').forEach(g=>{g.style.opacity=g.dataset.part===name?'1':'.35';g.style.filter=g.dataset.part===name?'drop-shadow(0 0 8px rgba(108,76,241,.55))':'none'});const d=partData[name];$('#partInfo').innerHTML=`<h4>${name}</h4><p><b>Función:</b> ${d[0]}</p><p><b>Inspección:</b> ${d[1]}</p><p class="reading">Componentes consultados: ${(state.exploredParts||[]).length} de 6</p>`}
 $$("[data-part-button]").forEach(b=>b.addEventListener("click",()=>selectPart(b.dataset.partButton)));selectPart("Placa base");
 const maintenance=[
  {title:"1. Preparar y asegurar el área",lead:"Primero controla los riesgos eléctricos y electrostáticos.",items:["Apaga completamente el computador y desconecta la alimentación.","Desconecta periféricos y accesorios externos.","En portátiles, consulta el manual para aislar la batería interna.","Usa protección ESD y organiza herramientas y tornillos."],why:"La preparación reduce el riesgo de descarga eléctrica, cortocircuitos, daños electrostáticos y pérdida de piezas.",alert:"Nunca abras una fuente de alimentación. Sus condensadores pueden conservar tensiones peligrosas incluso desconectada."},
@@ -300,7 +343,7 @@ const cases=[
 ];let caseIndex=0,caseChoice="";
 function renderCase(){const c=cases[caseIndex];caseChoice="";$$("[data-case]").forEach(b=>b.classList.toggle("active",+b.dataset.case===caseIndex));$("#caseInfo").innerHTML=`<h4>${c.title}</h4><p class="symptom"><b>Síntoma:</b> ${c.symptom}</p><p class="reading">${c.context}</p>`;$("#caseChoices").innerHTML=c.options.map(([v,t])=>`<button class="choice" data-choice="${v}">${t}</button>`).join("");$$("[data-choice]").forEach(b=>b.addEventListener("click",()=>{caseChoice=b.dataset.choice;$$("[data-choice]").forEach(x=>x.classList.toggle("selected",x===b));$("#caseCheck").disabled=false;$("#caseFeedback").hidden=true}));$("#caseCheck").disabled=true;$("#caseFeedback").hidden=true}
 $$("[data-case]").forEach(b=>b.addEventListener("click",()=>{caseIndex=+b.dataset.case;renderCase()}));$("#caseCheck").addEventListener("click",()=>{const c=cases[caseIndex],ok=caseChoice===c.correct;state.caseAnswers=state.caseAnswers||{};state.caseAnswers[caseIndex]=caseChoice;if(ok)state.cases[caseIndex]=true;save();labLog({tipo:"Diagnóstico",actividad:c.title,pregunta:c.symptom,seleccionada:(c.options.find(x=>x[0]===caseChoice)||[])[1]||String(caseChoice),correcta:(c.options.find(x=>x[0]===c.correct)||[])[1]||String(c.correct),resultado:ok?"Correcta":"Incorrecta"});const f=$("#caseFeedback");f.hidden=false;f.innerHTML=`<b>${ok?"¡Buena decisión!":"Revisa tu razonamiento."}</b><br>${ok?c.explain:c.wrong}<br><span class="reading">Progreso: ${state.cases.filter(Boolean).length} de 3 casos resueltos.</span>`;});renderCase();
-const sliders=[["cpuRange","cpuVal","%"],["ramRange","ramVal","%"],["tempRange","tempVal"," °C"],["diskRange","diskVal","%"]];sliders.forEach(([id,out,suffix])=>$("#"+id).addEventListener("input",()=>{const v=+$("#"+id).value;$("#"+out).textContent=v+suffix;interpret()}));sliders.forEach(([id,out,suffix])=>$("#"+id).addEventListener("change",()=>labLog({tipo:"Simulador",actividad:"Rendimiento y temperatura",pregunta:out,seleccionada:$("#"+id).value+suffix,resultado:"Valor ajustado"})));
+const sliders=[["cpuRange","cpuVal","%"],["ramRange","ramVal","%"],["tempRange","tempVal"," °C"],["diskRange","diskVal","%"]];sliders.forEach(([id,out,suffix])=>$('#'+id).addEventListener('input',()=>{const v=+$('#'+id).value;$('#'+out).textContent=v+suffix;state.performanceTouched=state.performanceTouched||[];if(!state.performanceTouched.includes(id))state.performanceTouched.push(id);save();interpret()}));sliders.forEach(([id,out,suffix])=>$("#"+id).addEventListener("change",()=>labLog({tipo:"Simulador",actividad:"Rendimiento y temperatura",pregunta:out,seleccionada:$("#"+id).value+suffix,resultado:"Valor ajustado"})));
 function interpret(){const cpu=+$("#cpuRange").value,ram=+$("#ramRange").value,temp=+$("#tempRange").value,disk=+$("#diskRange").value;let alerts=[];if(cpu>=90)alerts.push("CPU con carga muy alta: identifica procesos y verifica si la carga es esperada.");if(ram>=90)alerts.push("RAM muy ocupada: revisa aplicaciones, consumo y posible presión de memoria.");if(temp>=90)alerts.push("Temperatura elevada en este escenario: detén la carga si corresponde y revisa refrigeración y especificaciones del fabricante.");else if(temp>=80)alerts.push("Temperatura alta para investigar: compara con los límites del modelo y las condiciones de prueba.");if(disk<=20)alerts.push("Indicador de salud SSD muy bajo: prioriza copia de seguridad y diagnóstico de la unidad.");else if(disk<=60)alerts.push("Salud SSD reducida: revisa SMART y planifica seguimiento o reemplazo según diagnóstico.");let pill="Normal",color="#a9f0d0",txt="Los valores simulados no muestran una alerta evidente. Compara siempre con el modelo y el contexto de uso.";if(alerts.length){pill=alerts.length>1?"Varias alertas":"Revisar";color="#ffd28b";txt=alerts.join(" ")}$("#statusPill").textContent=pill;$("#statusPill").style.color=color;$("#performanceText").textContent=txt;sliders.forEach(([id,out,s])=>$("#"+out).textContent=$("#"+id).value+s)}
 interpret();
 const questions=[
@@ -310,14 +353,13 @@ const questions=[
  {q:"Si detectas olor a quemado o líquido dentro del equipo, ¿qué haces?",o:["Lo enciendes para confirmar la falla.","Continúas limpiando con el equipo conectado.","No lo energizas, documentas el hallazgo y sigues un diagnóstico seguro."],a:2,e:"No energices un equipo con indicios de daño eléctrico o líquido. Documenta y evalúa los riesgos."},
  {q:"¿Qué conviene hacer antes de intervenir una unidad de almacenamiento?",o:["Realizar copia de seguridad de los datos importantes.","Eliminar todos los archivos.","Desactivar la protección ESD."],a:0,e:"La copia de seguridad protege la información ante fallas o errores durante la intervención."}
 ];
-function renderQuiz(){const area=$("#quizArea");area.innerHTML=questions.map((q,i)=>`<div class="case"><b>${i+1}. ${q.q}</b><div class="quiz-list" style="margin-top:9px">${q.o.map((o,j)=>`<button class="choice ${state.quizAnswers[i]===j?"selected":""}" data-q="${i}" data-v="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div></div>`).join("");$$("[data-q]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.q;state.quizAnswers[i]=+b.dataset.v;state.quizScore=null;save();renderQuiz();$("#quizResult").hidden=true}))}
-$("#submitQuiz").addEventListener("click",()=>{const answered=questions.every((q,i)=>state.quizAnswers[i]!==undefined);if(!answered){toast("Responde las cinco preguntas para calificar.");return}let score=0;questions.forEach((q,i)=>{if(state.quizAnswers[i]===q.a)score++});state.quizScore=Math.round(score/questions.length*100);save();questions.forEach((q,i)=>labLog({tipo:"Evaluación",actividad:"Cuestionario MR TECH LAB 2.0",pregunta:q.q,seleccionada:q.o[state.quizAnswers[i]],correcta:q.o[q.a],resultado:state.quizAnswers[i]===q.a?"Correcta":"Incorrecta"}));labLog({tipo:"Resultado",actividad:"Cuestionario MR TECH LAB 2.0",pregunta:"Calificación final",seleccionada:state.quizScore+"%",correcta:"100%",resultado:score+" de "+questions.length});const result=$("#quizResult");result.hidden=false;result.innerHTML=`<b>Resultado: ${score} de ${questions.length} (${state.quizScore}%).</b><br>${questions.map((q,i)=>`<p style="margin:8px 0"><b>${i+1}. ${state.quizAnswers[i]===q.a?"Correcto":"Para repasar"}:</b> ${q.e}</p>`).join("")}`;renderReport()});
-$("#retryQuiz").addEventListener("click",()=>{state.quizAnswers={};state.quizScore=null;save();renderQuiz();$("#quizResult").hidden=true;toast("Evaluación reiniciada")});renderQuiz();
-function reportData(){return {laboratorio:"MR TECH LAB 2.0",alumno:state.name||"Sin nombre",fecha:new Date().toLocaleString("es-CO"),checklist:{completadas:state.checks.filter(Boolean).length,total:8,detalle:state.checks},casos:{resueltos:state.cases.filter(Boolean).length,total:3,detalle:state.cases},evaluacion:{calificacion:state.quizScore, respuestas:state.quizAnswers}}}
-function renderReport(){const d=reportData();$("#reportContent").innerHTML=`<div class="row"><div><span class="reading">ESTUDIANTE</span><h2 style="margin:2px 0">${escapeHtml(d.alumno)}</h2></div><span class="pill">MR TECH LAB 2.0</span></div><p class="reading">Generado: ${d.fecha}</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><div class="lesson-grid"><div class="lesson"><span class="reading">MANTENIMIENTO</span><b>${d.checklist.completadas}/8 tareas</b><p>Lista de comprobación</p></div><div class="lesson"><span class="reading">DIAGNÓSTICO</span><b>${d.casos.resueltos}/3 casos</b><p>Decisiones correctas</p></div><div class="lesson"><span class="reading">EVALUACIÓN</span><b>${d.evaluacion.calificacion===null?"Pendiente":d.evaluacion.calificacion+"%"}</b><p>Resultado del cuestionario</p></div><div class="lesson"><span class="reading">AVANCE GENERAL</span><b>${$("#overallPercent").textContent}</b><p>Indicador de actividades</p></div></div><p class="reading" style="margin-top:14px">El avance se guarda en este navegador. Cuando ingresas a la plataforma con tu cuenta de estudiante, las respuestas y resultados de las actividades se registran en el panel docente.</p>`}
+function renderQuiz(){const area=$('#quizArea');const i=Math.min(Math.max(0,+state.quizIndex||0),questions.length-1),q=questions[i],chosen=state.quizAnswers[i];area.innerHTML=`<div class="case"><div class="row"><span class="pill">Pregunta ${i+1} de ${questions.length}</span><span class="reading">${Object.keys(state.quizAnswers).length} respondidas</span></div><div class="quiz-progress"><span style="width:${(i+1)/questions.length*100}%"></span></div><b>${q.q}</b><div class="quiz-list" style="margin-top:12px">${q.o.map((o,j)=>`<button class="choice ${chosen===j?'selected':''}" data-q="${i}" data-v="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}</div><div class="btnrow" style="justify-content:space-between"><button class="btn ghost" id="quizPrev" ${i===0?'disabled':''}>← Anterior</button><button class="btn" id="quizNext" ${chosen===undefined?'disabled':''}>${i===questions.length-1?'Ir a calificar':'Siguiente pregunta →'}</button></div></div>`;$('#submitQuiz').hidden=i!==questions.length-1;$('#submitQuiz').textContent='Finalizar y calificar';$$('[data-q]').forEach(b=>b.addEventListener('click',()=>{state.quizAnswers[i]=+b.dataset.v;state.quizScore=null;save();renderQuiz();$('#quizResult').hidden=true}));$('#quizPrev').onclick=()=>{state.quizIndex=Math.max(0,i-1);save();renderQuiz()};$('#quizNext').onclick=()=>{if(state.quizAnswers[i]===undefined)return;if(i===questions.length-1){$('#submitQuiz').scrollIntoView({behavior:'smooth',block:'center'});$('#submitQuiz').focus()}else{state.quizIndex=i+1;save();renderQuiz()}}}$("#submitQuiz").addEventListener("click",()=>{const answered=questions.every((q,i)=>state.quizAnswers[i]!==undefined);if(!answered){toast("Responde las cinco preguntas para calificar.");return}let score=0;questions.forEach((q,i)=>{if(state.quizAnswers[i]===q.a)score++});state.quizScore=Math.round(score/questions.length*100);save();questions.forEach((q,i)=>labLog({tipo:"Evaluación",actividad:"Cuestionario MR TECH LAB 2.0",pregunta:q.q,seleccionada:q.o[state.quizAnswers[i]],correcta:q.o[q.a],resultado:state.quizAnswers[i]===q.a?"Correcta":"Incorrecta"}));labLog({tipo:"Resultado",actividad:"Cuestionario MR TECH LAB 2.0",pregunta:"Calificación final",seleccionada:state.quizScore+"%",correcta:"100%",resultado:score+" de "+questions.length});const result=$("#quizResult");result.hidden=false;result.innerHTML=`<b>Resultado: ${score} de ${questions.length} (${state.quizScore}%).</b><br>${questions.map((q,i)=>`<p style="margin:8px 0"><b>${i+1}. ${state.quizAnswers[i]===q.a?"Correcto":"Para repasar"}:</b> ${q.e}</p>`).join("")}`;renderReport()});
+$("#retryQuiz").addEventListener("click",()=>{state.quizAnswers={};state.quizScore=null;state.quizIndex=0;save();renderQuiz();$("#quizResult").hidden=true;toast("Evaluación reiniciada")});renderQuiz();
+function reportData(){return {laboratorio:"MR TECH LAB 2.0",alumno:state.name||"Sin nombre",fecha:new Date().toLocaleString("es-CO"),checklist:{completadas:state.checks.filter(Boolean).length,total:8,detalle:state.checks},hardware:{componentesConsultados:state.exploredParts||[],total:6},casos:{resueltos:state.cases.filter(Boolean).length,total:3,detalle:state.cases},simulador:{indicadoresAjustados:state.performanceTouched||[],total:4},evaluacion:{calificacion:state.quizScore, respuestas:state.quizAnswers}}}
+function renderReport(){const d=reportData();$("#reportContent").innerHTML=`<div class="row"><div><span class="reading">ESTUDIANTE</span><h2 style="margin:2px 0">${escapeHtml(d.alumno)}</h2></div><span class="pill">MR TECH LAB 2.0</span></div><p class="reading">Generado: ${d.fecha}</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><div class="lesson-grid"><div class="lesson"><span class="reading">MANTENIMIENTO</span><b>${d.checklist.completadas}/8 tareas</b><p>Lista de comprobación</p></div><div class="lesson"><span class="reading">DIAGNÓSTICO</span><b>${d.casos.resueltos}/3 casos</b><p>Decisiones correctas</p></div><div class="lesson"><span class="reading">EVALUACIÓN</span><b>${d.evaluacion.calificacion===null?"Pendiente":d.evaluacion.calificacion+"%"}</b><p>Resultado del cuestionario</p></div><div class="lesson"><span class="reading">AVANCE GENERAL</span><b>${$("#overallPercent").textContent}</b><p>Indicador de actividades</p></div></div><p class="reading" style="margin-top:14px">Tu avance se guarda en este navegador y, cuando la plataforma reconoce tu sesión de estudiante, los eventos de las actividades se envían al registro académico del aula.</p>`}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 $("#printReport").addEventListener("click",()=>{renderReport();window.print()});$("#downloadReport").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(reportData(),null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="informe-mr-tech-lab.json";a.click();URL.revokeObjectURL(a.href);toast("Informe descargado")});
-$("#clearProgress").addEventListener("click",()=>{if(!confirm("¿Seguro que deseas borrar el progreso guardado en este navegador?"))return;localStorage.removeItem(STORE);state={name:state.name,checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null};maintChecks.forEach(x=>x.checked=false);updateMaintChecks();renderQuiz();updateDashboard();renderReport();toast("Progreso borrado")});
+$("#clearProgress").addEventListener("click",()=>{if(!confirm("¿Seguro que deseas borrar el progreso guardado en este navegador?"))return;localStorage.removeItem(STORE);state={name:state.name,checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null,exploredParts:[],performanceTouched:[],quizIndex:0};maintChecks.forEach(x=>x.checked=false);updateMaintChecks();renderQuiz();updateDashboard();renderReport();toast("Progreso borrado")});
 updateDashboard();renderReport();
 </script>
 </body>
