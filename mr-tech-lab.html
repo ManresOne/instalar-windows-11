@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MR TECH LAB 2.0: plataforma interactiva de formación en mantenimiento y diagnóstico de computadores.">
+<title>MR TECH LAB 2.0 | Aula técnica interactiva</title>
+<style>
+:root{
+ --bg:#07111f;--surface:#0d1b2c;--surface2:#12263b;--surface3:#19334d;--line:#28445e;
+ --text:#edf6ff;--muted:#a6bbcf;--cyan:#52d3ef;--blue:#5d8cff;--green:#4bd39a;
+ --amber:#ffc66e;--red:#ff777e;--purple:#ad91ff;--shadow:0 18px 55px #0005;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 12% 0%,#123451 0,transparent 32%),radial-gradient(ellipse at 95% 30%,#17234b 0,transparent 30%),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}
+.app{max-width:1320px;margin:auto;padding:22px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 18px;border:1px solid var(--line);border-radius:20px;background:#0b1b2cdd;box-shadow:var(--shadow);position:sticky;top:10px;z-index:10;backdrop-filter:blur(16px)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(140deg,#58d5ed,#5477ed 58%,#a47bff);color:#061321;font-weight:950;font-size:19px;letter-spacing:-2px;box-shadow:0 7px 22px #3a9de955}
+.brand h1{font-size:19px;letter-spacing:.09em;margin:0;line-height:1.1}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.16em;margin-top:5px}
+.header-right{display:flex;align-items:center;gap:10px}.student{border:1px solid var(--line);background:#10243a;color:var(--text);border-radius:11px;padding:9px 11px;max-width:180px}
+.avatar{width:36px;height:36px;border-radius:50%;background:#244766;color:#aeeeff;display:grid;place-items:center;font-weight:800}
+.hero{padding:34px 5px 22px;display:grid;grid-template-columns:1.5fr .8fr;gap:20px;align-items:end}
+.kicker{color:var(--cyan);font-size:11px;font-weight:850;letter-spacing:.17em;text-transform:uppercase}
+.hero h2{font-size:clamp(30px,4.5vw,49px);line-height:1.04;letter-spacing:-.04em;margin:9px 0 12px;max-width:800px}
+.hero p{color:var(--muted);max-width:720px;margin:0}
+.hero-panel{border:1px solid #31516e;border-radius:18px;padding:17px;background:linear-gradient(135deg,#15314a,#172449)}
+.hero-panel .big{font-size:29px;font-weight:850;color:#8be8f8}.hero-panel small{color:var(--muted)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}.metric{background:#07172888;border-radius:11px;padding:9px}.metric b{display:block;font-size:18px}.metric span{font-size:10px;color:var(--muted)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:5px 0 18px}
+.nav button{border:1px solid var(--line);background:#0d1e30;color:#bfd2e5;border-radius:11px;padding:10px 13px;font-weight:700}
+.nav button.active{background:linear-gradient(130deg,#167da4,#465fc3);border-color:#65d8ef;color:#fff;box-shadow:0 5px 20px #267ec044}
+.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr);gap:16px}
+.stack{display:grid;gap:16px;align-content:start}
+.card{background:linear-gradient(155deg,#11263b,#0b1a2b);border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:var(--shadow);min-width:0}
+.card h3{font-size:18px;margin:0 0 4px}.card h4{margin:0 0 7px}.desc{color:var(--muted);font-size:13px;margin:0 0 15px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pill{font-size:10px;letter-spacing:.07em;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:#173b50;color:#a8efff;font-weight:800}
+.btn{border:0;border-radius:11px;padding:10px 14px;background:linear-gradient(135deg,#168db4,#4d70dc);color:white;font-weight:800}
+.btn.secondary{background:#142b41;border:1px solid var(--line);color:#d7e7f5}.btn.ghost{background:transparent;border:1px solid var(--line);color:#c8d9e9}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.info{background:#091a2a;border:1px solid #29465f;border-radius:14px;padding:15px}
+.info p{margin:6px 0;color:#c8d9e8}.info ul{margin:9px 0;padding-left:20px;color:#c8d9e8}.info li{margin:5px 0}
+.warning{background:#302719;border-left:3px solid var(--amber);padding:10px 12px;border-radius:8px;color:#ffe0ad;font-size:12px;margin-top:12px}
+.good{background:#102d2b;border-left:3px solid var(--green);padding:10px 12px;border-radius:8px;color:#b9f6dc;font-size:12px;margin-top:12px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.tabs button{padding:8px 11px;border-radius:10px;border:1px solid var(--line);background:#091a2a;color:#bfd2e5}.tabs button.active{background:#17435c;border-color:var(--cyan);color:#fff}
+.diagram{background:radial-gradient(circle at 50% 40%,#1d4963,#0b1c30 70%);border:1px solid #345875;border-radius:15px;padding:10px;overflow:hidden}
+.diagram svg{width:100%;display:block;max-height:330px}
+.component-picks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.component-picks button,.choice{border:1px solid var(--line);background:#0a1a2a;color:#cfe0ef;padding:10px;border-radius:10px;text-align:left}
+.component-picks button.active,.choice.selected{border-color:var(--cyan);background:#153d55;color:white}
+.component-picks button span{display:block;color:#8faac1;font-size:10px;margin-top:3px}
+.bar{height:9px;border-radius:30px;background:#061422;overflow:hidden}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#36b8e0,#50d69c);transition:width .25s}
+.checks{display:grid;gap:11px}.checks label{display:flex;align-items:flex-start;gap:10px;color:#d3e2ef}.checks input{accent-color:#43d59a;width:17px;height:17px;margin-top:3px}
+.quiz-list{display:grid;gap:8px}.choice{width:100%;font-size:14px;line-height:1.4}
+.feedback{margin-top:12px;padding:13px;border-radius:12px;background:#102b3d;border:1px solid #315a73}
+.range-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin:12px 0}.range-row input{width:100%;accent-color:#54d1ed}.value{font-weight:850;color:#8ce8f6;font-variant-numeric:tabular-nums}
+.reading{font-size:12px;color:var(--muted)}
+.case{border:1px solid var(--line);border-radius:14px;padding:14px;background:#0a1b2b;margin-top:10px}
+.case h4{font-size:16px}.case .symptom{color:#f5d18d;font-size:13px}
+.steps{counter-reset:step;display:grid;gap:10px}.step{display:flex;gap:11px;padding:11px;background:#0a1a2a;border:1px solid #203c54;border-radius:11px}.step:before{counter-increment:step;content:counter(step);flex:0 0 25px;height:25px;border-radius:8px;background:#1b5875;color:#b7f2ff;display:grid;place-items:center;font-weight:850}
+.lesson-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.lesson{background:#0a1b2b;border:1px solid var(--line);border-radius:13px;padding:13px}.lesson b{display:block;margin:5px 0}.lesson p{margin:0;color:var(--muted);font-size:12px}
+.footer{color:#7892aa;text-align:center;font-size:11px;padding:24px 6px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#e8f7ff;color:#102237;border-radius:12px;padding:10px 15px;font-weight:750;box-shadow:var(--shadow);display:none;z-index:30}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.header{position:relative;top:0}}
+@media(max-width:520px){.app{padding:12px}.header{padding:12px}.brand h1{font-size:16px}.brand small{font-size:8px}.student{max-width:115px;font-size:12px}.hero{padding-top:25px}.card{padding:15px}.component-picks{grid-template-columns:repeat(2,1fr)}.metrics{gap:6px}.metric{padding:7px}.metric b{font-size:16px}.nav button{flex:1 1 42%;font-size:12px}.lesson-grid{grid-template-columns:1fr}}
+@media print{body{background:white;color:#111}.header,.nav,.btn,.tabs,.footer{display:none!important}.card,.info{background:white;color:#111;box-shadow:none;border:1px solid #aaa}.desc,.muted,.reading{color:#444}.page{display:block!important;page-break-after:always}.hero{padding:10px}.hero p{color:#333}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+ <div class="brand"><div class="logo">MR</div><div><h1>MR TECH LAB <span style="color:#6edcf0">2.0</span></h1><small>AULA TÉCNICA INTERACTIVA</small></div></div>
+ <div class="header-right"><input id="studentName" class="student" placeholder="Nombre del alumno" aria-label="Nombre del alumno"><div class="avatar" id="avatar">A</div></div>
+</header>
+<section class="hero">
+ <div><div class="kicker">Aprender · Practicar · Verificar</div><h2>Tu taller de mantenimiento, ahora interactivo.</h2><p>Explora componentes, sigue procedimientos seguros, resuelve casos de diagnóstico y comprueba lo que aprendiste. Avanza a tu ritmo.</p></div>
+ <div class="hero-panel"><div class="row"><span class="pill">Panel del estudiante</span><span class="reading">Progreso local</span></div><div class="big" id="overallPercent">0%</div><small>Avance de las actividades completables</small><div class="metrics"><div class="metric"><b id="doneTasks">0/8</b><span>Checklist</span></div><div class="metric"><b id="quizScore">—</b><span>Evaluación</span></div><div class="metric"><b id="caseDone">0/3</b><span>Casos</span></div></div></div>
+</section>
+<nav class="nav" aria-label="Secciones del laboratorio">
+ <button class="active" data-page="inicio">Inicio</button><button data-page="hardware">Hardware 3D</button><button data-page="mantenimiento">Mantenimiento</button><button data-page="diagnostico">Casos de diagnóstico</button><button data-page="rendimiento">Rendimiento</button><button data-page="evaluacion">Evaluación</button><button data-page="informe">Mi informe</button>
+</nav>
+
+<section class="page active" id="inicio">
+ <div class="grid">
+  <article class="card">
+   <div class="row"><h3>Ruta de aprendizaje</h3><span class="pill">6 actividades</span></div><p class="desc">Sigue este recorrido sugerido. Puedes volver a cualquier módulo cuando lo necesites.</p>
+   <div class="steps">
+    <div class="step"><div><b>Reconoce el hardware</b><div class="reading">Identifica componentes y comprende su función.</div><button class="btn secondary" data-go="hardware" style="margin-top:8px">Abrir explorador</button></div></div>
+    <div class="step"><div><b>Aplica mantenimiento seguro</b><div class="reading">Prepara, inspecciona, limpia y verifica.</div><button class="btn secondary" data-go="mantenimiento" style="margin-top:8px">Iniciar práctica</button></div></div>
+    <div class="step"><div><b>Resuelve fallas simuladas</b><div class="reading">Analiza síntomas y selecciona pruebas adecuadas.</div><button class="btn secondary" data-go="diagnostico" style="margin-top:8px">Ver casos</button></div></div>
+    <div class="step"><div><b>Interpreta indicadores</b><div class="reading">Explora temperatura, uso y salud de almacenamiento.</div><button class="btn secondary" data-go="rendimiento" style="margin-top:8px">Abrir simulador</button></div></div>
+    <div class="step"><div><b>Comprueba tus conocimientos</b><div class="reading">Responde preguntas y revisa las explicaciones.</div><button class="btn secondary" data-go="evaluacion" style="margin-top:8px">Evaluarme</button></div></div>
+    <div class="step"><div><b>Genera tu reporte</b><div class="reading">Consulta el avance y guarda o imprime tu informe.</div><button class="btn secondary" data-go="informe" style="margin-top:8px">Ver informe</button></div></div>
+   </div>
+  </article>
+  <aside class="stack">
+   <div class="card"><h3>Antes de comenzar</h3><p class="desc">Este laboratorio simula situaciones para aprender. No está conectado al computador que estás usando.</p><div class="warning">Seguridad primero: apaga y desconecta el equipo antes de intervenirlo. Nunca abras una fuente de alimentación.</div></div>
+   <div class="card"><h3>Lo que vas a aprender</h3><div class="lesson-grid"><div class="lesson"><span>01</span><b>Identificar</b><p>Componentes y funciones.</p></div><div class="lesson"><span>02</span><b>Prevenir</b><p>Polvo, calor y desgaste.</p></div><div class="lesson"><span>03</span><b>Diagnosticar</b><p>Hipótesis y pruebas.</p></div><div class="lesson"><span>04</span><b>Documentar</b><p>Resultados técnicos.</p></div></div></div>
+  </aside>
+ </div>
+</section>
+
+<section class="page" id="hardware">
+ <div class="grid">
+  <article class="card">
+   <div class="row"><h3>Explorador visual de hardware</h3><span class="pill">Selecciona una pieza</span></div><p class="desc">Diagrama conceptual de un computador de escritorio. Selecciona un componente para resaltarlo y estudiar su función.</p>
+   <div class="diagram">
+    <svg viewBox="0 0 680 390" role="img" aria-label="Ilustración técnica de un computador abierto con placa base, procesador, memoria, ventiladores y unidad SSD">
+     <defs>
+      <linearGradient id="caseG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#294e6b"/><stop offset="1" stop-color="#10243a"/></linearGradient>
+      <linearGradient id="boardG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#267d76"/><stop offset="1" stop-color="#124c55"/></linearGradient>
+      <linearGradient id="glowG"><stop stop-color="#5de7ee"/><stop offset="1" stop-color="#7588ff"/></linearGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+     </defs>
+     <path d="M90 42 L476 18 L608 79 L608 328 L222 363 L90 299Z" fill="url(#caseG)" stroke="#83b7d1" stroke-width="3"/>
+     <path d="M222 363 L608 328 L608 79 L476 112 L476 18" fill="none" stroke="#456b86" stroke-width="2"/>
+     <path d="M116 67 L460 47 L570 94 L570 297 L229 330 L116 274Z" fill="#0b1d2e" stroke="#4f7e9b" stroke-width="2"/>
+     <path d="M170 91 L435 74 L536 116 L536 272 L256 301 L170 251Z" fill="url(#boardG)" stroke="#6ccbc1" stroke-width="2" data-part="Placa base"/>
+     <path d="M190 111 L420 96 M190 125 L420 110 M270 288 L270 315 M300 285 L300 313 M335 280 L335 308" stroke="#9ce4d5" opacity=".25" stroke-width="2"/>
+     <g data-part="Procesador">
+      <path d="M278 143 L359 137 L389 151 L389 219 L308 227 L278 210Z" fill="#18334c" stroke="#b8e8ff" stroke-width="3"/>
+      <path d="M292 151 L355 146 L375 156 L375 207 L311 214 L292 204Z" fill="#12263c" stroke="#62d8ee" stroke-width="3"/>
+      <text x="334" y="184" fill="#dffaff" text-anchor="middle" font-size="15" font-weight="800">CPU</text>
+      <path d="M285 137 V126 M301 136 V125 M317 134 V123 M333 132 V121 M349 131 V120 M365 130 V119" stroke="#8dddf2" stroke-width="3"/>
+     </g>
+     <g data-part="RAM">
+      <path d="M202 124 L224 122 L224 238 L202 240Z" fill="#142b40" stroke="#ffcf72" stroke-width="2"/>
+      <path d="M232 122 L254 120 L254 235 L232 237Z" fill="#142b40" stroke="#ffcf72" stroke-width="2"/>
+      <g fill="#d5b56f"><rect x="207" y="134" width="12" height="7"/><rect x="207" y="151" width="12" height="7"/><rect x="237" y="132" width="12" height="7"/><rect x="237" y="149" width="12" height="7"/></g>
+     </g>
+     <g data-part="Ventilador">
+      <circle cx="477" cy="166" r="51" fill="#102a40" stroke="#71d8e7" stroke-width="3"/>
+      <circle cx="477" cy="166" r="11" fill="#8cecff"/>
+      <g fill="#3e88a1" stroke="#8de4ee" stroke-width="1.5"><path d="M472 155 Q438 122 452 113 Q475 119 481 155Z"/><path d="M488 163 Q522 130 531 145 Q526 168 489 171Z"/><path d="M480 177 Q514 210 498 220 Q477 215 472 178Z"/><path d="M465 169 Q432 202 422 186 Q427 164 464 161Z"/></g>
+     </g>
+     <g data-part="SSD">
+      <path d="M421 247 L520 237 L544 249 L544 280 L445 291 L421 279Z" fill="#152c45" stroke="#bd9bff" stroke-width="3"/>
+      <text x="483" y="270" fill="#e8dcff" text-anchor="middle" font-size="14" font-weight="800">SSD</text>
+     </g>
+     <g data-part="Fuente">
+      <path d="M124 279 L205 271 L235 286 L235 315 L154 324 L124 309Z" fill="#26384b" stroke="#8fa9c1" stroke-width="2"/>
+      <circle cx="180" cy="298" r="13" fill="none" stroke="#91abc0" stroke-width="3"/><path d="M180 285 V311 M167 298 H193" stroke="#91abc0"/>
+     </g>
+     <g fill="#c9e8f7" font-size="12" font-weight="700">
+      <text x="110" y="31">GABINETE ABIERTO · VISTA ISOMÉTRICA</text>
+      <text x="177" y="106">RAM</text><text x="466" y="99">REFRIGERACIÓN</text><text x="124" y="350">FUENTE</text>
+     </g>
+     <g stroke="#71d6e8" stroke-width="1.5" stroke-dasharray="4 4" opacity=".8"><path d="M212 115 L164 76"/><path d="M334 136 L334 83"/><path d="M477 113 L520 74"/><path d="M486 288 L557 315"/></g>
+     <g fill="#7fe9f0"><circle cx="212" cy="115" r="4"/><circle cx="334" cy="136" r="4"/><circle cx="477" cy="113" r="4"/><circle cx="486" cy="288" r="4"/></g>
+    </svg>
+   </div>
+   <div class="component-picks" id="partButtons">
+    <button class="active" data-part-button="Placa base">Placa base<span>Interconexión</span></button>
+    <button data-part-button="Procesador">Procesador<span>Cálculo</span></button>
+    <button data-part-button="RAM">Memoria RAM<span>Datos temporales</span></button>
+    <button data-part-button="Ventilador">Ventilación<span>Flujo de aire</span></button>
+    <button data-part-button="SSD">SSD<span>Almacenamiento</span></button>
+    <button data-part-button="Fuente">Fuente<span>Alimentación</span></button>
+   </div>
+   <div class="info" id="partInfo" aria-live="polite"></div>
+  </article>
+  <aside class="stack">
+   <div class="card"><h3>Consejo del instructor</h3><p class="desc">Antes de desmontar, fotografía las conexiones y etiqueta los cables. Esto facilita el montaje y reduce errores.</p></div>
+   <div class="card"><h3>Recuerda</h3><p class="desc">Los componentes varían entre modelos. Usa siempre el manual de servicio y verifica compatibilidad antes de reemplazar piezas.</p><div class="warning">No manipules contactos electrónicos sin control ESD. No abras la fuente de alimentación.</div></div>
+  </aside>
+ </div>
+</section>
+
+<section class="page" id="mantenimiento">
+ <div class="grid">
+  <article class="card">
+   <div class="row"><h3>Práctica guiada de mantenimiento</h3><span class="pill">4 etapas</span></div><p class="desc">Avanza por el procedimiento. Cada etapa explica qué hacer y por qué hacerlo.</p>
+   <div class="tabs" id="maintTabs"><button class="active" data-maint="0">1. Preparar</button><button data-maint="1">2. Inspeccionar</button><button data-maint="2">3. Limpiar</button><button data-maint="3">4. Verificar</button></div>
+   <div class="info" id="maintInfo"></div>
+   <div class="row" style="margin-top:13px"><button class="btn secondary" id="prevMaint">← Anterior</button><span class="reading" id="maintCount">Etapa 1 de 4</span><button class="btn" id="nextMaint">Siguiente →</button></div>
+  </article>
+  <aside class="stack">
+   <div class="card"><h3>Checklist de práctica</h3><p class="desc">Marca las acciones completadas durante la actividad.</p>
+    <div class="row"><b id="maintProgressText">0%</b><span class="reading" id="maintCountText">0 de 8</span></div><div class="bar" style="margin:8px 0 14px"><span id="maintProgress"></span></div>
+    <div class="checks" id="maintChecks">
+     <label><input type="checkbox"> Apagué y desconecté el equipo.</label>
+     <label><input type="checkbox"> Apliqué protección antiestática.</label>
+     <label><input type="checkbox"> Registré el estado inicial.</label>
+     <label><input type="checkbox"> Inspeccioné cables y conectores.</label>
+     <label><input type="checkbox"> Limpié filtros y rejillas.</label>
+     <label><input type="checkbox"> Limpié ventiladores sujetando las aspas.</label>
+     <label><input type="checkbox"> Verifiqué el montaje y las conexiones.</label>
+     <label><input type="checkbox"> Realicé pruebas funcionales.</label>
+    </div>
+    <div class="btnrow"><button class="btn ghost" id="resetMaint">Reiniciar checklist</button></div>
+   </div>
+   <div class="card"><h3>Nota técnica</h3><p class="desc">No todos los equipos requieren el mismo mantenimiento. La frecuencia depende del entorno, uso, diseño térmico y recomendaciones del fabricante.</p></div>
+  </aside>
+ </div>
+</section>
+
+<section class="page" id="diagnostico">
+ <div class="grid">
+  <article class="card">
+   <div class="row"><h3>Casos de diagnóstico</h3><span class="pill">Simulador de fallas</span></div><p class="desc">Lee el síntoma, elige una prueba inicial y aprende a justificar el siguiente paso.</p>
+   <div class="tabs" id="caseTabs"><button class="active" data-case="0">Caso 1 · Lentitud</button><button data-case="1">Caso 2 · Temperatura</button><button data-case="2">Caso 3 · No enciende</button></div>
+   <div class="case" id="caseInfo"></div>
+   <h4 style="margin:17px 0 8px">¿Qué revisarías primero?</h4>
+   <div class="quiz-list" id="caseChoices"></div>
+   <button class="btn" id="caseCheck" disabled style="margin-top:10px">Evaluar decisión</button>
+   <div class="feedback" id="caseFeedback" hidden aria-live="polite"></div>
+  </article>
+  <aside class="stack">
+   <div class="card"><h3>Método de diagnóstico</h3><div class="steps"><div class="step"><div><b>Escuchar</b><div class="reading">Recopila el síntoma y cuándo ocurre.</div></div></div><div class="step"><div><b>Observar</b><div class="reading">Busca señales y cambios reproducibles.</div></div></div><div class="step"><div><b>Hipótesis</b><div class="reading">Propón causas posibles, no conclusiones prematuras.</div></div></div><div class="step"><div><b>Probar</b><div class="reading">Usa una prueba segura que descarte causas.</div></div></div></div></div>
+   <div class="card"><h3>Importante</h3><p class="desc">Los casos son simulaciones educativas. En un equipo real, respalda datos y evita pruebas invasivas sin autorización.</p></div>
+  </aside>
+ </div>
+</section>
+
+<section class="page" id="rendimiento">
+ <div class="grid">
+  <article class="card">
+   <h3>Simulador de rendimiento y temperaturas</h3><p class="desc">Modifica los valores para interpretar indicadores hipotéticos. No son lecturas del equipo real.</p>
+   <div class="info">
+    <div class="range-row"><label for="cpuRange"><b>Uso de CPU</b><div class="reading">Carga de procesamiento simulada</div></label><output class="value" id="cpuVal">35%</output><input id="cpuRange" type="range" min="0" max="100" value="35"></div>
+    <div class="range-row"><label for="ramRange"><b>Uso de RAM</b><div class="reading">Memoria ocupada simulada</div></label><output class="value" id="ramVal">58%</output><input id="ramRange" type="range" min="0" max="100" value="58"></div>
+    <div class="range-row"><label for="tempRange"><b>Temperatura CPU</b><div class="reading">Temperatura hipotética en carga</div></label><output class="value" id="tempVal">62 °C</output><input id="tempRange" type="range" min="25" max="105" value="62"></div>
+    <div class="range-row"><label for="diskRange"><b>Salud SSD</b><div class="reading">Indicador ilustrativo de salud</div></label><output class="value" id="diskVal">96%</output><input id="diskRange" type="range" min="0" max="100" value="96"></div>
+   </div>
+   <div class="info" style="margin-top:13px"><div class="row"><b>Interpretación del escenario</b><span class="pill" id="statusPill">Normal</span></div><p id="performanceText" style="margin-bottom:0">Los valores simulados no muestran una alerta evidente.</p></div>
+   <div class="warning">Los rangos seguros dependen del modelo de CPU, del fabricante y de las condiciones de medición. No uses un único umbral como diagnóstico universal.</div>
+  </article>
+  <aside class="stack">
+   <div class="card"><h3>Cómo interpretar</h3><div class="mini"><b>CPU</b><span class="reading">Carga de trabajo</span></div><div class="mini"><b>RAM</b><span class="reading">Presión de memoria</span></div><div class="mini"><b>Temperatura</b><span class="reading">Condición térmica</span></div><div class="mini"><b>SSD</b><span class="reading">Indicador de salud</span></div><p class="desc" style="margin-top:12px">Compara lecturas en reposo y bajo carga, identifica procesos activos y consulta herramientas del fabricante para obtener datos reales.</p></div>
+   <div class="card"><h3>Actividad sugerida</h3><p class="desc">Aumenta el uso de CPU y RAM, eleva la temperatura y reduce la salud SSD. Observa cómo cambia la interpretación y escribe qué comprobarías en un equipo real.</p></div>
+  </aside>
+ </div>
+</section>
+
+<section class="page" id="evaluacion">
+ <div class="grid">
+  <article class="card">
+   <div class="row"><h3>Evaluación de conocimientos</h3><span class="pill">5 preguntas</span></div><p class="desc">Selecciona una respuesta por pregunta. Al finalizar verás tu resultado y las explicaciones.</p>
+   <div id="quizArea"></div>
+   <div class="btnrow"><button class="btn" id="submitQuiz">Calificar evaluación</button><button class="btn ghost" id="retryQuiz">Reiniciar</button></div>
+   <div id="quizResult" class="feedback" hidden aria-live="polite"></div>
+  </article>
+  <aside class="stack"><div class="card"><h3>Recomendación para el alumno</h3><p class="desc">No memorices solamente la respuesta. Explica por qué una acción es segura, qué riesgo evita y qué resultado esperas observar.</p></div><div class="card"><h3>Para el docente</h3><p class="desc">Puedes utilizar la evaluación como actividad de repaso. El resultado queda guardado únicamente en el navegador del estudiante.</p></div></aside>
+ </div>
+</section>
+
+<section class="page" id="informe">
+ <div class="grid">
+  <article class="card">
+   <h3>Informe de aprendizaje</h3><p class="desc">Resumen de las actividades registradas en este navegador. Escribe tu nombre en la parte superior para identificar el reporte.</p>
+   <div class="info" id="reportContent"></div>
+   <div class="btnrow"><button class="btn" id="printReport">Imprimir / Guardar PDF</button><button class="btn secondary" id="downloadReport">Descargar informe JSON</button><button class="btn ghost" id="clearProgress">Borrar mi progreso</button></div>
+  </article>
+  <aside class="stack"><div class="card"><h3>¿Cómo entregar?</h3><p class="desc">El alumno puede imprimir el informe como PDF y enviarlo al docente, o descargar el archivo JSON para conservar los datos de la práctica.</p></div><div class="card"><h3>Privacidad</h3><p class="desc">Esta versión guarda el nombre y el avance en el almacenamiento local del navegador. Los datos no se envían a un servidor ni llegan automáticamente al docente.</p></div></aside>
+ </div>
+</section>
+<footer class="footer">MR TECH LAB 2.0 · Material didáctico para formación técnica · Simulación local, sin conexión a hardware real.</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const STORE="mrTechLab2Progress";
+const LAB_API="https://script.google.com/macros/s/AKfycbwebAyTLr5ulHxfmW6EnBqnngask8iijhtOhm_psa_jOX_GBZ3B4n8Kgo8pRqJqtzg5/exec";
+function labToken(){try{return JSON.parse(parent.sessionStorage.getItem("ses")||"null")?.token||""}catch(e){return ""}}
+function labLog(data){const token=labToken();if(!token)return;fetch(LAB_API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"lab_event",token,...data})}).catch(()=>{})}
+
+let state={name:"",checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null};
+try{const saved=JSON.parse(localStorage.getItem(STORE)||"null");if(saved)state={...state,...saved}}catch(e){}
+function save(){localStorage.setItem(STORE,JSON.stringify(state));updateDashboard()}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.style.display="block";clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.style.display="none",2400)}
+$("#studentName").value=state.name||"";$("#studentName").addEventListener("input",e=>{state.name=e.target.value;$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();save()});$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();
+function go(id){$$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));$$(".page").forEach(p=>p.classList.toggle("active",p.id===id));window.scrollTo({top:0,behavior:"smooth"});if(id==="informe")renderReport()}
+$$(".nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));$$("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
+function updateDashboard(){let tasks=state.checks.filter(Boolean).length,cases=state.cases.filter(Boolean).length,score=state.quizScore;$("#doneTasks").textContent=tasks+"/8";$("#caseDone").textContent=cases+"/3";$("#quizScore").textContent=score===null?"—":score+"%";let points=tasks/8*40+cases/3*30+(score===null?0:score/100*30);$("#overallPercent").textContent=Math.round(points)+"%"}
+const partData={
+ "Placa base":["Interconecta CPU, memoria, almacenamiento y periféricos; distribuye señales y energía entre ellos.","Inspecciona ranuras, conectores, fijaciones, corrosión y daños visibles. Consulta el manual del modelo."],
+ "Procesador":["Ejecuta instrucciones y operaciones. Su rendimiento y temperatura dependen también de la refrigeración y la carga.","Comprueba montaje del disipador, ventilación y temperaturas con herramientas compatibles. No retires el disipador sin necesidad."],
+ "RAM":["Mantiene temporalmente los datos y programas que el procesador necesita durante la ejecución.","Revisa fijación, compatibilidad y errores con una prueba de memoria cuando los síntomas lo indiquen."],
+ "Ventilador":["Mueve el aire para ayudar a evacuar el calor y mantener un flujo adecuado dentro del equipo.","Revisa polvo, vibraciones, ruido y fijación. Durante la limpieza, inmoviliza las aspas."],
+ "SSD":["Almacena sistema operativo, aplicaciones y archivos de forma persistente.","Consulta SMART, temperatura, firmware y conexión. Haz copia de seguridad antes de intervenir."],
+ "Fuente":["Convierte la energía de entrada y entrega tensiones adecuadas a los componentes.","Inspecciona externamente cables, conectores, ventilación y signos de daño. Nunca abras su carcasa."]
+};
+function selectPart(name){labLog({tipo:"Exploración",actividad:"Explorador de componentes",pregunta:"Componente consultado",seleccionada:name,resultado:"Consultado"});$$("[data-part-button]").forEach(b=>b.classList.toggle("active",b.dataset.partButton===name));$$("[data-part]").forEach(g=>{g.style.opacity=g.dataset.part===name?"1":".35";g.style.filter=g.dataset.part===name?"drop-shadow(0 0 8px #62e7f2)":"none"});const d=partData[name];$("#partInfo").innerHTML=`<h4>${name}</h4><p><b>Función:</b> ${d[0]}</p><p><b>Inspección:</b> ${d[1]}</p>`}
+$$("[data-part-button]").forEach(b=>b.addEventListener("click",()=>selectPart(b.dataset.partButton)));selectPart("Placa base");
+const maintenance=[
+ {title:"1. Preparar y asegurar el área",lead:"Primero controla los riesgos eléctricos y electrostáticos.",items:["Apaga completamente el computador y desconecta la alimentación.","Desconecta periféricos y accesorios externos.","En portátiles, consulta el manual para aislar la batería interna.","Usa protección ESD y organiza herramientas y tornillos."],why:"La preparación reduce el riesgo de descarga eléctrica, cortocircuitos, daños electrostáticos y pérdida de piezas.",alert:"Nunca abras una fuente de alimentación. Sus condensadores pueden conservar tensiones peligrosas incluso desconectada."},
+ {title:"2. Inspeccionar antes de limpiar",lead:"Observa, registra y compara el estado inicial.",items:["Busca acumulaciones de polvo en filtros, ventiladores y disipadores.","Revisa cables, conectores, puertos y fijaciones.","Busca corrosión, líquidos, olor a quemado o componentes deformados.","Registra síntomas reportados por el usuario y toma fotografías si corresponde."],why:"Inspeccionar antes evita pasar por alto una avería existente o confundirla con un problema causado durante el servicio.",alert:"Si detectas líquido, olor a quemado o daño eléctrico, no energices el equipo. Documenta el hallazgo."},
+ {title:"3. Limpiar con método",lead:"Retira polvo sin dañar componentes ni generar riesgos.",items:["Usa aire comprimido apto para electrónica en ráfagas controladas.","Sujeta las aspas del ventilador para que no giren libremente.","Usa brocha antiestática y limpia filtros y rejillas.","Evita aplicar líquidos directamente sobre la placa o componentes."],why:"El polvo puede obstruir el flujo de aire y contribuir al aumento de temperatura. La limpieza debe ser controlada para no dañar ventiladores ni conectores.",alert:"No uses una aspiradora doméstica directamente sobre circuitos. Cambia la pasta térmica cuando el diagnóstico o el fabricante lo justifique."},
+ {title:"4. Verificar y documentar",lead:"Confirma el montaje y valida el funcionamiento.",items:["Verifica que no queden herramientas, tornillos sueltos o cables obstruyendo ventiladores.","Reconecta componentes y cierra el equipo según el manual.","Comprueba POST, acceso al sistema y periféricos.","Revisa temperaturas, ventiladores, almacenamiento y registra resultados."],why:"La verificación final permite detectar errores de montaje y dejar evidencia del estado del equipo después del servicio.",alert:"Si aparece una falla nueva, apaga el equipo y revisa el montaje antes de continuar."}
+];let maintIndex=0;
+function renderMaint(){const m=maintenance[maintIndex];$$("[data-maint]").forEach(b=>b.classList.toggle("active",+b.dataset.maint===maintIndex));$("#maintInfo").innerHTML=`<h4>${m.title}</h4><p>${m.lead}</p><ul>${m.items.map(x=>`<li>${x}</li>`).join("")}</ul><div class="good"><b>¿Por qué importa?</b><br>${m.why}</div><div class="warning">${m.alert}</div>`;$("#maintCount").textContent=`Etapa ${maintIndex+1} de 4` ;$("#prevMaint").disabled=maintIndex===0;$("#nextMaint").textContent=maintIndex===3?"Volver al inicio ↺":"Siguiente →"}
+$$("[data-maint]").forEach(b=>b.addEventListener("click",()=>{maintIndex=+b.dataset.maint;renderMaint()}));$("#prevMaint").addEventListener("click",()=>{maintIndex=Math.max(0,maintIndex-1);renderMaint()});$("#nextMaint").addEventListener("click",()=>{maintIndex=maintIndex===3?0:maintIndex+1;renderMaint()});renderMaint();
+const maintChecks=$$("#maintChecks input");maintChecks.forEach((el,i)=>{el.checked=!!state.checks[i];el.addEventListener("change",()=>{state.checks[i]=el.checked;save();updateMaintChecks();labLog({tipo:"Checklist",actividad:"Mantenimiento preventivo",pregunta:maintChecks[i]?.parentElement?.innerText||("Tarea "+(i+1)),seleccionada:el.checked?"Completada":"Desmarcada",resultado:el.checked?"Completada":"Pendiente"})})});function updateMaintChecks(){const n=state.checks.filter(Boolean).length;$("#maintProgressText").textContent=Math.round(n/8*100)+"%";$("#maintProgress").style.width=n/8*100+"%";$("#maintCountText").textContent=n+" de 8"}$("#resetMaint").addEventListener("click",()=>{state.checks=Array(8).fill(false);maintChecks.forEach(x=>x.checked=false);save();updateMaintChecks();toast("Checklist reiniciado")});updateMaintChecks();
+const cases=[
+ {title:"Caso 1 · Computador lento",symptom:"El equipo tarda mucho en iniciar y las aplicaciones responden con demora.",context:"El usuario informa que la lentitud comenzó hace una semana. El equipo todavía inicia Windows.",options:[["a","Abrir el Administrador de tareas y revisar CPU, RAM, disco y procesos de inicio."],["b","Formatear inmediatamente el disco."],["c","Comprar más memoria RAM sin revisar el uso actual."]],correct:"a",explain:"Correcto. Primero mide el comportamiento y localiza el recurso o proceso que está generando la carga. Después plantea pruebas específicas y respalda datos antes de cambios importantes.",wrong:"No conviene aplicar una solución invasiva sin medir. Recopila datos de uso y procesos primero."},
+ {title:"Caso 2 · Sobrecalentamiento",symptom:"El portátil se calienta, el ventilador hace mucho ruido y el rendimiento baja durante tareas exigentes.",context:"La salida de aire parece tener polvo y el equipo no se ha limpiado en mucho tiempo.",options:[["a","Seguir usándolo para comprobar si se apaga solo."],["b","Apagarlo, desconectarlo y revisar obstrucciones, ventilación y estado del sistema térmico."],["c","Desactivar el ventilador desde el sistema operativo."]],correct:"b",explain:"Correcto. El polvo y la obstrucción pueden reducir el flujo de aire. Empieza por una inspección segura y sigue el manual de servicio antes de desmontar el sistema térmico.",wrong:"La temperatura elevada requiere una revisión segura. No ignores el síntoma ni desactives la refrigeración."},
+ {title:"Caso 3 · No enciende",symptom:"Al pulsar el botón de encendido no hay imagen ni respuesta aparente.",context:"El usuario confirma que el tomacorriente funciona, pero no se ha comprobado el cable ni las conexiones externas.",options:[["a","Cambiar la placa base de inmediato."],["b","Abrir la fuente de alimentación y medir sus condensadores."],["c","Verificar toma, cable, interruptor externo si existe y conexiones visibles siguiendo el manual."]],correct:"c",explain:"Correcto. Empieza por comprobaciones externas y seguras. Si el problema persiste, un técnico cualificado debe seguir un procedimiento de diagnóstico de alimentación. No abras la fuente.",wrong:"Evita reemplazar piezas por intuición o abrir la fuente. Empieza por verificaciones externas seguras."}
+];let caseIndex=0,caseChoice="";
+function renderCase(){const c=cases[caseIndex];caseChoice="";$$("[data-case]").forEach(b=>b.classList.toggle("active",+b.dataset.case===caseIndex));$("#caseInfo").innerHTML=`<h4>${c.title}</h4><p class="symptom"><b>Síntoma:</b> ${c.symptom}</p><p class="reading">${c.context}</p>`;$("#caseChoices").innerHTML=c.options.map(([v,t])=>`<button class="choice" data-choice="${v}">${t}</button>`).join("");$$("[data-choice]").forEach(b=>b.addEventListener("click",()=>{caseChoice=b.dataset.choice;$$("[data-choice]").forEach(x=>x.classList.toggle("selected",x===b));$("#caseCheck").disabled=false;$("#caseFeedback").hidden=true}));$("#caseCheck").disabled=true;$("#caseFeedback").hidden=true}
+$$("[data-case]").forEach(b=>b.addEventListener("click",()=>{caseIndex=+b.dataset.case;renderCase()}));$("#caseCheck").addEventListener("click",()=>{const c=cases[caseIndex],ok=caseChoice===c.correct;state.caseAnswers=state.caseAnswers||{};state.caseAnswers[caseIndex]=caseChoice;if(ok)state.cases[caseIndex]=true;save();labLog({tipo:"Diagnóstico",actividad:c.title,pregunta:c.symptom,seleccionada:(c.options.find(x=>x[0]===caseChoice)||[])[1]||String(caseChoice),correcta:(c.options.find(x=>x[0]===c.correct)||[])[1]||String(c.correct),resultado:ok?"Correcta":"Incorrecta"});const f=$("#caseFeedback");f.hidden=false;f.innerHTML=`<b>${ok?"¡Buena decisión!":"Revisa tu razonamiento."}</b><br>${ok?c.explain:c.wrong}<br><span class="reading">Progreso: ${state.cases.filter(Boolean).length} de 3 casos resueltos.</span>`;});renderCase();
+const sliders=[["cpuRange","cpuVal","%"],["ramRange","ramVal","%"],["tempRange","tempVal"," °C"],["diskRange","diskVal","%"]];sliders.forEach(([id,out,suffix])=>$("#"+id).addEventListener("input",()=>{const v=+$("#"+id).value;$("#"+out).textContent=v+suffix;interpret()}));sliders.forEach(([id,out,suffix])=>$("#"+id).addEventListener("change",()=>labLog({tipo:"Simulador",actividad:"Rendimiento y temperatura",pregunta:out,seleccionada:$("#"+id).value+suffix,resultado:"Valor ajustado"})));
+function interpret(){const cpu=+$("#cpuRange").value,ram=+$("#ramRange").value,temp=+$("#tempRange").value,disk=+$("#diskRange").value;let alerts=[];if(cpu>=90)alerts.push("CPU con carga muy alta: identifica procesos y verifica si la carga es esperada.");if(ram>=90)alerts.push("RAM muy ocupada: revisa aplicaciones, consumo y posible presión de memoria.");if(temp>=90)alerts.push("Temperatura elevada en este escenario: detén la carga si corresponde y revisa refrigeración y especificaciones del fabricante.");else if(temp>=80)alerts.push("Temperatura alta para investigar: compara con los límites del modelo y las condiciones de prueba.");if(disk<=20)alerts.push("Indicador de salud SSD muy bajo: prioriza copia de seguridad y diagnóstico de la unidad.");else if(disk<=60)alerts.push("Salud SSD reducida: revisa SMART y planifica seguimiento o reemplazo según diagnóstico.");let pill="Normal",color="#a9f0d0",txt="Los valores simulados no muestran una alerta evidente. Compara siempre con el modelo y el contexto de uso.";if(alerts.length){pill=alerts.length>1?"Varias alertas":"Revisar";color="#ffd28b";txt=alerts.join(" ")}$("#statusPill").textContent=pill;$("#statusPill").style.color=color;$("#performanceText").textContent=txt;sliders.forEach(([id,out,s])=>$("#"+out).textContent=$("#"+id).value+s)}
+interpret();
+const questions=[
+ {q:"¿Qué debes hacer antes de abrir un computador de escritorio para mantenimiento?",o:["Desconectarlo de la alimentación y aplicar medidas ESD.","Dejarlo en suspensión.","Retirar primero el procesador."],a:0,e:"Apagar y desconectar, junto con el control ESD, reduce riesgos eléctricos y electrostáticos."},
+ {q:"¿Por qué se sujetan las aspas del ventilador al usar aire comprimido?",o:["Para que gire más rápido.","Para evitar giros excesivos y posibles daños o tensión inducida.","Para enfriar más la CPU."],a:1,e:"El giro libre a alta velocidad puede dañar el ventilador o inducir tensión en su motor."},
+ {q:"¿Qué herramienta permite observar procesos y consumo de recursos en Windows?",o:["Administrador de tareas.","Bloc de notas.","Papelera de reciclaje."],a:0,e:"El Administrador de tareas permite revisar procesos y uso de CPU, memoria, disco y red."},
+ {q:"Si detectas olor a quemado o líquido dentro del equipo, ¿qué haces?",o:["Lo enciendes para confirmar la falla.","Continúas limpiando con el equipo conectado.","No lo energizas, documentas el hallazgo y sigues un diagnóstico seguro."],a:2,e:"No energices un equipo con indicios de daño eléctrico o líquido. Documenta y evalúa los riesgos."},
+ {q:"¿Qué conviene hacer antes de intervenir una unidad de almacenamiento?",o:["Realizar copia de seguridad de los datos importantes.","Eliminar todos los archivos.","Desactivar la protección ESD."],a:0,e:"La copia de seguridad protege la información ante fallas o errores durante la intervención."}
+];
+function renderQuiz(){const area=$("#quizArea");area.innerHTML=questions.map((q,i)=>`<div class="case"><b>${i+1}. ${q.q}</b><div class="quiz-list" style="margin-top:9px">${q.o.map((o,j)=>`<button class="choice ${state.quizAnswers[i]===j?"selected":""}" data-q="${i}" data-v="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div></div>`).join("");$$("[data-q]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.q;state.quizAnswers[i]=+b.dataset.v;state.quizScore=null;save();renderQuiz();$("#quizResult").hidden=true}))}
+$("#submitQuiz").addEventListener("click",()=>{const answered=questions.every((q,i)=>state.quizAnswers[i]!==undefined);if(!answered){toast("Responde las cinco preguntas para calificar.");return}let score=0;questions.forEach((q,i)=>{if(state.quizAnswers[i]===q.a)score++});state.quizScore=Math.round(score/questions.length*100);save();questions.forEach((q,i)=>labLog({tipo:"Evaluación",actividad:"Cuestionario MR TECH LAB 2.0",pregunta:q.q,seleccionada:q.o[state.quizAnswers[i]],correcta:q.o[q.a],resultado:state.quizAnswers[i]===q.a?"Correcta":"Incorrecta"}));labLog({tipo:"Resultado",actividad:"Cuestionario MR TECH LAB 2.0",pregunta:"Calificación final",seleccionada:state.quizScore+"%",correcta:"100%",resultado:score+" de "+questions.length});const result=$("#quizResult");result.hidden=false;result.innerHTML=`<b>Resultado: ${score} de ${questions.length} (${state.quizScore}%).</b><br>${questions.map((q,i)=>`<p style="margin:8px 0"><b>${i+1}. ${state.quizAnswers[i]===q.a?"Correcto":"Para repasar"}:</b> ${q.e}</p>`).join("")}`;renderReport()});
+$("#retryQuiz").addEventListener("click",()=>{state.quizAnswers={};state.quizScore=null;save();renderQuiz();$("#quizResult").hidden=true;toast("Evaluación reiniciada")});renderQuiz();
+function reportData(){return {laboratorio:"MR TECH LAB 2.0",alumno:state.name||"Sin nombre",fecha:new Date().toLocaleString("es-CO"),checklist:{completadas:state.checks.filter(Boolean).length,total:8,detalle:state.checks},casos:{resueltos:state.cases.filter(Boolean).length,total:3,detalle:state.cases},evaluacion:{calificacion:state.quizScore, respuestas:state.quizAnswers}}}
+function renderReport(){const d=reportData();$("#reportContent").innerHTML=`<div class="row"><div><span class="reading">ESTUDIANTE</span><h2 style="margin:2px 0">${escapeHtml(d.alumno)}</h2></div><span class="pill">MR TECH LAB 2.0</span></div><p class="reading">Generado: ${d.fecha}</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><div class="lesson-grid"><div class="lesson"><span class="reading">MANTENIMIENTO</span><b>${d.checklist.completadas}/8 tareas</b><p>Lista de comprobación</p></div><div class="lesson"><span class="reading">DIAGNÓSTICO</span><b>${d.casos.resueltos}/3 casos</b><p>Decisiones correctas</p></div><div class="lesson"><span class="reading">EVALUACIÓN</span><b>${d.evaluacion.calificacion===null?"Pendiente":d.evaluacion.calificacion+"%"}</b><p>Resultado del cuestionario</p></div><div class="lesson"><span class="reading">AVANCE GENERAL</span><b>${$("#overallPercent").textContent}</b><p>Indicador de actividades</p></div></div><p class="reading" style="margin-top:14px">El avance se guarda en este navegador. Cuando ingresas a la plataforma con tu cuenta de estudiante, las respuestas y resultados de las actividades se registran en el panel docente.</p>`}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+$("#printReport").addEventListener("click",()=>{renderReport();window.print()});$("#downloadReport").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(reportData(),null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="informe-mr-tech-lab.json";a.click();URL.revokeObjectURL(a.href);toast("Informe descargado")});
+$("#clearProgress").addEventListener("click",()=>{if(!confirm("¿Seguro que deseas borrar el progreso guardado en este navegador?"))return;localStorage.removeItem(STORE);state={name:state.name,checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null};maintChecks.forEach(x=>x.checked=false);updateMaintChecks();renderQuiz();updateDashboard();renderReport();toast("Progreso borrado")});
+updateDashboard();renderReport();
+</script>
+</body>
+</html>
