@@ -216,17 +216,47 @@ footer details p{margin:10px 0}
 .stp .now{color:var(--pri-d)}.stp .now b{background:var(--pri);color:#fff;border-color:var(--pri)}
 .stp .ok{color:#0A7A65}.stp .ok b{background:var(--mint);color:#053B31;border-color:var(--mint)}
 .stp .ln{flex:1;height:4px;min-width:30px;background:var(--line);border-radius:2px}
+
+/* Panel docente: mantiene la identidad visual del aula */
+.teacher-access{font:inherit;font-weight:800;padding:7px 14px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--pri);cursor:pointer;white-space:nowrap}.teacher-access:hover{border-color:var(--pri);background:#F0ECFF}
+.teacher-link{display:inline-block;margin-top:14px;color:var(--pri);font-weight:800;text-decoration:underline;cursor:pointer}
+#teacherLogin{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+#teacherLogin input{font:inherit;width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:14px;margin:8px 0;text-align:center}
+main.teacher-view{max-width:1240px}
+#teacherPanel{max-width:1160px;margin:0 auto}
+.thead{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+.thead h1{margin:0;font-size:clamp(1.6rem,4vw,2.2rem)}
+.tmuted{color:var(--mut)}
+.tcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin:18px 0}
+.tcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(108,76,241,.08)}
+.tcard small{display:block;color:var(--mut);font-weight:700}
+.tcard strong{display:block;font-size:2rem;line-height:1.25;color:var(--pri-d);margin-top:5px}
+.tbox{background:#fff;border-radius:20px;padding:20px;margin:16px 0;box-shadow:0 8px 24px rgba(108,76,241,.08);overflow:hidden}
+.tbox h2{font-size:1.2rem;margin:0 0 12px}
+.tscroll{overflow:auto}
+.tscroll table{min-width:650px;font-size:.92rem}
+.tscroll th{position:sticky;top:0}
+.tfilters{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.tfilters input,.tfilters select{font:inherit;padding:9px 12px;border:2px solid var(--line);border-radius:12px;max-width:100%}
+.tbadge{display:inline-block;padding:3px 10px;border-radius:999px;background:#E5FAF5;color:#08745F;font-weight:800;font-size:.82rem}
+.tbadge.bad{background:#FFF0F5;color:#B42355}
+.tnotice{padding:14px;border-radius:14px;background:#F0ECFF;color:var(--pri-d);font-weight:700}
+@media(max-width:700px){#teacherPanel{padding:0 2px}.tbox{padding:14px}.thead .btn{width:100%;text-align:center}}
+
 </style>
 </head>
 <body>
-<header><div class="brand"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" rx="2.5" fill="#6C4CF1"/><rect x="12.5" y="2" width="9.5" height="9.5" rx="2.5" fill="#19C3A0"/><rect x="2" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FFB020"/><rect x="12.5" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FF5C8A"/></svg><span>Aula de instalación</span></div><nav id="tabs" role="tablist" aria-label="Guías"></nav><span id="who" class="who" hidden></span><button id="menu" aria-expanded="false">☰ <b>Todos los pasos</b></button></header>
+<header><div class="brand"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" rx="2.5" fill="#6C4CF1"/><rect x="12.5" y="2" width="9.5" height="9.5" rx="2.5" fill="#19C3A0"/><rect x="2" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FFB020"/><rect x="12.5" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FF5C8A"/></svg><span>Aula de instalación</span></div><nav id="tabs" role="tablist" aria-label="Guías"></nav><span id="who" class="who" hidden></span><button id="teacherAccess" class="teacher-access">Panel docente</button><button id="menu" aria-expanded="false">☰ <b>Todos los pasos</b></button></header>
 <div id="login" class="gate" hidden><div><div style="font-size:3rem">👋</div><h1>¡Te damos la bienvenida!</h1><span class="grp">TICS Marinilla Grupo 2</span><p>Entra con el correo que registró tu docente.</p>
 <form id="f1"><input id="em" type="email" placeholder="tu correo" autocomplete="email" required><button class="btn">Enviarme el código</button></form>
 <form id="f2" hidden><input id="cd" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" autocomplete="one-time-code" required><button class="btn">Entrar</button></form>
-<p id="lmsg" role="status"></p><small>Creado por Manuel Restrepo · Con fines académicos</small></div></div>
+<p id="lmsg" role="status"></p><a class="teacher-link" id="teacherLink">Acceso docente</a>
+<div id="teacherLogin" hidden><b>Panel del profesor</b><p>Acceso exclusivo para la cuenta autorizada.</p><form id="tf1"><input id="tem" type="email" value="manuelrestrepo@gmail.com" readonly><button class="btn">Enviar código al correo del profesor</button></form><form id="tf2" hidden><input id="tcode" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" required><button class="btn">Verificar y entrar</button></form><p id="tlmsg" role="status"></p><a class="teacher-link" id="studentLink">Volver al acceso de estudiantes</a></div>
+<small>Creado por Manuel Restrepo · Con fines académicos</small></div></div>
 <div id="toast" role="status"></div>
 <aside id="side" aria-label="Lista de pasos"><h1>Todos los pasos</h1><nav id="toc"></nav></aside><div id="scrim"></div>
 <main><div class="pills" id="pills"></div><div class="bar"><i id="pb"></i></div><p class="meta" id="meta"></p><article id="step" tabindex="-1"></article>
+<section id="teacherPanel" hidden aria-live="polite"></section>
 <div class="nav" id="nav"><button id="prev">Anterior</button><button id="next" class="p">Siguiente</button></div></main>
 <footer>
 <p><b>Creado por Manuel Restrepo</b></p>
@@ -426,9 +456,10 @@ QZ.linux=[
 {q:"¿Qué comandos actualizan Ubuntu desde la terminal?",o:["sudo apt update y luego sudo apt upgrade","format c:","sudo apt remove all"]}];
 const API="https://script.google.com/macros/s/AKfycbwebAyTLr5ulHxfmW6EnBqnngask8iijhtOhm_psa_jOX_GBZ3B4n8Kgo8pRqJqtzg5/exec";
 const on=API.startsWith("https://");
-let mi=0,n=0,seen=new Set(),ses=null,done=new Set(),qok=new Set();
+let mi=0,n=0,seen=new Set(),ses=null,done=new Set(),qok=new Set(),teacherToken=null,teacherMode=false;
+try{teacherToken=sessionStorage.getItem("teacherToken")||null}catch(e){}
 try{ses=JSON.parse(sessionStorage.getItem("ses")||"null")}catch(e){}
-const post=b=>fetch(API,{method:"POST",body:JSON.stringify(b)}).then(r=>r.json()).then(r=>{if(!r.ok&&/Sesión expirada/.test(r.error||"")&&b.action!=="code"&&b.action!=="verify")expired();return r});
+const post=b=>fetch(API,{method:"POST",body:JSON.stringify(b)}).then(r=>r.json()).then(r=>{if(!r.ok&&/Sesión expirada/.test(r.error||"")&&b.action!=="code"&&b.action!=="verify"&&b.action!=="teacher_code"&&b.action!=="teacher_verify"&&b.action!=="teacher_data")expired();return r});
 function expired(){ses=null;try{sessionStorage.removeItem("ses")}catch(e){}$("who").hidden=true;$("login").hidden=false;$("f1").hidden=false;$("f2").hidden=true;lm("Tu sesión venció. Entra de nuevo: tu avance y tu quiz aprobado se conservan.",1)}
 const ping=b=>{if(on&&ses)post({...b,token:ses.token}).catch(()=>{})};
 const key=()=>"seen-"+MODS[mi].id;
@@ -436,7 +467,7 @@ function load(){try{seen=new Set(JSON.parse(localStorage.getItem(key())||"[]"))}
 function save(){try{localStorage.setItem(key(),JSON.stringify([...seen]))}catch(e){}}
 const open=m=>!m.req||done.has(m.req);
 const dis=m=>m.soon||!open(m)||(done.has(m.id)&&!m.info);
-function tabs(){$("tabs").innerHTML=MODS.map((m,i)=>`<button role="tab" data-m="${i}" aria-selected="${i===mi}"${dis(m)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`).join("")}
+function tabs(){if(teacherToken){$("tabs").innerHTML='<button role="tab" data-teacher aria-selected="true">Panel del profesor</button>';return}$("tabs").innerHTML=MODS.map((m,i)=>`<button role="tab" data-m="${i}" aria-selected="${i===mi}"${dis(m)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`).join("")}
 function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3400)}
 function pills(){const m=MODS[mi],f=m.S[n].f;$("pills").innerHTML=m.SH.map((t,i)=>`<button class="pill${i===f?" on":i<f?" past":""}" data-ph="${i}" aria-label="Ir a ${t}"><b>${i<f?"✓":m.I[i]}</b><span>${t}</span></button>`).join("");const o=document.querySelector(".pill.on");if(o)o.scrollIntoView({inline:"center",block:"nearest"})}
 function toc(){const{S,F,I}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!==last){if(last>-1)h+="</ol>";h+=`<h2>${I[s.f]} ${F[s.f]}</h2><ol>`;last=s.f}
@@ -458,7 +489,7 @@ if(s.k==="os")osInit();if(s.k==="glo")gloInit();if(s.k==="quizev"){quiz();evid()
 if(!fromHash){history.replaceState(null,"","#"+MODS[mi].id+"/"+i);window.scrollTo(0,0);$("step").focus({preventScroll:true});
 if(!matchMedia("(prefers-reduced-motion:reduce)").matches)$("step").animate([{opacity:0,transform:"translateY(14px) scale(.98)"},{opacity:1,transform:"none"}],{duration:300,easing:"cubic-bezier(.3,1.3,.5,1)"})}}
 function openMod(m,i,fromHash){mi=m;n=0;load();tabs();go(i,fromHash)}
-$("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;const m=MODS[+b.dataset.m];if(done.has(m.id)&&!m.info)return toast("Ya completaste esta guía.");if(m.soon)return toast("Esta guía estará disponible pronto.");if(!open(m)){const r=MODS.find(x=>x.id===m.req);return toast(r.info?"Termina primero «"+r.name+"» para desbloquear esta guía.":"Termina "+r.name+" (quiz y prueba) para desbloquear.")}openMod(+b.dataset.m,0)};
+$("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.hasAttribute("data-teacher")){showTeacher();return}const m=MODS[+b.dataset.m];if(done.has(m.id)&&!m.info)return toast("Ya completaste esta guía.");if(m.soon)return toast("Esta guía estará disponible pronto.");if(!open(m)){const r=MODS.find(x=>x.id===m.req);return toast(r.info?"Termina primero «"+r.name+"» para desbloquear esta guía.":"Termina "+r.name+" (quiz y prueba) para desbloquear.")}openMod(+b.dataset.m,0)};
 $("pills").onclick=e=>{const b=e.target.closest("[data-ph]");if(!b)return;const k=MODS[mi].S.findIndex(x=>x.f===+b.dataset.ph);if(k>=0)go(k)};
 $("toc").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
 $("prev").onclick=()=>go(n-1);$("next").onclick=()=>{const S=MODS[mi].S;if(n<S.length-1)return go(n+1);if(MODS[mi].ref){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;return showDone()}return openMod(k,0)}if(MODS[mi].info){const id=mid(),ir=()=>{done.add(id);tabs();const k=MODS.findIndex(x=>!x.info&&!x.soon&&open(x)&&!done.has(x.id));k>=0?openMod(k,0):toast("Pronto habrá más guías.")};if(on&&ses&&!done.has(id))post({action:"leido",mod:id,token:ses.token}).then(r=>r.ok?ir():toast(r.error)).catch(()=>toast("No pudimos conectar. Intenta de nuevo."));else ir();return}if(done.has(mid()))showDone();else{toast("Antes de finalizar, aprueba el quiz y envía tu prueba.");go(S.findIndex(x=>x.k==="quizev"))}};
@@ -471,6 +502,33 @@ const lm=(t,e)=>{$("lmsg").textContent=t;$("lmsg").className=e?"err":""};
 const mail=()=>$("em").value.trim().toLowerCase();
 $("f1").onsubmit=async e=>{e.preventDefault();lm("Enviando el código…");try{const r=await post({action:"code",email:mail()});if(r.ok){$("f1").hidden=true;$("f2").hidden=false;lm("Te enviamos un código. Revisa también la carpeta de spam.")}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
 $("f2").onsubmit=async e=>{e.preventDefault();lm("Verificando…");try{const r=await post({action:"verify",email:mail(),code:$("cd").value.trim(),ua:navigator.userAgent});if(r.ok){ses={email:mail(),name:r.name,token:r.token};try{sessionStorage.setItem("ses",JSON.stringify(ses))}catch(x){}enter()}else lm(r.error,1)}catch(x){lm("No pudimos conectar. Intenta de nuevo.",1)}};
+// Acceso docente separado del inicio de sesión de los estudiantes.
+const teacherEmail="manuelrestrepo@gmail.com";
+function openTeacherLogin(){$("login").hidden=false;$("f1").hidden=true;$("f2").hidden=true;$("teacherLogin").hidden=false;$("tf1").hidden=false;$("tf2").hidden=true;$("tlmsg").textContent="Acceso reservado al docente."}
+$("teacherLink").onclick=openTeacherLogin;
+$("teacherAccess").onclick=openTeacherLogin;
+$("teacherLink").onclick=()=>{$("f1").hidden=true;$("f2").hidden=true;$("teacherLogin").hidden=false;lm("Acceso reservado al docente.")};
+$("studentLink").onclick=()=>{$("teacherLogin").hidden=true;$("f1").hidden=false;$("f2").hidden=true;lm("")};
+$("tf1").onsubmit=async e=>{e.preventDefault();$("tlmsg").textContent="Enviando código…";try{const r=await post({action:"teacher_code",email:teacherEmail});if(r.ok){$("tf1").hidden=true;$("tf2").hidden=false;$("tlmsg").textContent="Código enviado. Revisa tu correo y la carpeta de spam."}else $("tlmsg").textContent=r.error}catch(x){$("tlmsg").textContent="No pudimos conectar. Intenta de nuevo."}};
+$("tf2").onsubmit=async e=>{e.preventDefault();$("tlmsg").textContent="Verificando…";try{const r=await post({action:"teacher_verify",email:teacherEmail,code:$("tcode").value.trim()});if(r.ok){teacherToken=r.token;try{sessionStorage.setItem("teacherToken",teacherToken)}catch(x){}showTeacher()}else $("tlmsg").textContent=r.error}catch(x){$("tlmsg").textContent="No pudimos conectar. Intenta de nuevo."}};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const niceDate=s=>{if(!s)return "—";const d=new Date(String(s).replace(" ","T"));return isNaN(d)?esc(s):d.toLocaleString("es-CO")};
+function showTeacher(){teacherMode=true;$("teacherPanel").closest("main").classList.add("teacher-view");$("login").hidden=true;$("who").textContent="Docente";$("who").hidden=false;$("menu").hidden=true;["pills","pb","meta","step","nav"].forEach(id=>{const e=$(id);if(e)e.hidden=true});$("teacherPanel").hidden=false;document.querySelector("footer").hidden=true;tabs();loadTeacherData()}
+function teacherLogout(){teacherToken=null;teacherMode=false;try{sessionStorage.removeItem("teacherToken")}catch(e){}location.reload()}
+function tableHTML(headers,rows){if(!rows.length)return '<p class="tmuted">Todavía no hay registros.</p>';return '<div class="tscroll"><table><thead><tr>'+headers.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>'}
+async function loadTeacherData(){const box=$("teacherPanel");box.innerHTML='<div class="tbox"><p>Consultando los datos del aula…</p></div>';try{const d=await post({action:"teacher_data",token:teacherToken});if(!d.ok){if(/expirada|permiso/i.test(d.error||"")){box.innerHTML='<div class="tbox"><p>'+esc(d.error)+'</p><button class="btn" id="tAgain">Volver a ingresar</button></div>';$("tAgain").onclick=teacherLogout;return}throw Error(d.error||"No se pudieron cargar los datos")}
+const unique=new Set(d.ingresos.map(x=>x.correo.toLowerCase())).size,passed=d.quiz.filter(x=>x.aprobado==="Sí").length,avg=d.quiz.length?Math.round(d.quiz.reduce((a,x)=>a+(+x.nota||0),0)/d.quiz.length*10)/10:0,wrong=d.respuestas.filter(x=>x.resultado==="Incorrecta");
+const errors={};wrong.forEach(x=>{const k=x.pregunta;errors[k]=(errors[k]||0)+1});const hard=Object.entries(errors).sort((a,b)=>b[1]-a[1]).slice(0,8);
+const cards=[["Alumnos registrados",d.alumnos.length],["Han ingresado",unique],["Intentos de quiz",d.quiz.length],["Quizzes aprobados",passed],["Promedio de nota",avg+" / 10"],["Respuestas incorrectas",wrong.length]];
+const students=d.alumnos.map(a=>{const q=d.quiz.filter(x=>x.correo.toLowerCase()===String(a.correo).toLowerCase());const best=q.length?Math.max(...q.map(x=>+x.nota||0)):"—";const last=d.ingresos.filter(x=>x.correo.toLowerCase()===String(a.correo).toLowerCase()).slice(-1)[0];return `<tr><td>${esc(a.nombre)}</td><td>${esc(a.correo)}</td><td>${q.length}</td><td>${best}</td><td>${last?niceDate(last.fecha):"Sin ingreso"}</td></tr>`});
+const quizRows=d.quiz.slice().reverse().map(x=>`<tr><td>${niceDate(x.fecha)}</td><td>${esc(x.correo)}</td><td>${esc(x.guia)}</td><td>${esc(x.intento)}</td><td><b>${esc(x.nota)} / 10</b></td><td><span class="tbadge ${x.aprobado==="Sí"?"":"bad"}">${esc(x.aprobado)}</span></td><td>${esc(x.incorrectas||"—")}</td></tr>`);
+const answerRows=d.respuestas.slice().reverse().map(x=>`<tr><td>${niceDate(x.fecha)}</td><td>${esc(x.correo)}</td><td>${esc(x.guia)}</td><td>${esc(x.intento)}</td><td>${esc(x.pregunta)}</td><td>${esc(x.seleccionada)}</td><td>${esc(x.correcta)}</td><td><span class="tbadge ${x.resultado==="Correcta"?"":"bad"}">${esc(x.resultado)}</span></td></tr>`);
+const evidenceRows=d.evidencias.slice().reverse().map(x=>`<tr><td>${niceDate(x.fecha)}</td><td>${esc(x.nombre)}</td><td>${esc(x.correo)}</td><td>${esc(x.guia)}</td><td>${x.enlace&&String(x.enlace).startsWith("http")?`<a href="${esc(x.enlace)}" target="_blank" rel="noopener">Abrir evidencia</a>`:esc(x.enlace||"—")}</td></tr>`);
+const hardRows=hard.map(x=>`<tr><td>${esc(x[0])}</td><td>${x[1]}</td></tr>`);
+box.innerHTML=`<div class="thead"><div><span class="grp">MR TECH LAB · DOCENTE</span><h1>Panel del profesor</h1><p class="tmuted">Seguimiento académico y resultados de tus estudiantes.</p></div><button class="btn alt" id="tLogout">Cerrar sesión docente</button></div><div class="tcards">${cards.map(c=>`<div class="tcard"><small>${esc(c[0])}</small><strong>${esc(c[1])}</strong></div>`).join("")}</div><div class="tbox"><h2>👩‍🎓 Alumnos registrados</h2>${tableHTML(["Nombre","Correo","Intentos","Mejor nota","Último ingreso"],students)}</div><div class="tbox"><h2>📝 Resultados de cuestionarios</h2>${tableHTML(["Fecha","Correo","Guía","Intento","Nota","Aprobó","Preguntas falladas"],quizRows)}</div><div class="tbox"><h2>🔎 Detalle de cada respuesta</h2><p class="tmuted">Incluye la opción elegida, la respuesta correcta y si acertó. Los registros anteriores a esta actualización no tienen el detalle de la opción seleccionada.</p>${tableHTML(["Fecha","Correo","Guía","Intento","Pregunta","Eligió","Correcta","Resultado"],answerRows)}</div><div class="tbox"><h2>📌 Preguntas con más errores</h2>${tableHTML(["Pregunta","Veces fallada"],hardRows)}</div><div class="tbox"><h2>📂 Evidencias enviadas</h2>${tableHTML(["Fecha","Nombre","Correo","Guía","Archivo"],evidenceRows)}</div><div class="tbox"><h2>⏱️ Progreso por guía</h2>${tableHTML(["Correo","Guía","Inicio","Última actividad","Paso actual","Paso máximo","Minutos activos"],d.progreso.slice().reverse().map(x=>`<tr><td>${esc(x.correo)}</td><td>${esc(x.guia)}</td><td>${niceDate(x.inicio)}</td><td>${niceDate(x.actividad)}</td><td>${esc(x.pasoActual)}</td><td>${esc(x.pasoMaximo)}</td><td>${esc(x.minutos)}</td></tr>`))}</div><p class="tmuted">Datos consultados directamente desde la hoja vinculada. No se muestran números de documento de los estudiantes.</p>`;
+$("tLogout").onclick=teacherLogout;
+}catch(err){box.innerHTML=`<div class="tbox"><h2>No se pudo cargar el panel</h2><p>${esc(err.message)}</p><button class="btn" id="tRetry">Reintentar</button></div>`;$("tRetry").onclick=loadTeacherData}}
+
 const mid=()=>MODS[mi].id;
 const demo='<div class="callout tip"><b>Modo de prueba</b>Conecta la hoja de Google para activar esta parte.</div>';
 const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.floor(Math.random()*i--);[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -510,7 +568,7 @@ function startMod(){const k=MODS.findIndex(x=>!x.soon&&!x.ref&&open(x)&&!done.ha
 function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(!r.ok)return;done=new Set(r.done);qok=new Set(r.quiz);const c=MODS[mi];tabs();if(!open(c)||done.has(c.id)){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;showDone()}else openMod(k,0,true)}else if(c.S[n].k)go(n,true)}).catch(()=>{})}
 function enter(){$("login").hidden=true;if(ses){$("who").textContent=ses.name;$("who").hidden=false}fromHash();estado()}
 window.addEventListener("hashchange",()=>{if(!$("login").hidden)return;fromHash()});
-if(!on||ses)enter();else $("login").hidden=false;
+if(teacherToken){showTeacher()}else if(!on||ses)enter();else $("login").hidden=false;
 </script>
 </body>
 </html>
