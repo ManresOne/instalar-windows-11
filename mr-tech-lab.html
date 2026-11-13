@@ -115,23 +115,29 @@ body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linea
 .component-picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin-top:13px}
 .component-picks button{min-height:58px}
 .component-picks button.active{box-shadow:inset 0 0 0 1px #19C3A0,0 5px 14px rgba(25,195,160,.12)}
-.explorer-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:16px;align-items:stretch;margin-top:12px}
-.explorer-workspace .photo-explorer{min-width:0;margin:0}
-.part-modal{display:none;min-width:0;min-height:260px}
+ .explorer-workspace{display:block;margin-top:12px}
+.explorer-workspace .photo-explorer{width:100%;min-width:0;margin:0}
+.part-modal{display:none;position:absolute;z-index:8;right:14px;bottom:54px;width:min(330px,calc(100% - 28px));max-height:calc(100% - 110px);min-height:0;overflow:visible;pointer-events:none}
 .part-modal.open{display:block}
-.part-dialog{width:100%;height:100%;max-height:620px;overflow:auto;background:#fff;border:1px solid #e4e0fa;border-radius:18px;box-shadow:0 8px 24px rgba(31,27,75,.09);padding:18px;color:#25224d;animation:partIn .2s ease-out}
-@keyframes partIn{from{opacity:.65;transform:translateX(8px)}to{opacity:1;transform:none}}
-.part-empty[hidden],.part-dialog[hidden]{display:none!important}
-.part-empty{height:100%;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#77739b;background:#faf9ff;border:1px dashed #d8d2f5;border-radius:18px}
-.part-empty strong{display:block;color:#37316e;margin:8px 0}
-@media(max-width:900px){.explorer-workspace{grid-template-columns:1fr}.part-modal{min-height:0}.part-dialog{max-height:420px}}
+.part-dialog{pointer-events:auto;width:100%;height:auto;max-height: min(430px,calc(100vh - 130px));overflow:auto;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border:1px solid #d8d2f5;border-radius:17px;box-shadow:0 12px 34px rgba(12,10,40,.32);padding:14px;color:#25224d}
+.part-empty[hidden],.part-dialog[hidden],.part-details[hidden]{display:none!important}
+.callout-lines{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none;overflow:visible}
+.callout-lines line{stroke:#6C4CF1;stroke-width:2.5;stroke-linecap:round;filter:drop-shadow(0 1px 2px #fff)}
+.callout-lines circle{fill:#19C3A0;stroke:#fff;stroke-width:2}
+.part-summary{font-size:13px;line-height:1.5;color:#514b80;margin:7px 0 10px}
+.part-more{width:100%;border:0;border-radius:10px;padding:9px 12px;background:linear-gradient(135deg,#6C4CF1,#8B72F5);color:white;font-weight:850;cursor:pointer}
+.part-dialog.expanded{max-height:min(620px,calc(100vh - 100px))}
+.photo-explorer:fullscreen .part-modal{right:22px;bottom:22px;width:min(390px,calc(100vw - 44px));max-height:calc(100vh - 44px)}
+.photo-explorer:fullscreen .part-dialog{max-height:calc(100vh - 70px);font-size:15px}
+.photo-explorer:fullscreen .part-dialog h3{font-size:22px}
+@media(max-width:600px){.part-modal{right:8px;bottom:44px;width:min(290px,calc(100% - 16px));max-height:calc(100% - 75px)}.part-dialog{padding:12px;max-height:300px}.part-dialog.expanded{max-height:calc(100vh - 100px)}.photo-explorer:fullscreen .part-modal{right:8px;bottom:8px;width:min(310px,calc(100vw - 16px))}}
 .part-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
-.part-dialog h3{font-size:22px;margin:0;color:#302b66}.part-dialog .part-kicker{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#77739b;font-weight:900;margin-bottom:5px}
-.part-dialog .part-close{border:0;border-radius:10px;background:#f0ecff;color:#4c438f;width:38px;height:38px;font-size:22px;cursor:pointer}
-.part-dialog .part-section{padding:12px 14px;margin:10px 0;border-radius:13px;background:#f7f5ff;border:1px solid #ebe7ff;line-height:1.55}
+.part-dialog h3{font-size:21px;margin:0;color:#302b66}.part-dialog .part-kicker{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#77739b;font-weight:900;margin-bottom:4px}
+.part-dialog .part-close{border:0;border-radius:10px;background:#f0ecff;color:#4c438f;width:34px;height:34px;font-size:21px;cursor:pointer;flex:0 0 auto}
+.part-dialog .part-section{padding:10px 12px;margin:8px 0;border-radius:12px;background:#f7f5ff;border:1px solid #ebe7ff;line-height:1.5;font-size:13px}
 .part-dialog .part-section b{display:block;color:#5546b1;margin-bottom:4px}
-.part-dialog .part-foot{font-size:12px;color:#77739b;margin-top:14px}
-@media(max-width:600px){.photo-explorer{aspect-ratio:16/9;min-height:220px}.hotspot{padding:5px 6px;font-size:8px;gap:4px}.hotspot span{width:6px;height:6px;flex-basis:6px}.explorer-tools{top:7px;right:7px;gap:5px}.explorer-tools button{font-size:10px;padding:7px 8px}.explorer-hint{font-size:10px;left:7px;bottom:7px}.part-dialog{padding:17px;border-radius:18px;max-height:360px}}
+.part-dialog .part-foot{font-size:11px;color:#77739b;margin-top:10px}
+@media(max-width:600px){.photo-explorer{aspect-ratio:16/9;min-height:220px}.hotspot{padding:5px 6px;font-size:8px;gap:4px}.hotspot span{width:6px;height:6px;flex-basis:6px}.explorer-tools{top:7px;right:7px;gap:5px}.explorer-tools button{font-size:10px;padding:7px 8px}.explorer-hint{font-size:10px;left:7px;bottom:7px}}
 
 
 </style>
@@ -191,14 +197,15 @@ body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linea
      <button class="hotspot hs-case" type="button" data-part-button="Chasis"><span></span>Chasis</button>
     </div>
     <div class="explorer-tools"><button type="button" id="zoomReset" title="Restablecer vista">↺ Vista</button><button type="button" id="fullscreenExplorer" title="Ampliar a pantalla completa">⛶ Pantalla completa</button></div>
-    <div class="explorer-hint">Selecciona un marcador para acercarte y consultar la ficha del componente.</div>
-   </div>
+    <div class="explorer-hint">Un clic acerca la vista; otro clic en la misma pieza la restablece. La ficha es flotante.</div>
    <div class="part-modal" id="partModal" role="region" aria-labelledby="partModalTitle" aria-hidden="true">
     <div class="part-empty" id="partEmpty"><span style="font-size:32px">🔎</span><strong>Selecciona un componente</strong><span>La ficha aparecerá aquí mientras mantienes visible el hardware.</span></div>
-    <div class="part-dialog" id="partDialog" hidden><div class="part-dialog-head"><div><div class="part-kicker">Ficha técnica interactiva</div><h3 id="partModalTitle">Componente</h3></div><button class="part-close" id="closePartModal" type="button" aria-label="Ocultar información">×</button></div>
-     <div class="part-section"><b>Función</b><div id="modalFunction"></div></div><div class="part-section"><b>Características y conexiones</b><div id="modalFeatures"></div></div><div class="part-section"><b>Qué revisar en mantenimiento</b><div id="modalInspection"></div></div><div class="part-section"><b>Fallas o síntomas frecuentes</b><div id="modalFaults"></div></div><div class="part-foot" id="modalProgress"></div>
+    <div class="part-dialog" id="partDialog" hidden><div class="part-dialog-head"><div><div class="part-kicker">Componente seleccionado</div><h3 id="partModalTitle">Componente</h3></div><button class="part-close" id="closePartModal" type="button" aria-label="Ocultar información">×</button></div>
+     <div class="part-summary" id="modalSummary"></div><button class="part-more" id="partMore" type="button" aria-expanded="false">Ver descripción completa +</button>
+     <div class="part-details" id="partDetails" hidden><div class="part-section"><b>Función</b><div id="modalFunction"></div></div><div class="part-section"><b>Características y conexiones</b><div id="modalFeatures"></div></div><div class="part-section"><b>Qué revisar en mantenimiento</b><div id="modalInspection"></div></div><div class="part-section"><b>Fallas o síntomas frecuentes</b><div id="modalFaults"></div></div><div class="part-foot" id="modalProgress"></div></div>
     </div>
-   </div></div>
+   </div>
+   </div>
    <div class="component-picks" id="partButtons">
     <button data-part-button="Placa base">Placa base<span>Interconexión</span></button>
     <button data-part-button="Procesador">Procesador<span>Cálculo</span></button>
@@ -345,16 +352,23 @@ const partData={
  "Chasis":{f:"Es la estructura que sostiene y protege los componentes y define el espacio y recorrido del flujo de aire.",c:"Incluye bandeja de placa, bahías, ranuras de expansión, filtros, paneles, ventiladores y puertos frontales.",i:"Limpia filtros y rejillas, verifica separadores correctos, tornillos, bordes, cableado y espacio libre para ventilación.",falla:"Vibraciones, ruido, temperaturas altas por mala circulación, puertos frontales sueltos o cortocircuitos por montaje incorrecto."}
 };
 const partCoords={"Placa base":[54,48],"Procesador":[48,28],"RAM":[63,29],"Ventilador":[28,28],"SSD":[48,47],"Fuente":[39,84],"Tarjeta gráfica":[57,58],"Ranuras PCI / PCIe":[39,69],"Chip BIOS/UEFI":[60,70],"Conector de energía":[69,36],"Chasis":[84,53]};
-function closePartModal(){const m=$("#partModal");m.classList.remove("open");m.setAttribute("aria-hidden","true");$("#partDialog").hidden=true;$("#partEmpty").hidden=false;}
-function selectPart(name){const d=partData[name];if(!d)return;labLog({tipo:"Exploración",actividad:"Explorador de componentes",pregunta:"Componente consultado",seleccionada:name,resultado:"Consultado"});state.exploredParts=state.exploredParts||[];if(!state.exploredParts.includes(name)){state.exploredParts.push(name);save()}$$('[data-part-button]').forEach(b=>b.classList.toggle('active',b.dataset.partButton===name));
- const [x,y]=partCoords[name];const stage=$("#photoStage"),explorer=$("#photoExplorer");stage.style.setProperty('--zoom','1.72');stage.style.setProperty('--zoom-x',x+'%');stage.style.setProperty('--zoom-y',y+'%');
- $("#partModalTitle").textContent=name;$("#modalFunction").textContent=d.f;$("#modalFeatures").textContent=d.c;$("#modalInspection").textContent=d.i;$("#modalFaults").textContent=d.falla;$("#modalProgress").textContent=`Componentes consultados: ${(state.exploredParts||[]).length} de 11 · La ficha es informativa; consulta siempre el manual del fabricante.`;
- const m=$("#partModal");m.classList.add("open");m.setAttribute("aria-hidden","false");$("#partEmpty").hidden=true;$("#partDialog").hidden=false;}
+let activePartName=null;
+function updateCallout(){const explorer=$("#photoExplorer"),card=$("#partModal"),target=$(`.hotspot[data-part-button="${CSS.escape(activePartName||"")}"]`);if(!activePartName||!card.classList.contains("open")||!target)return;const er=explorer.getBoundingClientRect(),tr=target.getBoundingClientRect(),cr=card.getBoundingClientRect();const x1=tr.left+tr.width/2-er.left,y1=tr.top+tr.height/2-er.top;const x2=(cr.left>tr.left?cr.left:cr.right)-er.left,y2=cr.top+Math.min(42,cr.height/2)-er.top;const line=$("#calloutLine"),dot=$("#calloutDot");line.setAttribute("x1",x1);line.setAttribute("y1",y1);line.setAttribute("x2",x2);line.setAttribute("y2",y2);dot.setAttribute("cx",x1);dot.setAttribute("cy",y1);}
+function resetHardwareZoom(){const stage=$("#photoStage");stage.style.setProperty('--zoom','1');stage.style.setProperty('--zoom-x','50%');stage.style.setProperty('--zoom-y','50%');$$('.hotspot').forEach(b=>b.classList.remove('active'));$$('[data-part-button]').forEach(b=>b.classList.remove('active'));activePartName=null;$("#calloutLines").style.display="none";$("#partDialog").classList.remove("expanded");$("#partDetails").hidden=true;$("#partMore").textContent="Ver descripción completa +";$("#partMore").setAttribute("aria-expanded","false");}
+function closePartModal(){const m=$("#partModal");m.classList.remove("open");m.setAttribute("aria-hidden","true");$("#partDialog").hidden=true;$("#partEmpty").hidden=false;$("#calloutLines").style.display="none";}
+function selectPart(name){const d=partData[name];if(!d)return;
+ if(activePartName===name){resetHardwareZoom();closePartModal();return;}
+ activePartName=name;labLog({tipo:"Exploración",actividad:"Explorador de componentes",pregunta:"Componente consultado",seleccionada:name,resultado:"Consultado"});state.exploredParts=state.exploredParts||[];if(!state.exploredParts.includes(name)){state.exploredParts.push(name);save()}$$('[data-part-button]').forEach(b=>b.classList.toggle('active',b.dataset.partButton===name));
+ const [x,y]=partCoords[name];const stage=$("#photoStage");stage.style.setProperty('--zoom','1.72');stage.style.setProperty('--zoom-x',x+'%');stage.style.setProperty('--zoom-y',y+'%');
+ $("#partModalTitle").textContent=name;$("#modalSummary").textContent=d.f;$("#modalFunction").textContent=d.f;$("#modalFeatures").textContent=d.c;$("#modalInspection").textContent=d.i;$("#modalFaults").textContent=d.falla;$("#modalProgress").textContent=`Componentes consultados: ${(state.exploredParts||[]).length} de 11 · Consulta siempre el manual del fabricante.`;
+ $("#partDialog").classList.remove("expanded");$("#partDetails").hidden=true;$("#partMore").textContent="Ver descripción completa +";$("#partMore").setAttribute("aria-expanded","false");const m=$("#partModal");m.classList.add("open");m.setAttribute("aria-hidden","false");$("#partEmpty").hidden=true;$("#partDialog").hidden=false;$("#calloutLines").style.display="block";requestAnimationFrame(()=>requestAnimationFrame(updateCallout));}
 $$("[data-part-button]").forEach(b=>b.addEventListener("click",()=>selectPart(b.dataset.partButton)));
 $("#closePartModal").addEventListener("click",closePartModal);
-$("#zoomReset").addEventListener("click",()=>{const stage=$("#photoStage");stage.style.setProperty('--zoom','1');stage.style.setProperty('--zoom-x','50%');stage.style.setProperty('--zoom-y','50%');$$('.hotspot').forEach(b=>b.classList.remove('active'))});
+$("#partMore").addEventListener("click",()=>{const details=$("#partDetails"),open=details.hidden;details.hidden=!open;$("#partDialog").classList.toggle("expanded",open);$("#partMore").textContent=open?"Ocultar descripción −":"Ver descripción completa +";$("#partMore").setAttribute("aria-expanded",String(open));requestAnimationFrame(updateCallout)});
+window.addEventListener("resize",()=>requestAnimationFrame(updateCallout));
+$("#zoomReset").addEventListener("click",()=>{resetHardwareZoom();closePartModal()});
 $("#fullscreenExplorer").addEventListener("click",async()=>{const el=$("#photoExplorer");try{if(!document.fullscreenElement){await el.requestFullscreen();$("#fullscreenExplorer").textContent='⤢ Salir de pantalla completa'}else{await document.exitFullscreen()}}catch(e){toast('La pantalla completa no está disponible en este navegador.')}});
-document.addEventListener('fullscreenchange',()=>{$("#fullscreenExplorer").textContent=document.fullscreenElement?'⤢ Salir de pantalla completa':'⛶ Pantalla completa'});
+document.addEventListener('fullscreenchange',()=>{$("#fullscreenExplorer").textContent=document.fullscreenElement?'⤢ Salir de pantalla completa':'⛶ Pantalla completa';requestAnimationFrame(()=>requestAnimationFrame(updateCallout))});
 $("#zoomReset").click();
 
 const maintenance=[
