@@ -94,20 +94,39 @@ body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linea
 .quiz-progress{height:7px;background:#eae6fa;border-radius:99px;overflow:hidden;margin:12px 0}.quiz-progress span{display:block;height:100%;background:linear-gradient(90deg,#6C4CF1,#19C3A0);border-radius:99px}
 
 
-/* Explorador fotográfico didáctico: fotografía realista + puntos interactivos */
+/* Explorador didáctico con zoom, puntos y modo pantalla completa */
 .photo-explorer{position:relative;padding:0!important;overflow:hidden;isolation:isolate;background:#ecebfa!important;border:1px solid #d8d2f5!important;box-shadow:0 12px 30px rgba(31,27,75,.14)!important;aspect-ratio:16/9;min-height:260px}
-.photo-explorer>img{display:block;width:100%;height:100%;min-height:260px;object-fit:cover;object-position:center;filter:saturate(1.06) contrast(1.03)}
-.photo-explorer:after{content:"";position:absolute;inset:55% 0 0;z-index:0;pointer-events:none;background:linear-gradient(transparent,rgba(12,17,32,.42))}
-.hotspot{position:absolute;z-index:2;display:flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.85);border-radius:999px;background:rgba(30,27,75,.88);color:white;font-size:clamp(9px,1.1vw,12px);font-weight:800;line-height:1.1;box-shadow:0 4px 14px rgba(10,15,30,.28);backdrop-filter:blur(8px);transform:translate(-50%,-50%);transition:transform .18s,box-shadow .18s,background .18s;white-space:nowrap}
-.hotspot span{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:#19C3A0;box-shadow:0 0 0 4px rgba(25,195,160,.2)}
-.hotspot:hover,.hotspot.active{transform:translate(-50%,-50%) scale(1.08);background:#6C4CF1;box-shadow:0 0 0 3px rgba(255,255,255,.75),0 7px 20px rgba(31,27,75,.34)}
-.hotspot.active span{background:#FFB020;box-shadow:0 0 0 4px rgba(255,176,32,.25)}
-.hs-board{left:52%;top:48%}.hs-cpu{left:43%;top:27%}.hs-ram{left:58%;top:30%}.hs-fan{left:31%;top:28%}.hs-ssd{left:56%;top:49%}.hs-psu{left:36%;top:81%}
-.photo-caption{position:absolute;z-index:1;left:12px;bottom:10px;display:flex;flex-direction:column;gap:1px;padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.9);color:#1E1B4B;box-shadow:0 3px 12px rgba(20,20,60,.12);font-size:11px;max-width:calc(100% - 24px)}
-.photo-caption span{color:#5B5886;font-size:10px}
-.component-picks button{min-height:62px}
+.photo-stage{position:absolute;inset:0;transform:scale(var(--zoom,1));transform-origin:var(--zoom-x,50%) var(--zoom-y,50%);transition:transform .48s cubic-bezier(.2,.8,.2,1)}
+.photo-stage>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.hotspot{position:absolute;z-index:2;display:flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid rgba(255,255,255,.9);border-radius:999px;background:rgba(30,27,75,.9);color:white;font-size:clamp(9px,.95vw,12px);font-weight:800;line-height:1.1;box-shadow:0 4px 14px rgba(10,15,30,.28);backdrop-filter:blur(8px);transform:translate(-50%,-50%);transition:transform .18s,box-shadow .18s,background .18s;white-space:nowrap;cursor:pointer}
+.hotspot span{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#19C3A0;box-shadow:0 0 0 4px rgba(25,195,160,.2)}
+.hotspot:hover,.hotspot.active{transform:translate(-50%,-50%) scale(1.1);background:#6C4CF1;box-shadow:0 0 0 3px rgba(255,255,255,.8),0 7px 20px rgba(31,27,75,.34)}
+.hotspot.active span{background:#FFB020}
+/* Coordenadas sobre la fotografía: etiquetas separadas para evitar solapamientos */
+.hs-board{left:54%;top:48%}.hs-cpu{left:48%;top:28%}.hs-ram{left:63%;top:29%}.hs-fan{left:28%;top:28%}.hs-ssd{left:48%;top:47%}.hs-psu{left:39%;top:84%}
+.hs-gpu{left:57%;top:58%}.hs-pcie{left:39%;top:69%}.hs-bios{left:60%;top:70%}.hs-power{left:69%;top:36%}.hs-case{left:84%;top:53%}
+.explorer-tools{position:absolute;z-index:5;top:12px;right:12px;display:flex;gap:8px}
+.explorer-tools button{border:1px solid rgba(255,255,255,.9);border-radius:11px;background:rgba(30,27,75,.9);color:#fff;padding:9px 11px;font-weight:800;box-shadow:0 4px 12px #1113;cursor:pointer}
+.explorer-tools button:hover{background:#6C4CF1}
+.explorer-hint{position:absolute;z-index:4;left:12px;bottom:12px;max-width:calc(100% - 24px);padding:8px 12px;border-radius:11px;background:rgba(255,255,255,.93);color:#37316e;font-size:12px;font-weight:700;box-shadow:0 3px 12px #14143c22}
+.photo-explorer:fullscreen{width:100vw;height:100vh;max-height:none;aspect-ratio:auto;background:#15152a!important;border:0!important;border-radius:0!important;display:flex;align-items:center;justify-content:center}
+.photo-explorer:fullscreen .photo-stage{inset:4vh 3vw}
+.photo-explorer:fullscreen .photo-stage>img{object-fit:contain}
+.component-picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin-top:13px}
+.component-picks button{min-height:58px}
 .component-picks button.active{box-shadow:inset 0 0 0 1px #19C3A0,0 5px 14px rgba(25,195,160,.12)}
-@media(max-width:600px){.photo-explorer{aspect-ratio:4/3}.photo-explorer>img{object-fit:cover}.hotspot{padding:6px 7px;font-size:9px;gap:5px}.hotspot span{width:7px;height:7px;flex-basis:7px}.hs-board{left:56%;top:50%}.hs-cpu{left:43%;top:27%}.hs-ram{left:65%;top:31%}.hs-fan{left:27%;top:28%}.hs-ssd{left:61%;top:52%}.hs-psu{left:35%;top:81%}.photo-caption{font-size:10px;bottom:6px;left:6px}.photo-caption span{font-size:9px}}
+.part-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(20,19,48,.62);backdrop-filter:blur(5px)}
+.part-modal.open{display:flex}
+.part-dialog{width:min(620px,100%);max-height:min(82vh,760px);overflow:auto;background:#fff;border:1px solid #e4e0fa;border-radius:22px;box-shadow:0 24px 80px #1115;padding:22px;color:#25224d;animation:partIn .22s ease-out}
+@keyframes partIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.part-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.part-dialog h3{font-size:22px;margin:0;color:#302b66}.part-dialog .part-kicker{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#77739b;font-weight:900;margin-bottom:5px}
+.part-dialog .part-close{border:0;border-radius:10px;background:#f0ecff;color:#4c438f;width:38px;height:38px;font-size:22px;cursor:pointer}
+.part-dialog .part-section{padding:12px 14px;margin:10px 0;border-radius:13px;background:#f7f5ff;border:1px solid #ebe7ff;line-height:1.55}
+.part-dialog .part-section b{display:block;color:#5546b1;margin-bottom:4px}
+.part-dialog .part-foot{font-size:12px;color:#77739b;margin-top:14px}
+@media(max-width:600px){.photo-explorer{aspect-ratio:16/9;min-height:220px}.hotspot{padding:5px 6px;font-size:8px;gap:4px}.hotspot span{width:6px;height:6px;flex-basis:6px}.explorer-tools{top:7px;right:7px;gap:5px}.explorer-tools button{font-size:10px;padding:7px 8px}.explorer-hint{font-size:10px;left:7px;bottom:7px}.part-dialog{padding:17px;border-radius:18px}}
+
 
 </style>
 </head>
@@ -149,25 +168,37 @@ body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linea
  <div class="grid">
   <article class="card">
    <div class="row"><h3>Explorador visual de hardware</h3><span class="pill">Selecciona una pieza</span></div><p class="desc">Fotografía detallada del interior de un computador. Selecciona los marcadores o las tarjetas para identificar cada componente, conocer su función y aprender qué revisar durante el mantenimiento.</p>
-   <div class="diagram photo-explorer" aria-label="Explorador fotográfico interactivo del interior de un computador">
-    <img src="tech-lab-pc-realista.png" alt="Computador de escritorio abierto: se observan placa base, procesador con disipador, memorias RAM, ventiladores, unidad SSD y fuente de alimentación" loading="eager">
-    <button class="hotspot hs-board" type="button" data-part-button="Placa base" aria-label="Explorar placa base"><span></span>Placa base</button>
-    <button class="hotspot hs-cpu" type="button" data-part-button="Procesador" aria-label="Explorar procesador"><span></span>Procesador</button>
-    <button class="hotspot hs-ram" type="button" data-part-button="RAM" aria-label="Explorar memoria RAM"><span></span>Memoria RAM</button>
-    <button class="hotspot hs-fan" type="button" data-part-button="Ventilador" aria-label="Explorar ventilador"><span></span>Ventilador</button>
-    <button class="hotspot hs-ssd" type="button" data-part-button="SSD" aria-label="Explorar unidad SSD"><span></span>SSD</button>
-    <button class="hotspot hs-psu" type="button" data-part-button="Fuente" aria-label="Explorar fuente de alimentación"><span></span>Fuente</button>
-    <div class="photo-caption"><b>Vista realista del interior</b><span>Selecciona los marcadores para identificar cada pieza</span></div>
+   <div class="diagram photo-explorer" id="photoExplorer" aria-label="Explorador interactivo del hardware">
+    <div class="photo-stage" id="photoStage">
+     <img src="tech-lab-pc-realista.png" alt="Interior de un computador de escritorio con placa base, procesador, RAM, tarjeta gráfica, almacenamiento y fuente" loading="eager">
+     <button class="hotspot hs-board" type="button" data-part-button="Placa base"><span></span>Placa base</button>
+     <button class="hotspot hs-cpu" type="button" data-part-button="Procesador"><span></span>CPU</button>
+     <button class="hotspot hs-ram" type="button" data-part-button="RAM"><span></span>RAM</button>
+     <button class="hotspot hs-fan" type="button" data-part-button="Ventilador"><span></span>Ventilador</button>
+     <button class="hotspot hs-ssd" type="button" data-part-button="SSD"><span></span>SSD M.2</button>
+     <button class="hotspot hs-psu" type="button" data-part-button="Fuente"><span></span>Fuente</button>
+     <button class="hotspot hs-gpu" type="button" data-part-button="Tarjeta gráfica"><span></span>GPU</button>
+     <button class="hotspot hs-pcie" type="button" data-part-button="Ranuras PCI / PCIe"><span></span>PCIe</button>
+     <button class="hotspot hs-bios" type="button" data-part-button="Chip BIOS/UEFI"><span></span>BIOS</button>
+     <button class="hotspot hs-power" type="button" data-part-button="Conector de energía"><span></span>Energía</button>
+     <button class="hotspot hs-case" type="button" data-part-button="Chasis"><span></span>Chasis</button>
+    </div>
+    <div class="explorer-tools"><button type="button" id="zoomReset" title="Restablecer vista">↺ Vista</button><button type="button" id="fullscreenExplorer" title="Ampliar a pantalla completa">⛶ Pantalla completa</button></div>
+    <div class="explorer-hint">Selecciona un marcador para acercarte y consultar la ficha del componente.</div>
    </div>
    <div class="component-picks" id="partButtons">
-    <button class="active" data-part-button="Placa base">Placa base<span>Interconexión</span></button>
+    <button data-part-button="Placa base">Placa base<span>Interconexión</span></button>
     <button data-part-button="Procesador">Procesador<span>Cálculo</span></button>
     <button data-part-button="RAM">Memoria RAM<span>Datos temporales</span></button>
-    <button data-part-button="Ventilador">Ventilación<span>Flujo de aire</span></button>
-    <button data-part-button="SSD">SSD<span>Almacenamiento</span></button>
-    <button data-part-button="Fuente">Fuente<span>Alimentación</span></button>
+    <button data-part-button="Ventilador">Ventilador<span>Refrigeración</span></button>
+    <button data-part-button="SSD">SSD M.2<span>Almacenamiento</span></button>
+    <button data-part-button="Tarjeta gráfica">Tarjeta gráfica<span>Procesamiento gráfico</span></button>
+    <button data-part-button="Ranuras PCI / PCIe">Ranuras PCI / PCIe<span>Expansión</span></button>
+    <button data-part-button="Chip BIOS/UEFI">Chip BIOS / UEFI<span>Firmware</span></button>
+    <button data-part-button="Conector de energía">Conector de energía<span>Alimentación ATX</span></button>
+    <button data-part-button="Fuente">Fuente de alimentación<span>Conversión eléctrica</span></button>
+    <button data-part-button="Chasis">Chasis / gabinete<span>Estructura y flujo de aire</span></button>
    </div>
-   <div class="info" id="partInfo" aria-live="polite"></div>
   </article>
   <aside class="stack">
    <div class="card"><h3>Consejo del instructor</h3><p class="desc">Antes de desmontar, fotografía las conexiones y etiqueta los cables. Esto facilita el montaje y reduce errores.</p></div>
@@ -175,6 +206,16 @@ body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linea
   </aside>
  </div>
 </section>
+
+<div class="part-modal" id="partModal" role="dialog" aria-modal="true" aria-labelledby="partModalTitle" aria-hidden="true">
+ <div class="part-dialog"><div class="part-dialog-head"><div><div class="part-kicker">Ficha técnica interactiva</div><h3 id="partModalTitle">Componente</h3></div><button class="part-close" id="closePartModal" type="button" aria-label="Cerrar">×</button></div>
+  <div class="part-section"><b>Función</b><div id="modalFunction"></div></div>
+  <div class="part-section"><b>Características y conexiones</b><div id="modalFeatures"></div></div>
+  <div class="part-section"><b>Qué revisar en mantenimiento</b><div id="modalInspection"></div></div>
+  <div class="part-section"><b>Fallas o síntomas frecuentes</b><div id="modalFaults"></div></div>
+  <div class="part-foot" id="modalProgress"></div>
+ </div>
+</div>
 
 <section class="page" id="mantenimiento">
  <div class="grid">
@@ -280,23 +321,39 @@ function save(){localStorage.setItem(STORE,JSON.stringify(state));updateDashboar
 function toast(msg){const t=$("#toast");t.textContent=msg;t.style.display="block";clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.style.display="none",2400)}
 $("#studentName").value=state.name||"";$("#studentName").addEventListener("input",e=>{state.name=e.target.value;$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();save()});$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();
 const flowSteps=[{id:"hardware",name:"Exploración de hardware"},{id:"mantenimiento",name:"Mantenimiento preventivo"},{id:"diagnostico",name:"Diagnóstico de fallas"},{id:"rendimiento",name:"Simulador de rendimiento"},{id:"evaluacion",name:"Evaluación final"},{id:"informe",name:"Informe de aprendizaje"}];
-function stepDone(id){if(id==="hardware")return ["Placa base","Procesador","RAM","Ventilador","SSD","Fuente"].every(x=>(state.exploredParts||[]).includes(x));if(id==="mantenimiento")return state.checks.every(Boolean);if(id==="diagnostico")return state.cases.every(Boolean);if(id==="rendimiento")return ["cpuRange","ramRange","tempRange","diskRange"].every(x=>(state.performanceTouched||[]).includes(x));if(id==="evaluacion")return state.quizScore!==null&&state.quizScore>=80;return id==="informe"}
+function stepDone(id){if(id==="hardware")return ["Placa base","Procesador","RAM","Ventilador","SSD","Tarjeta gráfica","Ranuras PCI / PCIe","Chip BIOS/UEFI","Conector de energía","Fuente","Chasis"].every(x=>(state.exploredParts||[]).includes(x));if(id==="mantenimiento")return state.checks.every(Boolean);if(id==="diagnostico")return state.cases.every(Boolean);if(id==="rendimiento")return ["cpuRange","ramRange","tempRange","diskRange"].every(x=>(state.performanceTouched||[]).includes(x));if(id==="evaluacion")return state.quizScore!==null&&state.quizScore>=80;return id==="informe"}
 function stepUnlocked(id){const i=flowSteps.findIndex(x=>x.id===id);return i<=0||stepDone(flowSteps[i-1].id)}
 function go(id){if(!stepUnlocked(id)){const i=flowSteps.findIndex(x=>x.id===id);toast("Completa primero: "+(flowSteps[Math.max(0,i-1)]?.name||"la actividad anterior"));return}$$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));$$('.page').forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='informe')renderReport()}
 function refreshFlowUI(){const seq=flowSteps.map(x=>x.id);$$('.nav button').forEach(b=>{const id=b.dataset.page;if(id)b.disabled=!stepUnlocked(id)});$$('[data-go]').forEach(b=>{b.disabled=!stepUnlocked(b.dataset.go)});flowSteps.forEach((s,i)=>{const page=document.getElementById(s.id);if(!page)return;let box=page.querySelector('.flow-control');if(!box){box=document.createElement('div');box.className='flow-control';page.appendChild(box)}const done=stepDone(s.id),next=flowSteps[i+1];box.innerHTML=`<p><strong>${done?'Actividad completada':'Actividad en progreso'}</strong><br>${done?(next?'Ya puedes continuar con la siguiente sección.':'Has completado el recorrido.'):flowHint(s.id)}</p>${next?`<button class="btn" data-flow-next="${next.id}" ${done?'':'disabled'}>${done?'Continuar: '+next.name:'Completa la actividad para continuar →'}</button>`:`<button class="btn" data-flow-next="informe" ${done?'':'disabled'}>Ver informe final</button>`}`});$$('[data-flow-next]').forEach(b=>b.onclick=()=>go(b.dataset.flowNext))}
-function flowHint(id){return ({hardware:'Explora los seis componentes del diagrama y consulta su función.',mantenimiento:'Marca las ocho tareas del checklist después de revisar cada paso.',diagnostico:'Resuelve correctamente los tres casos de diagnóstico.',rendimiento:'Ajusta los cuatro indicadores del simulador y observa su interpretación.',evaluacion:'Responde las cinco preguntas y alcanza al menos 80%.'})[id]||'Completa esta actividad.'}
+function flowHint(id){return ({hardware:'Explora los once componentes del diagrama y consulta sus fichas técnicas.',mantenimiento:'Marca las ocho tareas del checklist después de revisar cada paso.',diagnostico:'Resuelve correctamente los tres casos de diagnóstico.',rendimiento:'Ajusta los cuatro indicadores del simulador y observa su interpretación.',evaluacion:'Responde las cinco preguntas y alcanza al menos 80%.'})[id]||'Completa esta actividad.'}
 $$('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));$$('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
-function updateDashboard(){let tasks=state.checks.filter(Boolean).length,cases=state.cases.filter(Boolean).length,score=state.quizScore;$('#doneTasks').textContent=tasks+'/8';$('#caseDone').textContent=cases+'/3';$('#quizScore').textContent=score===null?'—':score+'%';let points=(state.exploredParts||[]).length/6*15+tasks/8*25+cases/3*25+(state.performanceTouched||[]).length/4*15+(score===null?0:score/100*20);$('#overallPercent').textContent=Math.round(points)+'%';refreshFlowUI()}
+function updateDashboard(){let tasks=state.checks.filter(Boolean).length,cases=state.cases.filter(Boolean).length,score=state.quizScore;$('#doneTasks').textContent=tasks+'/8';$('#caseDone').textContent=cases+'/3';$('#quizScore').textContent=score===null?'—':score+'%';let points=(state.exploredParts||[]).length/11*15+tasks/8*25+cases/3*25+(state.performanceTouched||[]).length/4*15+(score===null?0:score/100*20);$('#overallPercent').textContent=Math.round(points)+'%';refreshFlowUI()}
 const partData={
- "Placa base":["Interconecta CPU, memoria, almacenamiento y periféricos; distribuye señales y energía entre ellos.","Inspecciona ranuras, conectores, fijaciones, corrosión y daños visibles. Consulta el manual del modelo."],
- "Procesador":["Ejecuta instrucciones y operaciones. Su rendimiento y temperatura dependen también de la refrigeración y la carga.","Comprueba montaje del disipador, ventilación y temperaturas con herramientas compatibles. No retires el disipador sin necesidad."],
- "RAM":["Mantiene temporalmente los datos y programas que el procesador necesita durante la ejecución.","Revisa fijación, compatibilidad y errores con una prueba de memoria cuando los síntomas lo indiquen."],
- "Ventilador":["Mueve el aire para ayudar a evacuar el calor y mantener un flujo adecuado dentro del equipo.","Revisa polvo, vibraciones, ruido y fijación. Durante la limpieza, inmoviliza las aspas."],
- "SSD":["Almacena sistema operativo, aplicaciones y archivos de forma persistente.","Consulta SMART, temperatura, firmware y conexión. Haz copia de seguridad antes de intervenir."],
- "Fuente":["Convierte la energía de entrada y entrega tensiones adecuadas a los componentes.","Inspecciona externamente cables, conectores, ventilación y signos de daño. Nunca abras su carcasa."]
+ "Placa base":{f:"Es la tarjeta principal que conecta y permite la comunicación entre procesador, memoria, almacenamiento y periféricos.",c:"Incluye zócalo de CPU, bancos DIMM, chipset, ranuras PCIe, conectores SATA/M.2, puertos traseros y conectores de alimentación ATX.",i:"Busca polvo, corrosión, condensadores deformados, conectores flojos y daños en pistas. Consulta el manual exacto de la placa.",falla:"No enciende, no completa POST, puertos que dejan de funcionar o detección intermitente de componentes."},
+ "Procesador":{f:"Ejecuta instrucciones y coordina operaciones del sistema. Su arquitectura, núcleos, frecuencia y caché influyen en el rendimiento.",c:"Se instala en un socket compatible (por ejemplo, LGA o AM). Requiere disipador y pasta térmica adecuada.",i:"Comprueba compatibilidad, fijación del disipador, ventilación y temperaturas bajo carga. No retires el disipador sin necesidad.",falla:"Sobrecalentamiento, apagados, reducción de frecuencia, errores de cálculo o ausencia de POST."},
+ "RAM":{f:"Almacena temporalmente los datos que CPU y aplicaciones necesitan mientras el equipo está encendido.",c:"Módulos DIMM o SO-DIMM; generaciones DDR, capacidad, frecuencia y latencias deben ser compatibles con placa y CPU.",i:"Verifica que los módulos estén bien insertados, ranuras recomendadas, limpieza de contactos según procedimiento y prueba de memoria.",falla:"Pitidos o LED de diagnóstico, reinicios, pantallas azules y errores al abrir programas."},
+ "Ventilador":{f:"Mueve aire para evacuar calor de CPU, GPU y gabinete y mantener temperaturas de operación adecuadas.",c:"Puede ser de 3 pines DC o 4 pines PWM. Importan tamaño, flujo de aire, presión estática y sentido de montaje.",i:"Retira polvo, revisa aspas, rodamientos, ruido, vibración y conexión. Inmoviliza las aspas durante la limpieza.",falla:"Ruido excesivo, vibración, giro irregular o temperaturas elevadas por flujo de aire insuficiente."},
+ "SSD":{f:"Almacena sistema operativo, aplicaciones y archivos de forma persistente sin partes móviles.",c:"Puede usar formato M.2 NVMe (PCIe) o M.2 SATA, o unidad de 2,5 pulgadas SATA. La forma M.2 no garantiza que sea NVMe.",i:"Comprueba interfaz y compatibilidad, fijación, temperatura, firmware y datos SMART. Realiza copia de seguridad antes de intervenir.",falla:"Arranque lento, unidad no detectada, errores de lectura/escritura o alertas de salud y desgaste."},
+ "Tarjeta gráfica":{f:"Procesa gráficos, vídeo y cálculos paralelos; envía la señal de imagen a los monitores.",c:"Se instala normalmente en PCI Express x16. Puede requerir conectores PCIe de 6/8 pines o 12V-2x6 y espacio físico suficiente.",i:"Revisa fijación, conectores, ventiladores, polvo, temperatura y cable de vídeo. Verifica potencia y conectores recomendados por fabricante.",falla:"Sin imagen, artefactos, cierres de juegos, ventiladores ruidosos o temperaturas elevadas."},
+ "Ranuras PCI / PCIe":{f:"Permiten ampliar el equipo con tarjetas de vídeo, red, sonido, captura y controladoras de almacenamiento.",c:"Hay tamaños físicos x1, x4, x8 y x16; las líneas eléctricas disponibles dependen de la placa y del procesador.",i:"Inspecciona pestañas, contactos, polvo y fijación. Consulta el manual para conocer ranuras compartidas y distribución de líneas.",falla:"Tarjeta no detectada, enlace negociado a menos líneas o inestabilidad por mala inserción o incompatibilidad."},
+ "Chip BIOS/UEFI":{f:"Almacena el firmware que inicializa el hardware, ejecuta el POST y entrega el control al gestor de arranque.",c:"Suele ser un chip flash SPI en la placa. La configuración UEFI también puede guardar variables en memoria no volátil.",i:"Identifica fabricante y versión desde firmware o herramienta del sistema. Actualiza solo con archivo exacto y alimentación estable.",falla:"No completa POST, pierde configuración, fecha/hora incorrectas o problemas después de una actualización fallida."},
+ "Conector de energía":{f:"Lleva alimentación desde la fuente hacia la placa y componentes mediante conectores normalizados.",c:"Incluye ATX de 24 pines, EPS de 4/8 pines para CPU y conectores PCIe/12V-2x6 para GPU. No son intercambiables.",i:"Comprueba que cada conector esté totalmente insertado, sin pines quemados, deformados o cables tensos. Nunca fuerces un conector.",falla:"Apagados, reinicios bajo carga, olor a quemado o ausencia de encendido por conexión incorrecta."},
+ "Fuente":{f:"Convierte la corriente alterna de entrada en tensiones continuas reguladas para los componentes del computador.",c:"Se especifica por potencia, eficiencia, protecciones y conectores. La potencia requerida depende del conjunto de componentes.",i:"Inspecciona externamente cable, interruptor, rejilla y conectores. No abras la carcasa: puede conservar tensiones peligrosas.",falla:"No enciende, apagados bajo carga, ventilador anómalo o inestabilidad eléctrica."},
+ "Chasis":{f:"Es la estructura que sostiene y protege los componentes y define el espacio y recorrido del flujo de aire.",c:"Incluye bandeja de placa, bahías, ranuras de expansión, filtros, paneles, ventiladores y puertos frontales.",i:"Limpia filtros y rejillas, verifica separadores correctos, tornillos, bordes, cableado y espacio libre para ventilación.",falla:"Vibraciones, ruido, temperaturas altas por mala circulación, puertos frontales sueltos o cortocircuitos por montaje incorrecto."}
 };
-function selectPart(name){labLog({tipo:"Exploración",actividad:"Explorador de componentes",pregunta:"Componente consultado",seleccionada:name,resultado:"Consultado"});state.exploredParts=state.exploredParts||[];if(!state.exploredParts.includes(name)){state.exploredParts.push(name);save()}$$('[data-part-button]').forEach(b=>b.classList.toggle('active',b.dataset.partButton===name));const d=partData[name];$('#partInfo').innerHTML=`<h4>${name}</h4><p><b>Función:</b> ${d[0]}</p><p><b>Inspección:</b> ${d[1]}</p><p class="reading">Componentes consultados: ${(state.exploredParts||[]).length} de 6</p>`}
-$$("[data-part-button]").forEach(b=>b.addEventListener("click",()=>selectPart(b.dataset.partButton)));selectPart("Placa base");
+const partCoords={"Placa base":[54,48],"Procesador":[48,28],"RAM":[63,29],"Ventilador":[28,28],"SSD":[48,47],"Fuente":[39,84],"Tarjeta gráfica":[57,58],"Ranuras PCI / PCIe":[39,69],"Chip BIOS/UEFI":[60,70],"Conector de energía":[69,36],"Chasis":[84,53]};
+function closePartModal(){const m=$("#partModal");m.classList.remove("open");m.setAttribute("aria-hidden","true");}
+function selectPart(name){const d=partData[name];if(!d)return;labLog({tipo:"Exploración",actividad:"Explorador de componentes",pregunta:"Componente consultado",seleccionada:name,resultado:"Consultado"});state.exploredParts=state.exploredParts||[];if(!state.exploredParts.includes(name)){state.exploredParts.push(name);save()}$$('[data-part-button]').forEach(b=>b.classList.toggle('active',b.dataset.partButton===name));
+ const [x,y]=partCoords[name];const stage=$("#photoStage"),explorer=$("#photoExplorer");stage.style.setProperty('--zoom','1.72');stage.style.setProperty('--zoom-x',x+'%');stage.style.setProperty('--zoom-y',y+'%');
+ $("#partModalTitle").textContent=name;$("#modalFunction").textContent=d.f;$("#modalFeatures").textContent=d.c;$("#modalInspection").textContent=d.i;$("#modalFaults").textContent=d.falla;$("#modalProgress").textContent=`Componentes consultados: ${(state.exploredParts||[]).length} de 11 · La ficha es informativa; consulta siempre el manual del fabricante.`;
+ const m=$("#partModal");m.classList.add("open");m.setAttribute("aria-hidden","false");$("#closePartModal").focus();}
+$$("[data-part-button]").forEach(b=>b.addEventListener("click",()=>selectPart(b.dataset.partButton)));
+$("#closePartModal").addEventListener("click",closePartModal);$("#partModal").addEventListener("click",e=>{if(e.target.id==="partModal")closePartModal()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closePartModal()});
+$("#zoomReset").addEventListener("click",()=>{const stage=$("#photoStage");stage.style.setProperty('--zoom','1');stage.style.setProperty('--zoom-x','50%');stage.style.setProperty('--zoom-y','50%');$$('.hotspot').forEach(b=>b.classList.remove('active'))});
+$("#fullscreenExplorer").addEventListener("click",async()=>{const el=$("#photoExplorer");try{if(!document.fullscreenElement){await el.requestFullscreen();$("#fullscreenExplorer").textContent='⤢ Salir de pantalla completa'}else{await document.exitFullscreen()}}catch(e){toast('La pantalla completa no está disponible en este navegador.')}});
+document.addEventListener('fullscreenchange',()=>{$("#fullscreenExplorer").textContent=document.fullscreenElement?'⤢ Salir de pantalla completa':'⛶ Pantalla completa'});
+$("#zoomReset").click();
+
 const maintenance=[
  {title:"1. Preparar y asegurar el área",lead:"Primero controla los riesgos eléctricos y electrostáticos.",items:["Apaga completamente el computador y desconecta la alimentación.","Desconecta periféricos y accesorios externos.","En portátiles, consulta el manual para aislar la batería interna.","Usa protección ESD y organiza herramientas y tornillos."],why:"La preparación reduce el riesgo de descarga eléctrica, cortocircuitos, daños electrostáticos y pérdida de piezas.",alert:"Nunca abras una fuente de alimentación. Sus condensadores pueden conservar tensiones peligrosas incluso desconectada."},
  {title:"2. Inspeccionar antes de limpiar",lead:"Observa, registra y compara el estado inicial.",items:["Busca acumulaciones de polvo en filtros, ventiladores y disipadores.","Revisa cables, conectores, puertos y fijaciones.","Busca corrosión, líquidos, olor a quemado o componentes deformados.","Registra síntomas reportados por el usuario y toma fotografías si corresponde."],why:"Inspeccionar antes evita pasar por alto una avería existente o confundirla con un problema causado durante el servicio.",alert:"Si detectas líquido, olor a quemado o daño eléctrico, no energices el equipo. Documenta el hallazgo."},
@@ -325,7 +382,7 @@ const questions=[
 ];
 function renderQuiz(){const area=$('#quizArea');const i=Math.min(Math.max(0,+state.quizIndex||0),questions.length-1),q=questions[i],chosen=state.quizAnswers[i];area.innerHTML=`<div class="case"><div class="row"><span class="pill">Pregunta ${i+1} de ${questions.length}</span><span class="reading">${Object.keys(state.quizAnswers).length} respondidas</span></div><div class="quiz-progress"><span style="width:${(i+1)/questions.length*100}%"></span></div><b>${q.q}</b><div class="quiz-list" style="margin-top:12px">${q.o.map((o,j)=>`<button class="choice ${chosen===j?'selected':''}" data-q="${i}" data-v="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}</div><div class="btnrow" style="justify-content:space-between"><button class="btn ghost" id="quizPrev" ${i===0?'disabled':''}>← Anterior</button><button class="btn" id="quizNext" ${chosen===undefined?'disabled':''}>${i===questions.length-1?'Ir a calificar':'Siguiente pregunta →'}</button></div></div>`;$('#submitQuiz').hidden=i!==questions.length-1;$('#submitQuiz').textContent='Finalizar y calificar';$$('[data-q]').forEach(b=>b.addEventListener('click',()=>{state.quizAnswers[i]=+b.dataset.v;state.quizScore=null;save();renderQuiz();$('#quizResult').hidden=true}));$('#quizPrev').onclick=()=>{state.quizIndex=Math.max(0,i-1);save();renderQuiz()};$('#quizNext').onclick=()=>{if(state.quizAnswers[i]===undefined)return;if(i===questions.length-1){$('#submitQuiz').scrollIntoView({behavior:'smooth',block:'center'});$('#submitQuiz').focus()}else{state.quizIndex=i+1;save();renderQuiz()}}}$("#submitQuiz").addEventListener("click",()=>{const answered=questions.every((q,i)=>state.quizAnswers[i]!==undefined);if(!answered){toast("Responde las cinco preguntas para calificar.");return}let score=0;questions.forEach((q,i)=>{if(state.quizAnswers[i]===q.a)score++});state.quizScore=Math.round(score/questions.length*100);save();questions.forEach((q,i)=>labLog({tipo:"Evaluación",actividad:"Cuestionario Tech Lab",pregunta:q.q,seleccionada:q.o[state.quizAnswers[i]],correcta:q.o[q.a],resultado:state.quizAnswers[i]===q.a?"Correcta":"Incorrecta"}));labLog({tipo:"Resultado",actividad:"Cuestionario Tech Lab",pregunta:"Calificación final",seleccionada:state.quizScore+"%",correcta:"100%",resultado:score+" de "+questions.length});const result=$("#quizResult");result.hidden=false;result.innerHTML=`<b>Resultado: ${score} de ${questions.length} (${state.quizScore}%).</b><br>${questions.map((q,i)=>`<p style="margin:8px 0"><b>${i+1}. ${state.quizAnswers[i]===q.a?"Correcto":"Para repasar"}:</b> ${q.e}</p>`).join("")}`;renderReport()});
 $("#retryQuiz").addEventListener("click",()=>{state.quizAnswers={};state.quizScore=null;state.quizIndex=0;save();renderQuiz();$("#quizResult").hidden=true;toast("Evaluación reiniciada")});renderQuiz();
-function reportData(){return {laboratorio:"Tech Lab",alumno:state.name||"Sin nombre",fecha:new Date().toLocaleString("es-CO"),checklist:{completadas:state.checks.filter(Boolean).length,total:8,detalle:state.checks},hardware:{componentesConsultados:state.exploredParts||[],total:6},casos:{resueltos:state.cases.filter(Boolean).length,total:3,detalle:state.cases},simulador:{indicadoresAjustados:state.performanceTouched||[],total:4},evaluacion:{calificacion:state.quizScore, respuestas:state.quizAnswers}}}
+function reportData(){return {laboratorio:"Tech Lab",alumno:state.name||"Sin nombre",fecha:new Date().toLocaleString("es-CO"),checklist:{completadas:state.checks.filter(Boolean).length,total:8,detalle:state.checks},hardware:{componentesConsultados:state.exploredParts||[],total:11},casos:{resueltos:state.cases.filter(Boolean).length,total:3,detalle:state.cases},simulador:{indicadoresAjustados:state.performanceTouched||[],total:4},evaluacion:{calificacion:state.quizScore, respuestas:state.quizAnswers}}}
 function renderReport(){const d=reportData();$("#reportContent").innerHTML=`<div class="row"><div><span class="reading">ESTUDIANTE</span><h2 style="margin:2px 0">${escapeHtml(d.alumno)}</h2></div><span class="pill">Tech Lab</span></div><p class="reading">Generado: ${d.fecha}</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><div class="lesson-grid"><div class="lesson"><span class="reading">MANTENIMIENTO</span><b>${d.checklist.completadas}/8 tareas</b><p>Lista de comprobación</p></div><div class="lesson"><span class="reading">DIAGNÓSTICO</span><b>${d.casos.resueltos}/3 casos</b><p>Decisiones correctas</p></div><div class="lesson"><span class="reading">EVALUACIÓN</span><b>${d.evaluacion.calificacion===null?"Pendiente":d.evaluacion.calificacion+"%"}</b><p>Resultado del cuestionario</p></div><div class="lesson"><span class="reading">AVANCE GENERAL</span><b>${$("#overallPercent").textContent}</b><p>Indicador de actividades</p></div></div><p class="reading" style="margin-top:14px">Tu avance se guarda en este navegador y, cuando la plataforma reconoce tu sesión de estudiante, los eventos de las actividades se envían al registro académico del aula.</p>`}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 $("#printReport").addEventListener("click",()=>{renderReport();window.print()});$("#downloadReport").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(reportData(),null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="informe-tech-lab.json";a.click();URL.revokeObjectURL(a.href);toast("Informe descargado")});
