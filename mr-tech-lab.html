@@ -18,7 +18,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 .header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 18px;border:1px solid var(--line);border-radius:20px;background:#0b1b2cdd;box-shadow:var(--shadow);position:sticky;top:10px;z-index:10;backdrop-filter:blur(16px)}
 .brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(140deg,#58d5ed,#5477ed 58%,#a47bff);color:#061321;font-weight:950;font-size:19px;letter-spacing:-2px;box-shadow:0 7px 22px #3a9de955}
 .brand h1{font-size:19px;letter-spacing:.09em;margin:0;line-height:1.1}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.16em;margin-top:5px}
-.header-right{display:flex;align-items:center;gap:10px}.student{border:1px solid var(--line);background:#10243a;color:var(--text);border-radius:11px;padding:9px 11px;max-width:180px}
+.header-right{display:flex;align-items:center;gap:10px}.student{border:1px solid var(--line);background:#10243a;color:var(--text);border-radius:11px;padding:9px 11px;max-width:180px}.student-name{font-weight:800;color:var(--text);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.logout-lab{border:1px solid #ef9a9a;background:#fff1f1;color:#a52626;border-radius:11px;padding:9px 12px;font-weight:800;cursor:pointer}.session-time{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .avatar{width:36px;height:36px;border-radius:50%;background:#244766;color:#aeeeff;display:grid;place-items:center;font-weight:800}
 .hero{padding:34px 5px 22px;display:grid;grid-template-columns:1.5fr .8fr;gap:20px;align-items:end}
 .kicker{color:var(--cyan);font-size:11px;font-weight:850;letter-spacing:.17em;text-transform:uppercase}
@@ -146,7 +146,7 @@ body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linea
 <div class="app">
 <header class="header">
  <div class="brand"><div class="logo" aria-hidden="true">⚙</div><div><h1>Tech Lab</h1><small>AULA TÉCNICA INTERACTIVA</small></div></div>
- <div class="header-right"><input id="studentName" class="student" placeholder="Nombre del alumno" aria-label="Nombre del alumno"><div class="avatar" id="avatar">A</div></div>
+ <div class="header-right"><span class="student-name" id="studentName" aria-label="Alumno">Alumno</span><span class="session-time" id="sessionClock">00:00:00</span><div class="avatar" id="avatar">A</div><button class="logout-lab" id="logoutLab" type="button">Cerrar sesión</button></div>
 </header>
 <section class="hero">
  <div><div class="kicker">Aprender · Practicar · Verificar</div><h2>Tu taller de mantenimiento, ahora interactivo.</h2><p>Explora componentes, sigue procedimientos seguros, resuelve casos de diagnóstico y comprueba lo que aprendiste. Avanza a tu ritmo.</p></div>
@@ -322,14 +322,25 @@ body{background:radial-gradient(circle at 8% 0%,#eeeaff 0,transparent 32%),linea
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const STORE="mrTechLab2Progress";
 const LAB_API="https://script.google.com/macros/s/AKfycbwebAyTLr5ulHxfmW6EnBqnngask8iijhtOhm_psa_jOX_GBZ3B4n8Kgo8pRqJqtzg5/exec";
-function labToken(){try{return JSON.parse(parent.sessionStorage.getItem("ses")||"null")?.token||""}catch(e){return ""}}
-function labLog(data){const token=labToken();if(!token){console.warn("Tech Lab: no se encontró una sesión de estudiante en la plataforma principal; este evento no se enviará.");return}fetch(LAB_API,{method:"POST",body:JSON.stringify({action:"lab_event",token,...data})}).then(r=>r.json()).then(r=>{if(!r.ok)console.warn("Tech Lab: el servidor no registró el evento:",r.error||r)}).catch(err=>console.warn("Tech Lab: no fue posible enviar el evento al registro académico:",err))}
-
-let state={name:"",checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null,exploredParts:[],performanceTouched:[],quizIndex:0};
+function labSession(){try{return JSON.parse(parent.sessionStorage.getItem("ses")||"null")}catch(e){return null}}
+function labToken(){return labSession()?.token||""}
+function labPost(data){const token=labToken();if(!token)return Promise.reject(new Error("No hay una sesión de alumno activa."));return fetch(LAB_API,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({token,...data})})}
+function labLog(data){labPost({action:"lab_event",...data}).catch(()=>{})}
+const studentSession=labSession();
+if(!studentSession?.token){document.body.innerHTML='<main style="font:16px system-ui;padding:32px;max-width:640px;margin:auto"><h2>Sesión no disponible</h2><p>Ingresa primero al Aula para abrir Tech Lab.</p></main>';throw new Error("Tech Lab requiere una sesión activa del Aula.")}
+let labStartedAt=Date.now(),labClockTimer=null,labClosed=false;
+function formatElapsed(ms){const sec=Math.max(0,Math.floor(ms/1000)),h=String(Math.floor(sec/3600)).padStart(2,"0"),m=String(Math.floor(sec%3600/60)).padStart(2,"0"),s=String(sec%60).padStart(2,"0");return `${h}:${m}:${s}`}
+function tickLabClock(){const el=$("#sessionClock");if(el)el.textContent=formatElapsed(Date.now()-labStartedAt)}
+function closeLabSession(reason){if(labClosed)return;labClosed=true;clearInterval(labClockTimer);return labPost({action:"lab_session_end",startedAt:labStartedAt,endedAt:Date.now(),reason}).catch(()=>{})}
+labPost({action:"lab_session_start",startedAt:labStartedAt}).catch(()=>{});tickLabClock();labClockTimer=setInterval(tickLabClock,1000);
+window.addEventListener("pagehide",()=>{if(!labClosed){labClosed=true;try{const body=JSON.stringify({action:"lab_session_end",token:labToken(),startedAt:labStartedAt,endedAt:Date.now(),reason:"Salida o cierre de pestaña"});navigator.sendBeacon(LAB_API,new Blob([body],{type:"text/plain;charset=utf-8"}))}catch(e){}}});
+let state={name:studentSession.name||"Alumno",checks:Array(8).fill(false),cases:[false,false,false],caseAnswers:{},quizAnswers:{},quizScore:null,exploredParts:[],performanceTouched:[],quizIndex:0};
 try{const saved=JSON.parse(localStorage.getItem(STORE)||"null");if(saved)state={...state,...saved}}catch(e){}
+state.name=studentSession.name||"Alumno";
 function save(){localStorage.setItem(STORE,JSON.stringify(state));updateDashboard()}
 function toast(msg){const t=$("#toast");t.textContent=msg;t.style.display="block";clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.style.display="none",2400)}
-$("#studentName").value=state.name||"";$("#studentName").addEventListener("input",e=>{state.name=e.target.value;$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();save()});$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();
+$("#studentName").textContent=state.name;$("#avatar").textContent=(state.name.trim()[0]||"A").toUpperCase();
+$("#logoutLab").addEventListener("click",async()=>{const b=$("#logoutLab");b.disabled=true;b.textContent="Cerrando…";await closeLabSession("Cierre manual desde Tech Lab");try{if(parent&&typeof parent.techLabLogout==="function")parent.techLabLogout();else{parent.sessionStorage.removeItem("ses");parent.location.reload()}}catch(e){location.href="./"}});
 const flowSteps=[{id:"hardware",name:"Exploración de hardware"},{id:"mantenimiento",name:"Mantenimiento preventivo"},{id:"diagnostico",name:"Diagnóstico de fallas"},{id:"rendimiento",name:"Simulador de rendimiento"},{id:"evaluacion",name:"Evaluación final"},{id:"informe",name:"Informe de aprendizaje"}];
 function stepDone(id){if(id==="hardware")return ["Placa base","Procesador","RAM","Ventilador","SSD","Tarjeta gráfica","Ranuras PCI / PCIe","Chip BIOS/UEFI","Conector de energía","Fuente","Chasis"].every(x=>(state.exploredParts||[]).includes(x));if(id==="mantenimiento")return state.checks.every(Boolean);if(id==="diagnostico")return state.cases.every(Boolean);if(id==="rendimiento")return ["cpuRange","ramRange","tempRange","diskRange"].every(x=>(state.performanceTouched||[]).includes(x));if(id==="evaluacion")return state.quizScore!==null&&state.quizScore>=80;return id==="informe"}
 function stepUnlocked(id){const i=flowSteps.findIndex(x=>x.id===id);return i<=0||stepDone(flowSteps[i-1].id)}

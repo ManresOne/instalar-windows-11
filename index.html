@@ -456,18 +456,19 @@ QZ.linux=[
 {q:"¿Qué comandos actualizan Ubuntu desde la terminal?",o:["sudo apt update y luego sudo apt upgrade","format c:","sudo apt remove all"]}];
 const API="https://script.google.com/macros/s/AKfycbwebAyTLr5ulHxfmW6EnBqnngask8iijhtOhm_psa_jOX_GBZ3B4n8Kgo8pRqJqtzg5/exec";
 const on=API.startsWith("https://");
-let mi=0,n=0,seen=new Set(),ses=null,done=new Set(),qok=new Set(),quizOpen={},quizControlsLoaded=false,teacherToken=null,teacherMode=false;
+let mi=0,n=0,seen=new Set(),ses=null,done=new Set(),qok=new Set(),teacherToken=null,teacherMode=false;
 try{teacherToken=sessionStorage.getItem("teacherToken")||null}catch(e){}
 try{ses=JSON.parse(sessionStorage.getItem("ses")||"null")}catch(e){}
 const post=b=>fetch(API,{method:"POST",body:JSON.stringify(b)}).then(r=>r.json()).then(r=>{if(!r.ok&&/Sesión expirada/.test(r.error||"")&&b.action!=="code"&&b.action!=="verify"&&b.action!=="teacher_code"&&b.action!=="teacher_verify"&&b.action!=="teacher_data")expired();return r});
 function expired(){ses=null;try{sessionStorage.removeItem("ses")}catch(e){}$("who").hidden=true;$("login").hidden=false;$("f1").hidden=false;$("f2").hidden=true;lm("Tu sesión venció. Entra de nuevo: tu avance y tu quiz aprobado se conservan.",1)}
 const ping=b=>{if(on&&ses)post({...b,token:ses.token}).catch(()=>{})};
+window.techLabLogout=()=>{try{sessionStorage.removeItem("ses")}catch(e){}location.reload()};
 const key=()=>"seen-"+MODS[mi].id;
 function load(){try{seen=new Set(JSON.parse(localStorage.getItem(key())||"[]"))}catch(e){seen=new Set()}}
 function save(){try{localStorage.setItem(key(),JSON.stringify([...seen]))}catch(e){}}
 const open=m=>!m.req||done.has(m.req);
 const dis=m=>m.soon||!open(m)||(done.has(m.id)&&!m.info);
-function tabs(){if(teacherToken){$("tabs").innerHTML='<button role="tab" data-teacher aria-selected="true">Panel del profesor</button>';return}const before=MODS.filter(m=>m.id!=="glo"),glossary=MODS.filter(m=>m.id==="glo");const draw=m=>{const i=MODS.indexOf(m);return `<button role="tab" data-m="${i}" aria-selected="${i===mi&&!workshopMode}"${dis(m)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`};$("tabs").innerHTML=before.map(draw).join("")+'<button role="tab" data-workshop aria-selected="'+(workshopMode?"true":"false")+'">Tech Lab</button>'+glossary.map(draw).join("")}
+function tabs(){if(teacherToken){$("tabs").innerHTML='<button role="tab" data-teacher aria-selected="'+(!workshopMode?"true":"false")+'">Panel docente</button><button role="tab" data-workshop aria-selected="'+(workshopMode?"true":"false")+'">Tech Lab</button>';return}const before=MODS.filter(m=>m.id!=="glo"),glossary=MODS.filter(m=>m.id==="glo");const draw=m=>{const i=MODS.indexOf(m);return `<button role="tab" data-m="${i}" aria-selected="${i===mi&&!workshopMode}"${dis(m)?' aria-disabled="true"':""}>${done.has(m.id)?"✅ ":open(m)?"":"🔒 "}${m.name}${m.soon?"<small>pronto</small>":""}</button>`};$("tabs").innerHTML=before.map(draw).join("")+'<button role="tab" data-workshop aria-selected="'+(workshopMode?"true":"false")+'">Tech Lab</button>'+glossary.map(draw).join("")}
 function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),3400)}
 function pills(){const m=MODS[mi],f=m.S[n].f;$("pills").innerHTML=m.SH.map((t,i)=>`<button class="pill${i===f?" on":i<f?" past":""}" data-ph="${i}" aria-label="Ir a ${t}"><b>${i<f?"✓":m.I[i]}</b><span>${t}</span></button>`).join("");const o=document.querySelector(".pill.on");if(o)o.scrollIntoView({inline:"center",block:"nearest"})}
 function toc(){const{S,F,I}=MODS[mi];let h="",last=-1;S.forEach((s,i)=>{if(s.f!==last){if(last>-1)h+="</ol>";h+=`<h2>${I[s.f]} ${F[s.f]}</h2><ol>`;last=s.f}
@@ -537,8 +538,6 @@ const mid=()=>MODS[mi].id;
 const demo='<div class="callout tip"><b>Modo de prueba</b>Conecta la hoja de Google para activar esta parte.</div>';
 const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.floor(Math.random()*i--);[a[i],a[j]]=[a[j],a[i]]}return a};
 function quiz(){const b=$("qz"),Q=QZ[mid()];if(!on){b.innerHTML=demo;return}
-if(!quizControlsLoaded){b.innerHTML='<div class="callout warn"><b>Consultando disponibilidad…</b>Estamos verificando con el docente si esta evaluación está habilitada.</div>';return}
-if(quizOpen[mid()]!==true){b.innerHTML='<div class="callout warn"><b>Evaluación temporalmente bloqueada</b>Tu docente habilitará esta actividad cuando terminemos de estudiar el tema. Puedes continuar revisando el contenido de la guía.</div>';return}
 if(qok.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Quiz aprobado!</b>Ya cumpliste la parte 1. Falta la parte 2: envía tu prueba más abajo.</div>';return}
 b.innerHTML=shuf(Q.map((_,i)=>i)).map((qi,k)=>`<fieldset class="q" data-q="${qi}"><legend>${k+1}. ${Q[qi].q}</legend>${shuf(Q[qi].o.map((t,j)=>[t,j])).map(([t,j])=>`<label><input type="radio" name="q${qi}" value="${j}">${t}</label>`).join("")}<p class="exp" hidden></p></fieldset>`).join("")+'<div class="qbar" id="qbar"><span id="qcnt"></span><div id="qb"><button class="btn" id="qgo">Comprobar respuestas</button></div></div><p id="qres" role="status"></p>';
 const upd=()=>{const c=$("qcnt");if(!c)return;const k=Q.filter((_,i)=>document.querySelector(`input[name=q${i}]:checked`)).length;c.textContent=k<Q.length?`Respondidas: ${k} de ${Q.length}`:"¡Listo! Pulsa «Comprobar respuestas» para enviar tu quiz.";$("qbar").classList.toggle("ready",k===Q.length)};b.onchange=upd;upd();
@@ -571,7 +570,7 @@ draw();
 $("oschips").onclick=e=>{const b=e.target.closest("button");if(!b)return;f=b.dataset.f;document.querySelectorAll("#oschips button").forEach(x=>x.classList.toggle("on",x===b));draw();det.innerHTML="<p>👆 Elige un sistema para ver su ficha.</p>"};
 box.onclick=e=>{const b=e.target.closest("[data-os]");if(!b)return;const o=OSD.find(x=>x.id===b.dataset.os);document.querySelectorAll(".osc").forEach(x=>x.classList.toggle("on",x===b));det.innerHTML=`<h3>${o.n}</h3><dl><dt>Creador</dt><dd>${o.by}</dd><dt>Desde</dt><dd>${o.y}</dd><dt>Licencia</dt><dd>${o.lic}</dd><dt>Se usa en</dt><dd>${o.use}</dd><dt>Dato clave</dt><dd>${o.cu}</dd></dl>`;det.classList.remove("pop");void det.offsetWidth;det.classList.add("pop")}}
 function startMod(){const k=MODS.findIndex(x=>!x.soon&&!x.ref&&open(x)&&!done.has(x.id));if(k>=0)return k;for(let i=MODS.length-1;i>=0;i--)if(!MODS[i].soon&&!MODS[i].info&&done.has(MODS[i].id))return i;return 0}
-function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(!r.ok)return;done=new Set(r.done);qok=new Set(r.quiz);quizOpen=r.quizOpen||{};quizControlsLoaded=true;const c=MODS[mi];tabs();if(!open(c)||done.has(c.id)){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;showDone()}else openMod(k,0,true)}else if(c.S[n].k)go(n,true)}).catch(()=>{quizControlsLoaded=true;quizOpen={};if(MODS[mi].S[n].k==="quizev")quiz()})}
+function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(!r.ok)return;done=new Set(r.done);qok=new Set(r.quiz);const c=MODS[mi];tabs();if(!open(c)||done.has(c.id)){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;showDone()}else openMod(k,0,true)}else if(c.S[n].k)go(n,true)}).catch(()=>{})}
 function enter(){$("login").hidden=true;if(ses){$("who").textContent=ses.name;$("who").hidden=false}fromHash();estado()}
 window.addEventListener("hashchange",()=>{if(!$("login").hidden)return;fromHash()});
 if(teacherToken){showTeacher()}else if(!on||ses)enter();else $("login").hidden=false;
