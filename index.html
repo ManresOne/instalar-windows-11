@@ -20,6 +20,7 @@ header{display:flex;align-items:center;gap:16px;height:var(--hh);padding:0 22px;
 #tabs button[aria-selected=true]{background:var(--pri);color:#fff}
 #tabs small{margin-left:6px;font-size:.75rem}
 .who{background:#E5FAF5;color:#0A7A65;font-weight:700;font-size:.9rem;padding:5px 14px;border-radius:999px;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.logout-global{font:inherit;font-weight:800;padding:8px 13px;border-radius:999px;border:1px solid #efb2b2;background:#fff1f1;color:#a52626;cursor:pointer;white-space:nowrap}.logout-global:hover{background:#ffe2e2}.logout-global:disabled{opacity:.65;cursor:wait}
 #menu{font:inherit;font-weight:700;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
 #menu:hover{border-color:var(--pri);color:var(--pri)}
 main{max-width:860px;margin:0 auto;padding:26px 18px 64px}
@@ -98,7 +99,7 @@ aside .done .n::after{content:"✓"}
 .cf{position:fixed;top:-14px;width:9px;height:14px;border-radius:2px;z-index:50;animation:fall linear forwards;pointer-events:none}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-@media (max-width:700px){.brand span,#menu b,.who{display:none}.pill:not(.on) span{display:none}header{padding:0 12px;gap:8px}}
+@media (max-width:700px){.brand span,#menu b,.who{display:none}.logout-global{font-size:.78rem;padding:7px 9px}.pill:not(.on) span{display:none}header{padding:0 12px;gap:8px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 footer{max-width:860px;margin:0 auto;padding:0 18px 44px;text-align:center;color:var(--mut);font-size:.92rem}
 footer p{margin:4px 0}
@@ -246,7 +247,7 @@ main.teacher-view{max-width:1240px}
 </style>
 </head>
 <body>
-<header><div class="brand"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" rx="2.5" fill="#6C4CF1"/><rect x="12.5" y="2" width="9.5" height="9.5" rx="2.5" fill="#19C3A0"/><rect x="2" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FFB020"/><rect x="12.5" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FF5C8A"/></svg><span>Aula de instalación</span></div><nav id="tabs" role="tablist" aria-label="Guías"></nav><span id="who" class="who" hidden></span><button id="teacherAccess" class="teacher-access">Panel docente</button><button id="menu" aria-expanded="false">☰ <b>Todos los pasos</b></button></header>
+<header><div class="brand"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" rx="2.5" fill="#6C4CF1"/><rect x="12.5" y="2" width="9.5" height="9.5" rx="2.5" fill="#19C3A0"/><rect x="2" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FFB020"/><rect x="12.5" y="12.5" width="9.5" height="9.5" rx="2.5" fill="#FF5C8A"/></svg><span>Aula de instalación</span></div><nav id="tabs" role="tablist" aria-label="Guías"></nav><span id="who" class="who" hidden></span><button id="logoutGlobal" class="logout-global" type="button" hidden>Cerrar sesión</button><button id="teacherAccess" class="teacher-access">Panel docente</button><button id="menu" aria-expanded="false">☰ <b>Todos los pasos</b></button></header>
 <div id="login" class="gate" hidden><div><div style="font-size:3rem">👋</div><h1>¡Te damos la bienvenida!</h1><span class="grp">TICS Marinilla Grupo 2</span><p>Entra con el correo que registró tu docente.</p>
 <form id="f1"><input id="em" type="email" placeholder="tu correo" autocomplete="email" required><button class="btn">Enviarme el código</button></form>
 <form id="f2" hidden><input id="cd" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" autocomplete="one-time-code" required><button class="btn">Entrar</button></form>
@@ -462,7 +463,9 @@ try{ses=JSON.parse(sessionStorage.getItem("ses")||"null")}catch(e){}
 const post=b=>fetch(API,{method:"POST",body:JSON.stringify(b)}).then(r=>r.json()).then(r=>{if(!r.ok&&/Sesión expirada/.test(r.error||"")&&b.action!=="code"&&b.action!=="verify"&&b.action!=="teacher_code"&&b.action!=="teacher_verify"&&b.action!=="teacher_data")expired();return r});
 function expired(){ses=null;try{sessionStorage.removeItem("ses")}catch(e){}$("who").hidden=true;$("login").hidden=false;$("f1").hidden=false;$("f2").hidden=true;lm("Tu sesión venció. Entra de nuevo: tu avance y tu quiz aprobado se conservan.",1)}
 const ping=b=>{if(on&&ses)post({...b,token:ses.token}).catch(()=>{})};
-window.techLabLogout=()=>{try{sessionStorage.removeItem("ses")}catch(e){}location.reload()};
+window.techLabLogout=async()=>{const token=ses?.token;const b=$("logoutGlobal");if(b){b.disabled=true;b.textContent="Cerrando…"}try{if(token)await post({action:"logout",token})}catch(e){}try{sessionStorage.removeItem("ses")}catch(e){}ses=null;location.reload()};
+const logoutGlobal=$("logoutGlobal");if(logoutGlobal)logoutGlobal.addEventListener("click",()=>window.techLabLogout());
+function setGlobalLogout(visible){const b=$("logoutGlobal");if(b)b.hidden=!visible;}
 const key=()=>"seen-"+MODS[mi].id;
 function load(){try{seen=new Set(JSON.parse(localStorage.getItem(key())||"[]"))}catch(e){seen=new Set()}}
 function save(){try{localStorage.setItem(key(),JSON.stringify([...seen]))}catch(e){}}
@@ -517,7 +520,7 @@ const niceDate=s=>{if(!s)return "—";const d=new Date(String(s).replace(" ","T"
 function hideWorkshop(){workshopMode=false;$("workshopView").hidden=true;["pills","pb","meta","step","nav"].forEach(id=>{const e=$(id);if(e)e.hidden=false});$("side").hidden=false;$("menu").hidden=false;$("teacherPanel").hidden=true;document.querySelector("footer").hidden=false;tabs()}
 function showWorkshop(){workshopMode=true;teacherMode=false;$("login").hidden=true;$("teacherPanel").hidden=true;["pills","pb","meta","step","nav"].forEach(id=>{const e=$(id);if(e)e.hidden=true});$("side").hidden=true;$("scrim").classList.remove("on");$("menu").hidden=true;$("workshopView").hidden=false;document.querySelector("footer").hidden=true;tabs();window.scrollTo(0,0)}
 let workshopMode=false;
-function showTeacher(){workshopMode=false;$("workshopView").hidden=true;$("side").hidden=true;teacherMode=true;$("teacherPanel").closest("main").classList.add("teacher-view");$("login").hidden=true;$("who").textContent="Docente";$("who").hidden=false;$("menu").hidden=true;["pills","pb","meta","step","nav"].forEach(id=>{const e=$(id);if(e)e.hidden=true});$("teacherPanel").hidden=false;document.querySelector("footer").hidden=true;tabs();loadTeacherData()}
+function showTeacher(){setGlobalLogout(false);workshopMode=false;$("workshopView").hidden=true;$("side").hidden=true;teacherMode=true;$("teacherPanel").closest("main").classList.add("teacher-view");$("login").hidden=true;$("who").textContent="Docente";$("who").hidden=false;$("menu").hidden=true;["pills","pb","meta","step","nav"].forEach(id=>{const e=$(id);if(e)e.hidden=true});$("teacherPanel").hidden=false;document.querySelector("footer").hidden=true;tabs();loadTeacherData()}
 function teacherLogout(){teacherToken=null;teacherMode=false;try{sessionStorage.removeItem("teacherToken")}catch(e){}location.reload()}
 function tableHTML(headers,rows){if(!rows.length)return '<p class="tmuted">Todavía no hay registros.</p>';return '<div class="tscroll"><table><thead><tr>'+headers.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>'}
 async function loadTeacherData(){const box=$("teacherPanel");box.innerHTML='<div class="tbox"><p>Consultando los datos del aula…</p></div>';try{const d=await post({action:"teacher_data",token:teacherToken});if(!d.ok){if(/expirada|permiso/i.test(d.error||"")){box.innerHTML='<div class="tbox"><p>'+esc(d.error)+'</p><button class="btn" id="tAgain">Volver a ingresar</button></div>';$("tAgain").onclick=teacherLogout;return}throw Error(d.error||"No se pudieron cargar los datos")}
@@ -537,7 +540,9 @@ $("tLogout").onclick=teacherLogout;
 const mid=()=>MODS[mi].id;
 const demo='<div class="callout tip"><b>Modo de prueba</b>Conecta la hoja de Google para activar esta parte.</div>';
 const shuf=a=>{a=[...a];for(let i=a.length;i>1;){const j=Math.floor(Math.random()*i--);[a[i],a[j]]=[a[j],a[i]]}return a};
-function quiz(){const b=$("qz"),Q=QZ[mid()];if(!on){b.innerHTML=demo;return}
+async function quizAccess(){try{const r=await post({action:"quiz_status",mod:mid(),token:ses?.token});if(!r.ok)return {open:false,error:r.error||"No se pudo consultar el estado del quiz."};const v=r.open??r.abierto??r.quizOpen??r.quizAbierto??r.enabled;const open=v===true||["si","sí","true","yes","abierto"].includes(String(v).trim().toLowerCase());return {open,error:""};}catch(e){return {open:false,error:"No se pudo verificar la disponibilidad. Intenta de nuevo."}}}
+async function quiz(){const b=$("qz"),Q=QZ[mid()];if(!on){b.innerHTML=demo;return}
+const access=await quizAccess();if(!access.open){b.innerHTML='<div class="callout warn"><b>Quiz temporalmente cerrado</b>'+(access.error?access.error:"Tu docente aún no ha habilitado esta evaluación. Puedes continuar explorando el contenido y Tech Lab.")+'</div>';return}
 if(qok.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Quiz aprobado!</b>Ya cumpliste la parte 1. Falta la parte 2: envía tu prueba más abajo.</div>';return}
 b.innerHTML=shuf(Q.map((_,i)=>i)).map((qi,k)=>`<fieldset class="q" data-q="${qi}"><legend>${k+1}. ${Q[qi].q}</legend>${shuf(Q[qi].o.map((t,j)=>[t,j])).map(([t,j])=>`<label><input type="radio" name="q${qi}" value="${j}">${t}</label>`).join("")}<p class="exp" hidden></p></fieldset>`).join("")+'<div class="qbar" id="qbar"><span id="qcnt"></span><div id="qb"><button class="btn" id="qgo">Comprobar respuestas</button></div></div><p id="qres" role="status"></p>';
 const upd=()=>{const c=$("qcnt");if(!c)return;const k=Q.filter((_,i)=>document.querySelector(`input[name=q${i}]:checked`)).length;c.textContent=k<Q.length?`Respondidas: ${k} de ${Q.length}`:"¡Listo! Pulsa «Comprobar respuestas» para enviar tu quiz.";$("qbar").classList.toggle("ready",k===Q.length)};b.onchange=upd;upd();
@@ -551,7 +556,8 @@ if(r.pass){qok.add(mid());$("qres").textContent=`¡Aprobaste con ${r.score} de $
 else{$("qres").textContent=`Sacaste ${r.score} de ${r.total} y necesitas ${r.need}. Lee la explicación de las respuestas en rojo y vuelve a intentarlo.`;$("qb").innerHTML='<button class="btn" id="qre">Intentar de nuevo</button>';$("qre").onclick=()=>{quiz();$("qz").scrollIntoView({behavior:"smooth"})}}}catch(x){$("qres").textContent="No pudimos conectar. Intenta de nuevo.";$("qgo").disabled=false}}}
 function stp(){const e=$("fin2");if(!e)return;const q=qok.has(mid()),d=done.has(mid());
 e.innerHTML=`<div class="stp"><div class="${q?"ok":"now"}"><b>${q?"✓":"1"}</b>Quiz</div><span class="ln"></span><div class="${d?"ok":q?"now":""}"><b>${d?"✓":"2"}</b>Enviar prueba</div></div>${q&&!d?'<div class="callout warn"><b>¡Falta un último paso!</b>Aprobaste el quiz, pero todavía no terminas: escribe tus datos abajo y pulsa «Enviar prueba». Si no la envías, no queda registro de lo que hiciste.</div>':""}${d?'<div class="callout tip"><b>¡Todo enviado!</b>Tu quiz y tu prueba quedaron registrados. Pulsa «Finalizar» para cerrar la guía.</div>':""}`}
-function evid(){const b=$("ev");if(!on){b.innerHTML=demo;return}
+async function evid(){const b=$("ev");if(!on){b.innerHTML=demo;return}
+const access=await quizAccess();if(!access.open){b.innerHTML='<div class="callout warn"><b>Evaluación temporalmente cerrada</b>'+(access.error?access.error:"Esta actividad se habilitará cuando tu docente abra el quiz.")+'</div>';return}
 if(done.has(mid())){b.innerHTML='<div class="callout tip"><b>¡Listo!</b>Tu docente ya recibió tu prueba.</div>';return}
 if(!qok.has(mid())){b.innerHTML='<div class="callout warn"><b>Primero el quiz</b>Esta parte se abre cuando apruebes el quiz de arriba.</div>';return}
 b.innerHTML='<label class="fl">Nombre completo (obligatorio)<input id="fn" autocomplete="name" placeholder="Nombres y apellidos"></label><label class="fl">Número de documento (obligatorio)<input id="fd" inputmode="numeric" placeholder="Solo números"></label><label class="fl">Foto donde se vea tu rostro mientras manipulas el equipo (opcional)<input type="file" id="fi" accept="image/*"></label><img id="pv" alt="Vista previa de tu foto" hidden><label class="ck"><input type="checkbox" id="fc">Autorizo (obligatorio) el uso de mi nombre, documento e imagen únicamente para el seguimiento académico de este curso.</label><div class="qbar" id="evb"><span id="evh">Completa tu nombre, documento y la autorización</span><button class="btn" id="sv" disabled>Enviar prueba</button></div><p id="evm" role="status"></p>';
@@ -571,7 +577,7 @@ $("oschips").onclick=e=>{const b=e.target.closest("button");if(!b)return;f=b.dat
 box.onclick=e=>{const b=e.target.closest("[data-os]");if(!b)return;const o=OSD.find(x=>x.id===b.dataset.os);document.querySelectorAll(".osc").forEach(x=>x.classList.toggle("on",x===b));det.innerHTML=`<h3>${o.n}</h3><dl><dt>Creador</dt><dd>${o.by}</dd><dt>Desde</dt><dd>${o.y}</dd><dt>Licencia</dt><dd>${o.lic}</dd><dt>Se usa en</dt><dd>${o.use}</dd><dt>Dato clave</dt><dd>${o.cu}</dd></dl>`;det.classList.remove("pop");void det.offsetWidth;det.classList.add("pop")}}
 function startMod(){const k=MODS.findIndex(x=>!x.soon&&!x.ref&&open(x)&&!done.has(x.id));if(k>=0)return k;for(let i=MODS.length-1;i>=0;i--)if(!MODS[i].soon&&!MODS[i].info&&done.has(MODS[i].id))return i;return 0}
 function estado(){if(on&&ses)post({action:"estado",token:ses.token}).then(r=>{if(!r.ok)return;done=new Set(r.done);qok=new Set(r.quiz);const c=MODS[mi];tabs();if(!open(c)||done.has(c.id)){const k=startMod();if(done.has(MODS[k].id)&&!MODS[k].info){mi=k;showDone()}else openMod(k,0,true)}else if(c.S[n].k)go(n,true)}).catch(()=>{})}
-function enter(){$("login").hidden=true;if(ses){$("who").textContent=ses.name;$("who").hidden=false}fromHash();estado()}
+function enter(){$("login").hidden=true;if(ses){$("who").textContent=ses.name;$("who").hidden=false;setGlobalLogout(true)}else setGlobalLogout(false);fromHash();estado()}
 window.addEventListener("hashchange",()=>{if(!$("login").hidden)return;fromHash()});
 if(teacherToken){showTeacher()}else if(!on||ses)enter();else $("login").hidden=false;
 </script>
