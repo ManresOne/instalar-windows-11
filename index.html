@@ -99,7 +99,7 @@ aside .done .n::after{content:"✓"}
 .cf{position:fixed;top:-14px;width:9px;height:14px;border-radius:2px;z-index:50;animation:fall linear forwards;pointer-events:none}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-@media (max-width:700px){.brand span,#menu b,.who{display:none}.logout-global{font-size:.78rem;padding:7px 9px}.pill:not(.on) span{display:none}header{padding:0 12px;gap:8px}}
+@media (max-width:700px){.brand span,#menu b,.who{display:none}header{height:auto;min-height:var(--hh);padding:9px 12px 5px;gap:8px;flex-wrap:wrap}#tabs{order:5;display:flex;flex:0 0 100%;width:100%;min-width:0;max-width:100%;gap:7px;overflow-x:auto;overflow-y:hidden;padding:5px 1px 9px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}#tabs button{flex:0 0 auto;font-size:.88rem;padding:9px 13px;min-height:40px}.logout-global{font-size:.78rem;padding:7px 9px}.pill:not(.on) span{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 footer{max-width:860px;margin:0 auto;padding:0 18px 44px;text-align:center;color:var(--mut);font-size:.92rem}
 footer p{margin:4px 0}
